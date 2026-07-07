@@ -8,6 +8,7 @@
   --color-surface: var(--surface);
   --color-border: var(--border);
   --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-error: var(--error);
@@ -22,6 +23,7 @@
 
   html {
     color-scheme: dark;
+    scroll-behavior: smooth;
   }
 
   html[data-theme="light"] {
@@ -54,5 +56,21 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+@layer utilities {
+  @keyframes gradient-drift {
+    0%,
+    100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient-drift {
+    animation: gradient-drift 18s ease-in-out infinite;
   }
 }

@@ -25,7 +25,7 @@ export function TabsTrigger({ className, ...rest }: TabsPrimitive.TabsTriggerPro
       className={cn(
         "text-muted rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
         "hover:text-foreground",
-        "data-[state=active]:bg-primary data-[state=active]:text-white",
+        "data-[state=active]:bg-primary data-[state=active]:text-on-primary",
         className,
       )}
       {...rest}

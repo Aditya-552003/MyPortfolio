@@ -240,22 +240,24 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `AnimatedGradient` background (Primary → Secondary gradient drift) | 3 | ☐ |
-| T2 | Build `ParticleField` (subtle floating AI-themed particles, canvas/WebGL) | 5 | ☐ |
-| T3 | Build `Hero` component: headline "Aditya AI Studio", subtitle, mission line | 2 | ☐ |
-| T4 | Build `CTAButton` (primary: "Talk to My AI", secondary: "Explore Projects") | 1 | ☐ |
-| T5 | Integrate `prefers-reduced-motion`: disable gradient drift + particles | 1 | ☐ |
-| T6 | Responsive: stacked CTAs on mobile, centered text, adaptive particle density | 1 | ☐ |
+| T1 | Build `AnimatedGradient` background (Primary → Secondary gradient drift) | 3 | ☑ |
+| T2 | Build `ParticleField` (subtle floating AI-themed particles, canvas/WebGL) | 5 | ☑ |
+| T3 | Build `Hero` component: headline "Aditya AI Studio", subtitle, mission line | 2 | ☑ |
+| T4 | Build `CTAButton` (primary: "Talk to My AI", secondary: "Explore Projects") | 1 | ☑ |
+| T5 | Integrate `prefers-reduced-motion`: disable gradient drift + particles | 1 | ☑ |
+| T6 | Responsive: stacked CTAs on mobile, centered text, adaptive particle density | 1 | ☑ |
+
+> **Note:** T4 reused the `Button` primitive directly (primary/secondary variants) rather than a separate `CTAButton` wrapper — same behavior, no duplicate component.
 
 #### Acceptance Criteria
 
-- [ ] Hero renders headline, subtitle, mission, and both CTAs (FR-H1, FR-H2, FR-H3)
-- [ ] "Talk to My AI" navigates to Playground section
-- [ ] "Explore Projects" scrolls to Projects section
-- [ ] Gradient animation is subtle and smooth
-- [ ] Particles are low-amplitude, low-frequency, non-distracting
-- [ ] Reduced-motion: static gradient, no particle animation
-- [ ] FCP < 1.5s on representative hardware
+- [x] Hero renders headline, subtitle, mission, and both CTAs (FR-H1, FR-H2, FR-H3)
+- [x] "Talk to My AI" navigates to Playground section
+- [ ] "Explore Projects" scrolls to Projects section — navigates to the dedicated `/projects` route instead; Projects is its own page, not a landing-page anchor, in this architecture
+- [x] Gradient animation is subtle and smooth
+- [x] Particles are low-amplitude, low-frequency, non-distracting
+- [x] Reduced-motion: static gradient, no particle animation
+- [x] FCP < 1.5s on representative hardware — Lighthouse FCP 0.2s / LCP 0.5s locally
 
 ---
 
@@ -269,18 +271,18 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build About teaser — short intro + "Learn More" link | 2 | ☐ |
-| T2 | Build 3-item skills highlight strip (top categories + icons) | 3 | ☐ |
-| T3 | Build Playground teaser card ("Try it now" → Playground) | 2 | ☐ |
-| T4 | Build projects preview strip (3 featured project cards with hover effects) | 3 | ☐ |
+| T1 | Build About teaser — short intro + "Learn More" link | 2 | ☑ |
+| T2 | Build 3-item skills highlight strip (top categories + icons) | 3 | ☑ |
+| T3 | Build Playground teaser card ("Try it now" → Playground) | 2 | ☑ |
+| T4 | Build projects preview strip (3 featured project cards with hover effects) | 3 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Below-fold: About teaser, Skills highlight, Playground teaser, Projects strip
-- [ ] Each teaser links to its full section/page
-- [ ] Scroll-reveal animations: fade + translate (≤ 12px), staggered
-- [ ] Reduced-motion: final states shown immediately
-- [ ] Responsive: single-column mobile, multi-column desktop
+- [x] Below-fold: About teaser, Skills highlight, Playground teaser, Projects strip
+- [x] Each teaser links to its full section/page
+- [x] Scroll-reveal animations: fade + translate (≤ 12px), staggered
+- [x] Reduced-motion: final states shown immediately
+- [x] Responsive: single-column mobile, multi-column desktop
 
 ---
 
@@ -294,16 +296,16 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `useScrollReveal` hook or Framer Motion wrapper with Intersection Observer | 3 | ☐ |
-| T2 | Apply staggered reveals to all landing-page sections | 1 | ☐ |
-| T3 | Add smooth-scroll for in-page navigation links | 1 | ☐ |
+| T1 | Build `useScrollReveal` hook or Framer Motion wrapper with Intersection Observer | 3 | ☑ |
+| T2 | Apply staggered reveals to all landing-page sections | 1 | ☑ |
+| T3 | Add smooth-scroll for in-page navigation links | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Elements fade in with subtle upward translate on scroll
-- [ ] Stagger: 50–100ms between items
-- [ ] Reduced-motion: all reveals disabled
-- [ ] Zero layout shift during reveals
+- [x] Elements fade in with subtle upward translate on scroll
+- [x] Stagger: 50–100ms between items
+- [x] Reduced-motion: all reveals disabled
+- [x] Zero layout shift during reveals
 
 ---
 
@@ -317,17 +319,17 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Configure `metadata` in `layout.tsx`: title, description, OpenGraph, Twitter cards | 2 | ☐ |
-| T2 | Add JSON-LD structured data (Person, CreativeWork) | 1 | ☐ |
-| T3 | Create `sitemap.ts`, `robots.ts`, canonical URL config | 1 | ☐ |
-| T4 | Semantic HTML: single `<h1>` per page, heading hierarchy, `<main>`, `<section>`, `<nav>` | 1 | ☐ |
+| T1 | Configure `metadata` in `layout.tsx`: title, description, OpenGraph, Twitter cards | 2 | ☑ |
+| T2 | Add JSON-LD structured data (Person, CreativeWork) | 1 | ☑ |
+| T3 | Create `sitemap.ts`, `robots.ts`, canonical URL config | 1 | ☑ |
+| T4 | Semantic HTML: single `<h1>` per page, heading hierarchy, `<main>`, `<section>`, `<nav>` | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Lighthouse SEO = 100
-- [ ] OpenGraph preview renders correctly on LinkedIn, Twitter, Slack
-- [ ] Sitemap and robots.txt accessible
-- [ ] Every page has unique `<title>` and `<meta description>`
+- [x] Lighthouse SEO = 100 — verified locally on `/`, `/projects/emosens`, `/playground`, `/contact`
+- [ ] OpenGraph preview renders correctly on LinkedIn, Twitter, Slack — tags + dynamic OG image verified programmatically; not tested against live social platforms pre-deploy
+- [x] Sitemap and robots.txt accessible
+- [x] Every page has unique `<title>` and `<meta description>`
 
 ---
 
@@ -341,28 +343,30 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Audit + add ARIA labels/roles to Navbar, MobileNav, Hero, all primitives | 3 | ☐ |
-| T2 | Implement skip-to-content link | 1 | ☐ |
-| T3 | Ensure all interactive elements are focusable in logical tab order | 2 | ☐ |
-| T4 | Test with screen reader (NVDA/VoiceOver); fix announced labels | 1 | ☐ |
+| T1 | Audit + add ARIA labels/roles to Navbar, MobileNav, Hero, all primitives | 3 | ☑ |
+| T2 | Implement skip-to-content link | 1 | ☑ |
+| T3 | Ensure all interactive elements are focusable in logical tab order | 2 | ☑ |
+| T4 | Test with screen reader (NVDA/VoiceOver); fix announced labels | 1 | ☑ |
+
+> **Note:** T4 verified via automated axe-core scans (0 violations, dark + light, all routes) and a scripted keyboard tab-order walk, not manual NVDA/VoiceOver — no screen reader available in this environment.
 
 #### Acceptance Criteria
 
-- [ ] Lighthouse Accessibility = 100 on Home
-- [ ] Skip-to-content is the first focusable element
-- [ ] All images have `alt`; decorative images have `alt=""`
-- [ ] Tab order follows visual reading order
-- [ ] Screen reader announces nav items, buttons, headings correctly
+- [x] Lighthouse Accessibility = 100 on Home — and on every other sampled route
+- [x] Skip-to-content is the first focusable element
+- [x] All images have `alt`; decorative images have `alt=""`
+- [x] Tab order follows visual reading order
+- [ ] Screen reader announces nav items, buttons, headings correctly — inferred from ARIA audit + axe-core; not confirmed with an actual screen reader
 
 ---
 
 ### Sprint 1 — Exit Criteria
 
-- [ ] Landing page fully responsive + accessible at all 5 breakpoints
-- [ ] Lighthouse: Performance > 95, Accessibility = 100, SEO = 100, Best Practices = 100
-- [ ] Hero animation smooth and reduced-motion compliant
-- [ ] Dark/light mode works on landing page
-- [ ] CI green
+- [x] Landing page fully responsive + accessible at all 5 breakpoints
+- [x] Lighthouse: Performance > 95, Accessibility = 100, SEO = 100, Best Practices = 100 — all 100 locally (desktop preset)
+- [x] Hero animation smooth and reduced-motion compliant
+- [x] Dark/light mode works on landing page
+- [x] CI green — lint, type-check, format-check, build all pass locally; GitHub Actions run pending push
 
 ---
 

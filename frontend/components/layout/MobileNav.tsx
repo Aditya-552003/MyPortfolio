@@ -50,7 +50,7 @@ export function MobileNav(): ReactNode {
                   aria-current={isActive ? "page" : undefined}
                   className={cn(
                     "rounded-[var(--radius-md)] px-4 py-3 text-base font-medium transition-colors duration-[var(--duration-fast)]",
-                    isActive ? "bg-primary text-white" : "text-foreground hover:bg-border/50",
+                    isActive ? "bg-primary text-on-primary" : "text-foreground hover:bg-border/50",
                   )}
                 >
                   {item.label}

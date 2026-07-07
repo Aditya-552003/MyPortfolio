@@ -3,14 +3,14 @@ import type { ReactNode } from "react";
 
 import { ComingSoon } from "@/app/_components/ComingSoon";
 
-export const metadata: Metadata = { title: "About" };
+const description = "Career journey, mission, and values — arriving in Sprint 2.";
+
+export const metadata: Metadata = {
+  title: "About",
+  description,
+  alternates: { canonical: "/about" },
+};
 
 export default function AboutPage(): ReactNode {
-  return (
-    <ComingSoon
-      eyebrow="About"
-      title="About Aditya"
-      description="Career journey, mission, and values — arriving in Sprint 2."
-    />
-  );
+  return <ComingSoon eyebrow="About" title="About Aditya" description={description} />;
 }

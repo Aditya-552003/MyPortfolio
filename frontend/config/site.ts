@@ -10,6 +10,8 @@ export interface SocialLink {
 
 export const siteConfig = {
   name: "Aditya AI Studio",
+  authorName: "Aditya",
+  jobTitle: "AI Engineer",
   tagline: "Interactive AI Engineering Portfolio",
   mission: "Build. Search. Understand. Communicate.",
   description:

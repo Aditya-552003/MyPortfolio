@@ -8,6 +8,8 @@ export { Divider } from "./Divider";
 export { Skeleton } from "./Skeleton";
 export { Spinner } from "./Spinner";
 export { SectionContainer } from "./SectionContainer";
+export { Reveal } from "./Reveal";
+export type { RevealProps } from "./Reveal";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "./Tabs";
 export { Tooltip, TooltipProvider, TooltipRoot, TooltipTrigger, TooltipContent } from "./Tooltip";
 export { Modal, ModalTrigger, ModalClose, ModalContent } from "./Modal";
