@@ -1,0 +1,57 @@
+/**
+ * Design tokens — Aditya AI Studio (PRD §17).
+ * Dark mode is the default (:root); light mode is an equal-quality
+ * alternative applied via [data-theme="light"] on <html>.
+ */
+
+:root {
+  /* Color */
+  --background: #050816;
+  --foreground: #ffffff;
+  --muted: #94a3b8;
+  --surface: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
+  --primary: #0ea5e9;
+  --secondary: #7c3aed;
+  --accent: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* Glassmorphism */
+  --glass-blur: 16px;
+}
+
+:root[data-theme="light"] {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #475569;
+  --surface: rgba(15, 23, 42, 0.03);
+  --border: rgba(15, 23, 42, 0.08);
+  --primary: #0284c7;
+  --secondary: #6d28d9;
+  --accent: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.1);
+  --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.14);
+}
