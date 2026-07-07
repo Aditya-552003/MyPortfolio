@@ -15,6 +15,7 @@ const cardVariants = cva(
       hover: {
         none: "",
         lift: "hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]",
+        glow: "hover:border-primary/60 hover:shadow-[0_0_24px_color-mix(in_srgb,var(--primary)_35%,transparent)]",
       },
     },
     defaultVariants: {

@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Reveal } from "@/components/ui/Reveal";
 import { projects } from "@/content/projects";
 
-import { FeaturedProjectCard } from "./FeaturedProjectCard";
+import { ProjectCard } from "./ProjectCard";
 
 const FEATURED_COUNT = 3;
 
@@ -14,7 +14,7 @@ export function ProjectsPreview(): ReactNode {
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
       {featured.map((project, index) => (
         <Reveal key={project.slug} delayMs={index * 75} className="h-full">
-          <FeaturedProjectCard project={project} />
+          <ProjectCard project={project} />
         </Reveal>
       ))}
     </div>

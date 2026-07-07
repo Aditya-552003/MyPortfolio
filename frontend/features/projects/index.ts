@@ -1,2 +1,5 @@
 export { ProjectsPreview } from "./ProjectsPreview";
-export { FeaturedProjectCard } from "./FeaturedProjectCard";
+export { ProjectCard } from "./ProjectCard";
+export { ProjectExplorer } from "./ProjectExplorer";
+export { CategoryFilter, ALL_CATEGORIES } from "./CategoryFilter";
+export type { CategoryFilterValue } from "./CategoryFilter";

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
-import { ComingSoon } from "@/app/_components/ComingSoon";
+import { AboutSection } from "@/features/about";
 
-const description = "Career journey, mission, and values — arriving in Sprint 2.";
+const description =
+  "Aditya's career journey, mission, and values — the engineer behind the AI systems in this portfolio.";
 
 export const metadata: Metadata = {
   title: "About",
@@ -12,5 +13,5 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage(): ReactNode {
-  return <ComingSoon eyebrow="About" title="About Aditya" description={description} />;
+  return <AboutSection />;
 }

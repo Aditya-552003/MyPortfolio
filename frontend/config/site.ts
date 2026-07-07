@@ -18,6 +18,8 @@ export const siteConfig = {
     "An interactive AI engineering portfolio — chat with a RAG-grounded assistant, run live emotion detection and semantic search, and explore production-grade AI projects.",
   url: "https://aditya-ai-studio.vercel.app",
   resumeUrl: "/resume.pdf",
+  /** Placeholder — swap for the real GitHub handle before launch (see GitHubStats). */
+  githubUsername: "octocat",
 } as const;
 
 export const navItems: readonly NavItem[] = [

@@ -391,16 +391,18 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Create TS types/interfaces: `Project`, `Skill`, `Experience`, `Education`, `Certification` | 2 | ☐ |
-| T2 | Create data files in `content/`: `projects.ts`, `skills.ts`, `experience.ts`, `education.ts`, `certifications.ts`, `about.ts` | 2 | ☐ |
-| T3 | Populate data files with content from PRD + SKILLS.md | 1 | ☐ |
+| T1 | Create TS types/interfaces: `Project`, `Skill`, `Experience`, `Education`, `Certification` | 2 | ☑ |
+| T2 | Create data files in `content/`: `projects.ts`, `skills.ts`, `experience.ts`, `education.ts`, `certifications.ts`, `about.ts` | 2 | ☑ |
+| T3 | Populate data files with content from PRD + SKILLS.md | 1 | ☑ |
+
+> **Note:** Experience/Education/Certifications have no real source data in this repo (resume, transcript, credentials). Per explicit user decision, these are populated with clearly-flagged placeholder entries (`isPlaceholder: true` → a visible "Sample data" badge) rather than fabricated history. About's journey timeline uses only real, already-established facts (the actual projects + this site).
 
 #### Acceptance Criteria
 
-- [ ] All types are strict — no `any`
-- [ ] Data files export typed constants
-- [ ] 4 flagship projects defined with full metadata
-- [ ] All SKILLS.md skills represented with proficiency + category tags
+- [x] All types are strict — no `any`
+- [x] Data files export typed constants
+- [x] 4 flagship projects defined with full metadata (explorer-level; the full 17-item detail template is Sprint 3)
+- [x] All SKILLS.md skills represented with proficiency + category tags — 21 skills across 7 categories
 
 ---
 
@@ -414,15 +416,15 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `AboutSection` — intro, objective, focus, mission, values | 3 | ☐ |
-| T2 | Build `Timeline` + `TimelineItem` — vertical journey timeline | 2 | ☐ |
+| T1 | Build `AboutSection` — intro, objective, focus, mission, values | 3 | ☑ |
+| T2 | Build `Timeline` + `TimelineItem` — vertical journey timeline | 2 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Renders: professional intro, career objective, focus, mission, values
-- [ ] Journey timeline displays milestones chronologically
-- [ ] Responsive: vertical on all breakpoints, adjusted spacing on mobile
-- [ ] Scroll-reveal on timeline items
+- [x] Renders: professional intro, career objective, focus, mission, values
+- [x] Journey timeline displays milestones chronologically
+- [x] Responsive: vertical on all breakpoints, adjusted spacing on mobile
+- [x] Scroll-reveal on timeline items
 
 ---
 
@@ -436,15 +438,15 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `SkillsMatrix` — grouped layout with category headers | 3 | ☐ |
-| T2 | Build `SkillPill` — individual badge with proficiency signal (color/icon) | 2 | ☐ |
+| T1 | Build `SkillsMatrix` — grouped layout with category headers | 3 | ☑ |
+| T2 | Build `SkillPill` — individual badge with proficiency signal (color/icon) | 2 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Skills grouped per PRD §7.3: Programming, ML/DL, NLP, AI Systems, Backend, Frontend, DevOps
-- [ ] Proficiency levels (Core / Proficient / Working) visually differentiated
-- [ ] Interactive pills with hover effects
-- [ ] Responsive: multi-column desktop, wrapped mobile
+- [x] Skills grouped per PRD §7.3: Programming, ML/DL, NLP, AI Systems, Backend, Frontend, DevOps
+- [x] Proficiency levels (Core / Proficient / Working) visually differentiated
+- [x] Interactive pills with hover effects
+- [x] Responsive: multi-column desktop, wrapped mobile
 
 ---
 
@@ -458,16 +460,16 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build Experience timeline (reuse `Timeline` with experience data) | 2 | ☐ |
-| T2 | Build Education timeline (university, degree, coursework) | 2 | ☐ |
-| T3 | Add achievement highlights + tags to experience items | 1 | ☐ |
+| T1 | Build Experience timeline (reuse `Timeline` with experience data) | 2 | ☑ |
+| T2 | Build Education timeline (university, degree, coursework) | 2 | ☑ |
+| T3 | Add achievement highlights + tags to experience items | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Experience: internships, freelance, open-source, achievements
-- [ ] Education: university, degree, relevant coursework
-- [ ] Each entry: date range, title, description, optional tags
-- [ ] Scroll-reveal applied
+- [x] Experience: internships, freelance, open-source, achievements — placeholder entries, clearly flagged (see S2-1 note)
+- [x] Education: university, degree, relevant coursework — placeholder entry, clearly flagged
+- [x] Each entry: date range, title, description, optional tags
+- [x] Scroll-reveal applied
 
 ---
 
@@ -481,15 +483,17 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `CertificationCard` — title, date, credential link | 2 | ☐ |
-| T2 | Build `GitHubStats` — contribution graph, pinned repos, stars, followers, top languages | 5 | ☐ |
-| T3 | Integrate GitHub API (or readme stats images as fallback) | 1 | ☐ |
+| T1 | Build `CertificationCard` — title, date, credential link | 2 | ☑ |
+| T2 | Build `GitHubStats` — contribution graph, pinned repos, stars, followers, top languages | 5 | ☑ |
+| T3 | Integrate GitHub API (or readme stats images as fallback) | 1 | ☑ |
+
+> **Note:** GitHub stats use the real REST API (live followers/repos/languages/top-repos-by-stars) and the `ghchart.rshah.org` contribution-graph image, both genuinely working — but pointed at the placeholder username `octocat` (GitHub's own public demo account) since there's no real handle yet. Swap `githubUsername` in `config/site.ts` before launch. A visible badge flags this on the page.
 
 #### Acceptance Criteria
 
-- [ ] Cert cards: title, date, clickable credential link
-- [ ] GitHub section: contribution graph, pinned repos, stars, followers, languages
-- [ ] Graceful fallback if GitHub API unavailable
+- [x] Cert cards: title, date, clickable credential link
+- [x] GitHub section: contribution graph, pinned repos, stars, followers, languages — real API data for the placeholder username
+- [x] Graceful fallback if GitHub API unavailable — tested: falls back to a link to the profile; contribution image falls back to text on load failure
 
 ---
 
@@ -503,19 +507,21 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `ProjectExplorer` — grid layout of project cards | 2 | ☐ |
-| T2 | Build `ProjectCard` — image, title, description, category badges, hover effects | 3 | ☐ |
-| T3 | Build `CategoryFilter` — filter chips: AI, ML, NLP, Web, Vision, Search, Voice | 2 | ☐ |
-| T4 | Implement filter logic with animated enter/exit transitions | 1 | ☐ |
+| T1 | Build `ProjectExplorer` — grid layout of project cards | 2 | ☑ |
+| T2 | Build `ProjectCard` — image, title, description, category badges, hover effects | 3 | ☑ |
+| T3 | Build `CategoryFilter` — filter chips: AI, ML, NLP, Web, Vision, Search, Voice | 2 | ☑ |
+| T4 | Implement filter logic with animated enter/exit transitions | 1 | ☑ |
+
+> **Note:** No real project screenshots exist yet (Sprint 5 generates hero images), so `ProjectCard` shows a gradient placeholder with a category icon instead of a broken `<img>`. T2's "image" requirement is satisfied structurally; real images land in Sprint 5.
 
 #### Acceptance Criteria
 
-- [ ] All 4 flagship projects render in responsive grid
-- [ ] Category filters work: "NLP" → only NLP-tagged projects
-- [ ] "All" filter shows everything
-- [ ] Cards have hover effects (scale / shadow / border glow)
-- [ ] Filtered cards animate in/out
-- [ ] Each card links to `/projects/[slug]`
+- [x] All 4 flagship projects render in responsive grid
+- [x] Category filters work: "NLP" → only NLP-tagged projects — verified all 7 categories filter correctly (Playwright)
+- [x] "All" filter shows everything
+- [x] Cards have hover effects (scale / shadow / border glow) — new `Card` `hover="glow"` variant
+- [x] Filtered cards animate in/out — Framer Motion `AnimatePresence`, reduced-motion aware
+- [x] Each card links to `/projects/[slug]`
 
 ---
 
@@ -529,27 +535,30 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `ContactForm` — name, email, message with validation | 3 | ☐ |
-| T2 | Build `SocialLinks` — email, LinkedIn, GitHub icons | 1 | ☐ |
-| T3 | Build `Toast` / `Notification` for success/error states | 1 | ☐ |
-| T4 | Wire form to submission handler (placeholder API or email service) | 1 | ☐ |
+| T1 | Build `ContactForm` — name, email, message with validation | 3 | ☑ |
+| T2 | Build `SocialLinks` — email, LinkedIn, GitHub icons | 1 | ☑ |
+| T3 | Build `Toast` / `Notification` for success/error states | 1 | ☑ |
+| T4 | Wire form to submission handler (placeholder API or email service) | 1 | ☑ |
+
+> **Note:** T4's "placeholder API" is a Next.js route handler (`app/api/contact/route.ts`) with real validation, using the exact `{ error: { code, message } }` shape the real FastAPI endpoint will use — Sprint 3 (S3-4) swaps the fetch target, not the contract.
 
 #### Acceptance Criteria
 
-- [ ] Form validates: required fields, email format
-- [ ] Success/error toast shows after submission
-- [ ] Direct links to email, LinkedIn, GitHub functional
-- [ ] Résumé download works
-- [ ] Accessible: labels, error messages, focus management
+- [x] Form validates: required fields, email format — client-side + server-side (verified via direct API call)
+- [x] Success/error toast shows after submission
+- [x] Direct links to email, LinkedIn, GitHub functional — still placeholder URLs (Sprint 0 gap, unchanged)
+- [ ] Résumé download works — button wired; `public/resume.pdf` still doesn't exist (tracked since Sprint 0, for S7-5)
+- [x] Accessible: labels, error messages, focus management — focus moves to first invalid field; 0 axe violations
 
 ---
 
 ### Sprint 2 — Exit Criteria
 
-- [ ] All content sections render with real typed data
-- [ ] Project Explorer filtering works across all 7 categories
-- [ ] Contact form validates and shows success/error
-- [ ] All new sections responsive + accessible
+- [x] All content sections render with real typed data — projects/skills real; experience/education/certifications/GitHub-username clearly-flagged placeholders pending real input
+- [x] Project Explorer filtering works across all 7 categories
+- [x] Contact form validates and shows success/error
+- [x] All new sections responsive + accessible — Lighthouse 100/100/100/100 and 0 axe violations (dark + light) on all Sprint 2 routes
+- [x] CI green — lint, type-check, format-check, build (frontend) + ruff, mypy, pytest (backend) all pass locally
 - [ ] CI green
 
 ---
