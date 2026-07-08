@@ -10,6 +10,7 @@ class Settings(BaseSettings):
 
     environment: str = "development"
     frontend_origin: str = "http://localhost:3000"
+    log_level: str = "INFO"
 
 
 @lru_cache

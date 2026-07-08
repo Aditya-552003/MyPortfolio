@@ -584,18 +584,20 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `ProjectHero` — large hero image per project | 1 | ☐ |
-| T2 | Build `ArchitectureDiagram` — image/SVG display component | 2 | ☐ |
-| T3 | Build `TechStackGrid` — technology icons/badges grid | 1 | ☐ |
-| T4 | Build `FolderTree` — stylized directory tree renderer | 2 | ☐ |
-| T5 | Build `MetricsPanel`, `ScreenshotGallery`, `ChallengesList`, `LessonsList` | 2 | ☐ |
+| T1 | Build `ProjectHero` — large hero image per project | 1 | ☑ |
+| T2 | Build `ArchitectureDiagram` — image/SVG display component | 2 | ☑ |
+| T3 | Build `TechStackGrid` — technology icons/badges grid | 1 | ☑ |
+| T4 | Build `FolderTree` — stylized directory tree renderer | 2 | ☑ |
+| T5 | Build `MetricsPanel`, `ScreenshotGallery`, `ChallengesList`, `LessonsList` | 2 | ☑ |
+
+> **Note:** T1's "hero image" and T2's "architecture diagram" are rendered, not static images — a gradient+category-icon banner and a real data-flow diagram built from each project's actual pipeline steps, since no project screenshots exist yet. `ScreenshotGallery` and `LessonsList`/`ChallengesList`/an `ApiEndpointsList` were added beyond the original list to cover the remaining template items cleanly.
 
 #### Acceptance Criteria
 
-- [ ] Template covers all 17 items from PRD §7.4
-- [ ] Dynamic route `/projects/[slug]` resolves for all 4 projects
-- [ ] Components render from data in `content/projects.ts`
-- [ ] Responsive + keyboard-navigable
+- [x] Template covers all 17 items from PRD §7.4
+- [x] Dynamic route `/projects/[slug]` resolves for all 4 projects — 3 projects (see S3-2 note on Voice AI Assistant)
+- [x] Components render from data in `content/projects.ts`
+- [x] Responsive + keyboard-navigable
 
 ---
 
@@ -609,19 +611,19 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | **EmoSens** (Emotion Detection): dataset, metrics, confusion matrix, training pipeline, inference flow | 3 | ☐ |
-| T2 | **Chat with Code** (Repository Analysis): chunking, retriever, LLM layer, architecture, flow diagram | 4 | ☐ |
-| T3 | **Voice AI Assistant**: pipeline, latency handling, architecture | 3 | ☐ |
-| T4 | **Smart Shortlist**: embeddings, cosine similarity, recommendation pipeline, ranking | 3 | ☐ |
+| T1 | **EmoSens** (Emotion Detection): dataset, metrics, confusion matrix, training pipeline, inference flow | 3 | ☑ |
+| T2 | **Chat with Code** (Repository Analysis): chunking, retriever, LLM layer, architecture, flow diagram | 4 | ☑ |
+| T3 | ~~**Voice AI Assistant**: pipeline, latency handling, architecture~~ | 3 | ✗ |
+| T4 | **Smart Shortlist**: embeddings, cosine similarity, recommendation pipeline, ranking | 3 | ☑ |
 
-> **Note:** Each page needs all 17 template items: hero image, architecture diagram, overview, problem statement, solution, features, screenshots, tech stack, folder structure, model info, challenges, future improvements, GitHub link, live demo, API docs, metrics, lessons learned.
+> **Note:** Voice AI Assistant was dropped from the flagship lineup (explicit product decision). The real repo (`Voice-Assistant`) turned out to be a ~100-line Tkinter script — Google's free `speech_recognition` for STT, `pyttsx3` for TTS, plain `if/elif` keyword matching — not the LLM-grounded conversational assistant the original PRD described. Rather than fabricate depth that isn't there, the flagship lineup is now 3 projects: **EmoSens**, **Chat with Code**, **Smart Shortlist**. All three are populated from the real repositories (READMEs, source, and — for EmoSens — an actual generated `metrics.json`), pulled and verified by cloning each repo, not invented from the PRD's aspirational descriptions. One correction made along the way: EmoSens uses a RoBERTa + XGBoost ensemble, not "BERT and RoBERTa" as the PRD stated.
 
 #### Acceptance Criteria
 
-- [ ] Each detail page has all 17 template items
-- [ ] Architecture diagrams present (generated or SVG)
-- [ ] GitHub/demo links functional (or graceful "coming soon")
-- [ ] Correct category tags from SKILLS.md
+- [x] Each detail page has all 17 template items
+- [x] Architecture diagrams present (generated or SVG) — generated from real pipeline data, not static images
+- [x] GitHub/demo links functional (or graceful "coming soon") — GitHub links are real repos; no live demos are deployed yet, so those buttons show a disabled "coming soon" state
+- [x] Correct category tags from SKILLS.md
 
 ---
 
@@ -635,23 +637,25 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Configure CORS middleware locked to frontend origin | 1 | ☐ |
-| T2 | Implement per-IP rate limiting (slowapi or custom) | 3 | ☐ |
-| T3 | Define Pydantic base models: request/response/error `{ error: { code, message } }` | 2 | ☐ |
-| T4 | Implement global exception handler with consistent error shape | 2 | ☐ |
-| T5 | Add request logging middleware (structured JSON logs) | 2 | ☐ |
-| T6 | Configure env var management (pydantic-settings / python-dotenv) | 1 | ☐ |
-| T7 | Add `/api/contact` endpoint with validation + spam protection | 2 | ☐ |
+| T1 | Configure CORS middleware locked to frontend origin | 1 | ☑ |
+| T2 | Implement per-IP rate limiting (slowapi or custom) | 3 | ☑ |
+| T3 | Define Pydantic base models: request/response/error `{ error: { code, message } }` | 2 | ☑ |
+| T4 | Implement global exception handler with consistent error shape | 2 | ☑ |
+| T5 | Add request logging middleware (structured JSON logs) | 2 | ☑ |
+| T6 | Configure env var management (pydantic-settings / python-dotenv) | 1 | ☑ |
+| T7 | Add `/api/contact` endpoint with validation + spam protection | 2 | ☑ |
+
+> **Note:** T5's logging middleware also stamps + returns an `X-Request-ID` header per request (originally an S7-3 concern) — cheap to add alongside the middleware itself, so pulled forward. Spam protection (T7) is a honeypot field: a CSS-hidden input real users never fill in; a non-empty value causes the backend to silently return success without processing.
 
 #### Acceptance Criteria
 
-- [ ] CORS only allows configured frontend origin
-- [ ] Rate limiting returns `429 Too Many Requests` after threshold
-- [ ] All errors follow `{ error: { code, message } }` shape
-- [ ] OpenAPI docs auto-generated at `/docs`
-- [ ] Env vars loaded from `.env` (dev) or platform env (prod)
-- [ ] `/api/contact` validates input and returns success/error
-- [ ] No secrets hardcoded; `.env` in `.gitignore`
+- [x] CORS only allows configured frontend origin
+- [x] Rate limiting returns `429 Too Many Requests` after threshold — verified: 429 after ~3-4 rapid requests on `/api/contact` (5/minute limit)
+- [x] All errors follow `{ error: { code, message } }` shape — verified for validation errors, 404s, and rate limits
+- [x] OpenAPI docs auto-generated at `/docs` — verified `/docs` and `/openapi.json` both return 200
+- [x] Env vars loaded from `.env` (dev) or platform env (prod)
+- [x] `/api/contact` validates input and returns success/error
+- [x] No secrets hardcoded; `.env` in `.gitignore`
 
 ---
 
@@ -665,28 +669,30 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build API client in `lib/api.ts` — base URL, error handling, typed responses | 3 | ☐ |
-| T2 | Set up React Query (TanStack Query) — global config, query client, provider | 2 | ☐ |
-| T3 | Create custom hooks: `useChat`, `useEmotion`, `useSemanticSearch`, `useContact` (stubs) | 2 | ☐ |
-| T4 | Wire contact form to backend `/api/contact` | 1 | ☐ |
+| T1 | Build API client in `lib/api.ts` — base URL, error handling, typed responses | 3 | ☑ |
+| T2 | Set up React Query (TanStack Query) — global config, query client, provider | 2 | ☑ |
+| T3 | Create custom hooks: `useChat`, `useEmotion`, `useSemanticSearch`, `useContact` (stubs) | 2 | ☑ |
+| T4 | Wire contact form to backend `/api/contact` | 1 | ☑ |
+
+> **Note:** `useContact` is fully functional; `useEmotion`/`useSemanticSearch` are typed and call the real (not-yet-built) endpoint paths, so Sprint 4 just has to build the backend — no frontend changes needed. `useChat` is typed but its `sendMessage` throws, since SSE streaming needs materially different plumbing than a JSON mutation (that's explicitly S4-2 T3). The Sprint 2 placeholder Next.js `/api/contact` route was deleted now that the real backend handles it.
 
 #### Acceptance Criteria
 
-- [ ] API client handles errors consistently with typed error objects
-- [ ] React Query configured with sensible defaults (retry, stale time)
-- [ ] All hooks typed with Pydantic-matching TS interfaces
-- [ ] Contact form submits to backend; real success/error responses
+- [x] API client handles errors consistently with typed error objects — `ApiError` class carries `status` + `code` + `message`
+- [x] React Query configured with sensible defaults (retry, stale time)
+- [x] All hooks typed with Pydantic-matching TS interfaces
+- [x] Contact form submits to backend; real success/error responses — verified end-to-end (Playwright confirmed the request hits `localhost:8000`, not a Next.js route)
 
 ---
 
 ### Sprint 3 — Exit Criteria
 
-- [ ] All 4 project detail pages render with full content
-- [ ] Backend starts with CORS, rate limiting, validation, error handling
-- [ ] `/api/contact` functional end-to-end
-- [ ] OpenAPI docs render at `/docs`
-- [ ] Frontend API client typed and integrated
-- [ ] CI green
+- [x] All 4 project detail pages render with full content — 3 flagship projects (Voice AI Assistant dropped; see S3-2)
+- [x] Backend starts with CORS, rate limiting, validation, error handling
+- [x] `/api/contact` functional end-to-end — real backend, verified via Playwright + curl
+- [x] OpenAPI docs render at `/docs`
+- [x] Frontend API client typed and integrated
+- [x] CI green — lint, type-check, format-check, build (frontend) + ruff, mypy, pytest (backend) all pass locally; Lighthouse 100/100/100/100 and 0 axe violations (dark + light) on all new routes
 
 ---
 

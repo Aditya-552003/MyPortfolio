@@ -6,6 +6,8 @@ import type { FormEvent, ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { useToast } from "@/components/ui/Toast";
+import { ApiError } from "@/lib/api";
+import { useContact } from "@/lib/hooks/useContact";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -21,9 +23,10 @@ const INITIAL_VALUES: FormValues = { name: "", email: "", message: "" };
 
 export function ContactForm(): ReactNode {
   const { showToast } = useToast();
+  const contact = useContact();
   const [values, setValues] = useState<FormValues>(INITIAL_VALUES);
   const [errors, setErrors] = useState<FormErrors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -56,32 +59,33 @@ export function ContactForm(): ReactNode {
       return;
     }
 
-    setIsSubmitting(true);
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const data = (await response.json()) as { error?: { message: string } };
-
-      if (!response.ok) {
-        showToast("error", data.error?.message ?? "Something went wrong. Please try again.");
-        return;
-      }
-
+      await contact.mutateAsync({ ...values, honeypot });
       showToast("success", "Message sent — I'll get back to you soon.");
       setValues(INITIAL_VALUES);
       setErrors({});
-    } catch {
-      showToast("error", "Network error — please check your connection and try again.");
-    } finally {
-      setIsSubmitting(false);
+    } catch (error) {
+      const message =
+        error instanceof ApiError
+          ? error.message
+          : "Network error — please check your connection and try again.";
+      showToast("error", message);
     }
   }
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+      {/* Honeypot: real users never see or fill this in; bots that auto-fill every field do. */}
+      <input
+        type="text"
+        name="company"
+        value={honeypot}
+        onChange={(event) => setHoneypot(event.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        className="absolute h-0 w-0 opacity-0"
+      />
       <FormField
         ref={nameRef}
         id="contact-name"
@@ -113,7 +117,7 @@ export function ContactForm(): ReactNode {
         onChange={(event) => setValues((current) => ({ ...current, message: event.target.value }))}
         error={errors.message}
       />
-      <Button type="submit" variant="primary" loading={isSubmitting} className="self-start">
+      <Button type="submit" variant="primary" loading={contact.isPending} className="self-start">
         Send message
       </Button>
     </form>

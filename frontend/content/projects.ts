@@ -1,29 +1,304 @@
 import type { Project } from "./types";
 
-/** The four flagship projects (PRD §7.4). Full detail content lands in Sprint 3. */
+/**
+ * The flagship projects (PRD §7.4). Content here is pulled directly from the
+ * real repositories (READMEs, source, and — for EmoSens — an actual generated
+ * metrics.json), not invented. Voice AI Assistant was dropped from the
+ * flagship lineup: the real repo is a basic Tkinter keyword-matching script,
+ * not the LLM-grounded conversational assistant the original PRD described.
+ */
 export const projects: readonly Project[] = [
   {
     slug: "emosens",
     title: "EmoSens",
-    tagline: "Hybrid BERT/RoBERTa emotion detection with a live confidence-scored demo.",
+    tagline: "Hybrid RoBERTa + XGBoost emotion ensemble with a live confidence-scored demo.",
     categories: ["AI", "ML", "NLP"],
+
+    overview:
+      "EmoSens is a full-stack emotion detection system that classifies text into six emotions using a hybrid ensemble of a fine-tuned RoBERTa transformer and an XGBoost classifier trained on TF-IDF and NRC Emotion Lexicon features.",
+    problem:
+      "Single-model emotion classifiers force a tradeoff: transformer models capture context well but are slower and can misfire on lexicon-heavy phrasing; classical ML models are fast but miss contextual nuance. Neither alone is reliable enough for a production API.",
+    solution:
+      "A confidence-gated ensemble: when the fine-tuned RoBERTa branch is confident (≥ 75%), its prediction is used directly; when it's uncertain, its output is blended 70/30 with an XGBoost branch trained on word/char TF-IDF and NRC Emotion Lexicon features. This guarantees ensemble accuracy never falls below RoBERTa's alone, while the lexicon branch adds robustness on short or ambiguous text.",
+    features: [
+      "Single-text and CSV batch prediction endpoints",
+      "Real-time, confidence-scored predictions across 6 emotions",
+      "Interactive evaluation dashboard with a live confusion matrix",
+      "Dockerized FastAPI backend, deployable to Render, Railway, or Hugging Face Spaces",
+    ],
+    techStack: [
+      { layer: "Backend", items: ["FastAPI", "Uvicorn", "Pydantic"] },
+      {
+        layer: "ML",
+        items: [
+          "PyTorch",
+          "Transformers (RoBERTa)",
+          "XGBoost",
+          "scikit-learn",
+          "NRC Emotion Lexicon",
+        ],
+      },
+      { layer: "Frontend", items: ["Vanilla JS (ES6 modules)", "Chart rendering", "CSS"] },
+      { layer: "DevOps", items: ["Docker", "Render / Railway"] },
+    ],
+    folderStructure: `emosense-ai/
+├── backend/
+│   ├── app/
+│   │   ├── routes/        # health.py, predict.py
+│   │   ├── schemas/       # Pydantic request/response models
+│   │   ├── services/      # inference.py, model_loader.py
+│   │   └── utils/         # preprocessing.py
+│   ├── model/              # trained model artifacts
+│   ├── scripts/            # evaluate_model.py, test_inference.py
+│   └── requirements.txt
+├── frontend/
+│   ├── css/
+│   ├── js/                 # api.js, app.js, chart.js, evaluation.js ...
+│   ├── index.html
+│   └── evaluation.html
+├── docs/
+│   └── api_spec.md
+└── Dockerfile`,
+    architecture: [
+      { label: "Raw text input", description: "User submits text via the API or web UI." },
+      {
+        label: "XGBoost branch",
+        description: "Word/char TF-IDF + NRC Emotion Lexicon features → XGBClassifier.",
+      },
+      {
+        label: "RoBERTa branch",
+        description: "Fine-tuned transformer produces contextual emotion probabilities.",
+      },
+      {
+        label: "Confidence-gated blend",
+        description:
+          "RoBERTa used directly when confident (≥ 75%); otherwise blended 70% RoBERTa / 30% XGBoost.",
+      },
+      {
+        label: "Final prediction",
+        description: "Emotion label + per-class confidence scores returned.",
+      },
+    ],
+    modelInfo:
+      "Hybrid stacking ensemble: fine-tuned RoBERTa (contextual) + XGBoost trained on word/char TF-IDF and NRC Emotion Lexicon features (semantic), combined via confidence-gated soft voting.",
+    challenges: [
+      "The original meta-classifier blend under-weighted RoBERTa once it started outperforming XGBoost by a wide margin, pulling ensemble accuracy below RoBERTa alone — fixed by switching to a confidence-gated blend instead of a static learned weight.",
+      "Balancing inference latency: RoBERTa alone averages ~94ms/prediction; the confidence gate short-circuits the XGBoost path whenever possible to avoid paying for both branches.",
+    ],
+    futureImprovements: [
+      "Expand beyond 6 emotions to a finer-grained taxonomy",
+      "Add multi-language support",
+      "Serve the RoBERTa branch via ONNX/quantization to cut latency further",
+    ],
+    lessonsLearned: [
+      "A static meta-classifier blend can silently degrade as component models improve at different rates — blending weights need revisiting as models are retrained, not set once and forgotten.",
+      "Real, versioned evaluation metrics (regenerated by scripts/evaluate_model.py on every retrain) make regressions visible immediately instead of relying on anecdotal spot-checks.",
+    ],
+    githubUrl: "https://github.com/Aditya-552003/emosense-ai",
+    apiEndpoints: [
+      { method: "GET", path: "/", description: "Health check & capability discovery" },
+      {
+        method: "POST",
+        path: "/predict",
+        description: "Classify emotion for a single text string",
+      },
+      { method: "POST", path: "/predict/batch", description: "CSV batch emotion prediction" },
+    ],
+    metrics: [
+      { label: "Ensemble accuracy", value: "98.0%" },
+      { label: "Ensemble macro F1", value: "98.0%" },
+      { label: "RoBERTa branch accuracy", value: "98.0%" },
+      { label: "XGBoost branch accuracy", value: "91.3%" },
+      { label: "Avg. RoBERTa latency", value: "94.01 ms" },
+      { label: "Eval sample size", value: "300 (50 per class)" },
+    ],
+    confusionMatrix: {
+      labels: ["anger", "fear", "joy", "neutral", "sadness", "surprise"],
+      matrix: [
+        [98.0, 0.0, 0.0, 2.0, 0.0, 0.0],
+        [0.0, 96.0, 0.0, 2.0, 2.0, 0.0],
+        [0.0, 0.0, 100.0, 0.0, 0.0, 0.0],
+        [0.0, 2.0, 0.0, 96.0, 2.0, 0.0],
+        [0.0, 0.0, 0.0, 0.0, 100.0, 0.0],
+        [0.0, 0.0, 2.0, 0.0, 0.0, 98.0],
+      ],
+    },
   },
+
   {
     slug: "chat-with-code",
     title: "Chat with Code",
-    tagline: "Semantic Q&A over a codebase — chunking, retrieval, and a grounded LLM layer.",
+    tagline: "RAG over any public GitHub repo — streamed, cited answers via LlamaIndex + Gemini.",
     categories: ["AI", "NLP", "Search", "Web"],
+
+    overview:
+      "Chat with Code is a Retrieval-Augmented Generation app that lets you point it at any public GitHub repository and ask natural-language questions about the codebase, with streamed answers grounded in the actual source.",
+    problem:
+      "Understanding an unfamiliar codebase by reading files one at a time is slow — you don't know what's relevant, and keyword search misses semantically related code that doesn't share exact terms.",
+    solution:
+      "Loads a repository directly from GitHub, indexes it into a vector store, and answers questions by retrieving the top-k most semantically relevant chunks and passing them to an LLM as grounding context, so answers are backed by real code rather than the model's general knowledge.",
+    features: [
+      "Load any public GitHub repo by URL",
+      "Streamed, context-grounded answers",
+      "Downloadable Markdown export of any response",
+      "Cached repository loading and indexing for fast repeat queries",
+    ],
+    techStack: [
+      { layer: "App", items: ["Streamlit"] },
+      { layer: "RAG", items: ["LlamaIndex", "HuggingFace embeddings (BAAI/bge-small-en)"] },
+      { layer: "LLM", items: ["Google Gemini 2.5 Flash"] },
+      { layer: "Data", items: ["GitHub Repository Reader (LlamaIndex)"] },
+    ],
+    folderStructure: `chat-with-code/
+├── main.py           # Streamlit app + RAG pipeline
+├── requirements.txt
+├── pyproject.toml
+└── README.md`,
+    architecture: [
+      { label: "Repo URL parsed", description: "Owner/repo/branch extracted from the GitHub URL." },
+      {
+        label: "Repository loaded",
+        description: "LlamaIndex's GithubRepositoryReader fetches files via the GitHub API.",
+      },
+      {
+        label: "Documents embedded",
+        description: "Files embedded with BAAI/bge-small-en into a VectorStoreIndex.",
+      },
+      {
+        label: "Query → retrieval",
+        description: "Question embedded, top-5 most similar chunks retrieved.",
+      },
+      {
+        label: "Grounded generation",
+        description: "Retrieved chunks + question sent to Gemini 2.5 Flash; answer streamed back.",
+      },
+    ],
+    modelInfo:
+      "Retrieval: HuggingFace BAAI/bge-small-en sentence embeddings via LlamaIndex's VectorStoreIndex (top-5 similarity search). Generation: Google Gemini 2.5 Flash.",
+    challenges: [
+      "GitHub API rate limits on unauthenticated requests required adding optional personal-access-token support to reliably index larger repos.",
+      "Streamlit reruns the whole script on every interaction, so the loaded repo index has to be cached (st.cache_resource) — otherwise every keystroke would re-index the entire repository.",
+    ],
+    futureImprovements: [
+      "Custom chunking strategy that respects function/class boundaries instead of the default splitter",
+      "Support private repositories with OAuth",
+      "Persist indexes so repos don't need to be reloaded between sessions",
+    ],
+    lessonsLearned: [
+      "Off-the-shelf RAG components (LlamaIndex's loader + index) get you to a working demo fast, but production-grade retrieval quality needs a chunking strategy tuned to code structure, not prose.",
+      "Streamlit's rerun/caching model is a real constraint to design around for anything beyond a single-user demo.",
+    ],
+    githubUrl: "https://github.com/Aditya-552003/chat-with-code",
   },
-  {
-    slug: "voice-ai-assistant",
-    title: "Voice AI Assistant",
-    tagline: "Conversational assistant with streaming STT/TTS and per-session memory.",
-    categories: ["AI", "Voice", "NLP"],
-  },
+
   {
     slug: "smart-shortlist",
     title: "Smart Shortlist",
-    tagline: "Sentence-Transformer embeddings and cosine similarity for candidate ranking.",
-    categories: ["ML", "NLP", "Search"],
+    tagline: "Semantic resume-to-job matching, enriched with real GitHub and LeetCode signal.",
+    categories: ["ML", "NLP", "Search", "Web"],
+
+    overview:
+      "Shortlist is a semantic applicant-tracking system that ranks candidates against a job's specific criteria using sentence-embedding similarity, enriched with real signal from a candidate's GitHub and LeetCode activity.",
+    problem:
+      "Keyword-matching ATS software rejects qualified candidates whose resumes don't happen to contain a recruiter's exact phrasing, and can't tell a resume that lists a skill from one that demonstrates it.",
+    solution:
+      "Each job criterion and each sentence of a candidate's parsed resume is embedded with a Sentence-Transformer model; candidates are scored by cosine similarity between their strongest matching sentence and each criterion, weighted by that criterion's importance. The semantic score is then blended with normalized GitHub and LeetCode activity signals into a single composite score, alongside generated strengths, weaknesses, and suggestions per candidate.",
+    features: [
+      "Recruiters define weighted, custom criteria per job instead of a fixed rubric",
+      "One-click bulk analysis of all applicants for a posting",
+      "Per-candidate breakdown: semantic match, GitHub signal, LeetCode signal, generated feedback",
+      "Asynchronous background processing via a worker queue so the UI stays responsive during analysis",
+      "Candidate portal with live job search and real-time application-status tracking",
+    ],
+    techStack: [
+      { layer: "Frontend", items: ["Next.js 15 (App Router)", "Tailwind CSS", "Lucide React"] },
+      {
+        layer: "API",
+        items: ["Node.js", "Express.js", "MongoDB (Mongoose)", "BullMQ", "Cloudinary", "JWT auth"],
+      },
+      {
+        layer: "ML service",
+        items: ["Python", "FastAPI", "Sentence-Transformers", "PyMuPDF", "python-docx"],
+      },
+    ],
+    folderStructure: `Sortlist/
+├── apps/
+│   ├── web/            # Next.js frontend (App Router)
+│   │   └── src/app/    # recruiter/, admin/, jobs/, applications/ ...
+│   └── api/             # Express + MongoDB backend
+│       └── src/
+│           ├── controllers/
+│           ├── services/
+│           ├── models/       # User, Job, Result
+│           ├── routes/
+│           └── workers/      # analyse.worker.ts (BullMQ)
+├── ml/                    # Python FastAPI ML microservice
+│   ├── routers/           # embed, score, github, leetcode
+│   └── services/          # embedder.py, scorer.py, parser.py ...
+└── README.md`,
+    architecture: [
+      {
+        label: "Application submitted",
+        description: "Resume stored in Cloudinary; application queued in MongoDB.",
+      },
+      {
+        label: "Analysis triggered",
+        description: "Recruiter starts analysis; job pushed to a BullMQ analyse-queue.",
+      },
+      {
+        label: "Worker → ML service",
+        description: "A background worker calls the Python ML microservice per candidate.",
+      },
+      {
+        label: "Parse + embed",
+        description: "PyMuPDF/python-docx extract resume text; Sentence-Transformer embeds it.",
+      },
+      {
+        label: "Score + blend",
+        description:
+          "Cosine similarity per criterion, blended with normalized GitHub/LeetCode signals.",
+      },
+      {
+        label: "Results published",
+        description: "Composite score + feedback written to MongoDB; recruiter dashboard updates.",
+      },
+    ],
+    modelInfo:
+      "Sentence-Transformer embeddings (all-MiniLM-L6-v2) for both job criteria and resume sentences; ranking is cosine similarity between the two vector spaces, not classification.",
+    challenges: [
+      "Embedding generation and profile scraping take 2–5 seconds per candidate — too slow to run synchronously in an HTTP request, solved with a BullMQ worker queue so the API responds immediately while the dashboard reflects progress.",
+      "Resumes that are scanned images rather than selectable text can't be parsed by PyMuPDF/python-docx — the current version detects and skips them rather than silently returning a zero score.",
+    ],
+    futureImprovements: [
+      "OCR support for scanned/image-based resumes",
+      "GitHub deep-repo analysis (actual code quality, not just activity)",
+      "LinkedIn and Workday integrations",
+      "AI-driven automated first-round voice screening",
+    ],
+    lessonsLearned: [
+      "Blending a semantic score with external signals (GitHub/LeetCode) needed explicit, tunable weights and graceful degradation — the composite formula changes shape entirely when a signal is missing, rather than treating it as zero.",
+      "A queue-based worker pattern became necessary the moment a single request depended on multiple slow external calls (scraping + ML inference) — doing this synchronously would have made the API unusable.",
+    ],
+    githubUrl: "https://github.com/Aditya-552003/Sortlist",
+    apiEndpoints: [
+      {
+        method: "POST",
+        path: "/api/auth/register",
+        description: "Register a new user (candidate or recruiter)",
+      },
+      { method: "POST", path: "/api/auth/login", description: "Authenticate and receive a JWT" },
+      { method: "GET", path: "/api/jobs", description: "List all active job postings" },
+      { method: "POST", path: "/api/apply/:jobId", description: "Submit a resume and application" },
+      {
+        method: "POST",
+        path: "/api/recruiter/jobs/:id/analyse",
+        description: "Trigger the semantic analysis engine",
+      },
+      {
+        method: "GET",
+        path: "/api/recruiter/jobs/:id/results",
+        description: "Fetch ranked candidates for a job",
+      },
+    ],
   },
 ] as const;

@@ -8,11 +8,56 @@
 
 export type ProjectCategory = "AI" | "ML" | "NLP" | "Web" | "Vision" | "Search" | "Voice";
 
+export interface ArchitectureStep {
+  readonly label: string;
+  readonly description: string;
+}
+
+export interface TechStackGroup {
+  readonly layer: string;
+  readonly items: readonly string[];
+}
+
+export interface ProjectMetric {
+  readonly label: string;
+  readonly value: string;
+}
+
+export interface ConfusionMatrixData {
+  readonly labels: readonly string[];
+  readonly matrix: readonly (readonly number[])[];
+}
+
+export interface ApiEndpoint {
+  readonly method: "GET" | "POST" | "PUT" | "DELETE";
+  readonly path: string;
+  readonly description: string;
+}
+
 export interface Project {
   readonly slug: string;
   readonly title: string;
   readonly tagline: string;
   readonly categories: readonly ProjectCategory[];
+
+  // Sprint 3 — full detail template (PRD §7.4)
+  readonly overview: string;
+  readonly problem: string;
+  readonly solution: string;
+  readonly features: readonly string[];
+  readonly techStack: readonly TechStackGroup[];
+  /** Tree-formatted plain text, rendered monospace by `FolderTree`. */
+  readonly folderStructure: string;
+  readonly architecture: readonly ArchitectureStep[];
+  readonly modelInfo?: string;
+  readonly challenges: readonly string[];
+  readonly futureImprovements: readonly string[];
+  readonly lessonsLearned: readonly string[];
+  readonly githubUrl: string;
+  readonly liveDemoUrl?: string;
+  readonly apiEndpoints?: readonly ApiEndpoint[];
+  readonly metrics?: readonly ProjectMetric[];
+  readonly confusionMatrix?: ConfusionMatrixData;
 }
 
 export type SkillProficiency = "Core" | "Proficient" | "Working";

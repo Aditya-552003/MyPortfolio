@@ -1,3 +1,13 @@
 export { useTheme } from "./useTheme";
 export type { Theme } from "./useTheme";
 export { useReducedMotion } from "./useReducedMotion";
+export { useScrollReveal } from "./useScrollReveal";
+export type { ScrollReveal, ScrollRevealOptions } from "./useScrollReveal";
+export { useContact } from "./useContact";
+export type { ContactPayload, ContactResponse } from "./useContact";
+export { useEmotion } from "./useEmotion";
+export type { EmotionPayload, EmotionPrediction, EmotionResponse } from "./useEmotion";
+export { useSemanticSearch } from "./useSemanticSearch";
+export type { SearchPayload, SearchResponse, SearchResult } from "./useSemanticSearch";
+export { useChat } from "./useChat";
+export type { ChatMessage, UseChatResult } from "./useChat";
