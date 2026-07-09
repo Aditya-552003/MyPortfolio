@@ -1,0 +1,212 @@
+[
+  {
+    "text": "Introduction\nAditya is an AI engineer who builds systems end to end \u2014 from training and\nevaluating models to shipping the full-stack apps that put them in front of\nreal users. Aditya AI Studio, this portfolio itself, is one of those systems:\nevery demo in the Playground is a real, working model, not a mockup.",
+    "source": "about",
+    "section": "Introduction"
+  },
+  {
+    "text": "Career objective\nAditya wants to work on AI products where the interesting part isn't the demo\n\u2014 it's the engineering that makes the demo reliable, fast, and honest about\nwhat it doesn't know.",
+    "source": "about",
+    "section": "Career objective"
+  },
+  {
+    "text": "Current focus\nAditya is currently focused on retrieval-augmented generation, grounded\nconversational AI, and the full-stack engineering that turns a model into a\nproduct people can trust.",
+    "source": "about",
+    "section": "Current focus"
+  },
+  {
+    "text": "Values\n- Ship end-to-end \u2014 a model isn't done until it's behind a reliable API and a\n  real UI.\n- Grounded over impressive \u2014 a system that says \"I don't know\" beats one that\n  hallucinates.\n- Accessible by default, not as an afterthought.\n- Production-grade or not at all \u2014 no half-finished demos.",
+    "source": "about",
+    "section": "Values"
+  },
+  {
+    "text": "Journey\n- **2024 \u2014 EmoSens.** Built a hybrid RoBERTa + XGBoost emotion classifier \u2014\n  first deep-learning model shipped behind an API.\n- **2024 \u2014 Smart Shortlist.** Applied Sentence-Transformer embeddings and\n  cosine similarity to real-world candidate ranking, enriched with GitHub and\n  LeetCode signal.\n- **2025 \u2014 Chat with Code.** Designed a RAG pipeline \u2014 repository loading,\n  vector indexing, and a grounded LLM layer \u2014 to answer questions about a\n  codebase.\n- **2026 \u2014 Aditya AI Studio.** Started building this site \u2014 a portfolio that\n  works like a product, with every AI claim backed by a live demo, including\n  this very chatbot.",
+    "source": "about",
+    "section": "Journey"
+  },
+  {
+    "text": "What's not verified yet\nAditya's specific work history (employers, internships), education\n(university, degree), and certifications are still being finalized on this\nsite and are not yet published with real details. If asked about those\nspecifics, say they're not published yet rather than guessing or inventing\nnames, dates, or institutions.",
+    "source": "about",
+    "section": "What's not verified yet"
+  },
+  {
+    "text": "EmoSens \u2014 overview\nEmoSens is a full-stack emotion detection system that classifies text into\nsix emotions (anger, fear, joy, neutral, sadness, surprise) using a hybrid\nensemble of a fine-tuned RoBERTa transformer and an XGBoost classifier\ntrained on TF-IDF and NRC Emotion Lexicon features. Categories: AI, ML, NLP.\nRepository: https://github.com/Aditya-552003/emosense-ai",
+    "source": "projects",
+    "section": "EmoSens \u2014 overview"
+  },
+  {
+    "text": "EmoSens \u2014 problem and solution\nSingle-model emotion classifiers force a tradeoff: transformer models capture\ncontext well but are slower and can misfire on lexicon-heavy phrasing;\nclassical ML models are fast but miss contextual nuance. EmoSens solves this\nwith a confidence-gated ensemble: when the fine-tuned RoBERTa branch is\nconfident (at least 75%), its prediction is used directly; when it's\nuncertain, its output is blended 70/30 with the XGBoost branch. This\nguarantees ensemble accuracy never falls below RoBERTa's alone.",
+    "source": "projects",
+    "section": "EmoSens \u2014 problem and solution"
+  },
+  {
+    "text": "EmoSens \u2014 architecture and tech stack\nBackend: FastAPI, Uvicorn, Pydantic. ML: PyTorch, Transformers (RoBERTa),\nXGBoost, scikit-learn, NRC Emotion Lexicon. The live demo on this site is the\nreal EmoSens ensemble, loaded from its trained weights, not a mock.",
+    "source": "projects",
+    "section": "EmoSens \u2014 architecture and tech stack"
+  },
+  {
+    "text": "EmoSens \u2014 performance metrics\nOn a stratified 300-sample evaluation set (50 per class): ensemble accuracy\n98.0%, ensemble macro F1 98.0%, RoBERTa branch alone 98.0% accuracy, XGBoost\nbranch alone 91.3% accuracy. Average RoBERTa inference latency is about 94ms.",
+    "source": "projects",
+    "section": "EmoSens \u2014 performance metrics"
+  },
+  {
+    "text": "Chat with Code \u2014 overview\nChat with Code is a Retrieval-Augmented Generation app that lets you point it\nat any public GitHub repository and ask natural-language questions about the\ncodebase, with streamed answers grounded in the actual source. Categories:\nAI, NLP, Search, Web. Repository:\nhttps://github.com/Aditya-552003/chat-with-code",
+    "source": "projects",
+    "section": "Chat with Code \u2014 overview"
+  },
+  {
+    "text": "Chat with Code \u2014 problem and solution\nUnderstanding an unfamiliar codebase by reading files one at a time is slow \u2014\nkeyword search misses semantically related code that doesn't share exact\nterms. Chat with Code loads a repository directly from GitHub, indexes it\ninto a vector store, and answers questions by retrieving the top-5 most\nsemantically relevant chunks and passing them to an LLM as grounding context.",
+    "source": "projects",
+    "section": "Chat with Code \u2014 problem and solution"
+  },
+  {
+    "text": "Chat with Code \u2014 architecture and tech stack\nStreamlit app. Retrieval via LlamaIndex with HuggingFace embeddings\n(BAAI/bge-small-en). Generation via Google Gemini 2.5 Flash. Pipeline: GitHub\nURL parsed, repository loaded via LlamaIndex's GithubRepositoryReader, files\nembedded into a VectorStoreIndex, query embedded and top-5 chunks retrieved,\nthen sent to Gemini alongside the question for a grounded, streamed answer.",
+    "source": "projects",
+    "section": "Chat with Code \u2014 architecture and tech stack"
+  },
+  {
+    "text": "Smart Shortlist \u2014 overview\nSmart Shortlist (repo name \"Sortlist\") is a semantic applicant-tracking\nsystem that ranks candidates against a job's specific criteria using\nsentence-embedding similarity, enriched with real signal from a candidate's\nGitHub and LeetCode activity. Categories: ML, NLP, Search, Web. Repository:\nhttps://github.com/Aditya-552003/Sortlist",
+    "source": "projects",
+    "section": "Smart Shortlist \u2014 overview"
+  },
+  {
+    "text": "Smart Shortlist \u2014 problem and solution\nKeyword-matching applicant tracking systems reject qualified candidates whose\nresumes don't contain a recruiter's exact phrasing. Smart Shortlist embeds\neach job criterion and each resume sentence with a Sentence-Transformer model\n(all-MiniLM-L6-v2), scores candidates by cosine similarity per criterion\nweighted by importance, and blends that semantic score with normalized\nGitHub and LeetCode activity signals into one composite score.",
+    "source": "projects",
+    "section": "Smart Shortlist \u2014 problem and solution"
+  },
+  {
+    "text": "Smart Shortlist \u2014 architecture and tech stack\nFrontend: Next.js 15 (App Router), Tailwind CSS. API: Node.js, Express,\nMongoDB, BullMQ, Cloudinary, JWT auth. ML service: Python, FastAPI,\nSentence-Transformers, PyMuPDF. Because embedding generation and profile\nscraping take a few seconds per candidate, analysis runs asynchronously via a\nBullMQ worker queue so the recruiter dashboard stays responsive.",
+    "source": "projects",
+    "section": "Smart Shortlist \u2014 architecture and tech stack"
+  },
+  {
+    "text": "Voice AI Assistant \u2014 status\nThere is an early experimental voice assistant script in Aditya's GitHub, but\nit is a simple speech-to-text/text-to-speech command-matching tool, not an\nLLM-grounded conversational assistant. It is not one of the flagship,\nfully-documented projects on this site. Don't describe it as an AI\nconversational agent \u2014 if asked, say it's an early experiment, not a\npolished flagship project.",
+    "source": "projects",
+    "section": "Voice AI Assistant \u2014 status"
+  },
+  {
+    "text": "SKILLS.md \u2014 Aditya AI Studio\n**Purpose:** Canonical skills reference for Aditya AI Studio. This file is the single source of truth for the **Skills** section, the **Project Explorer** category tags, and the **semantic search** index in the AI Playground. Keep it accurate \u2014 the RAG chatbot and search demo are grounded in it.\n\n**Legend \u2014 proficiency**\n- **Core** \u2014 used daily, can architect and lead with it.\n- **Proficient** \u2014 comfortable building production features independently.\n- **Working** \u2014 practical hands-on experience; productive with reference.\n\n**Legend \u2014 category tags** (must match Project Explorer filters)\n`AI` \u00b7 `ML` \u00b7 `NLP` \u00b7 `Web` \u00b7 `Vision` \u00b7 `Search` \u00b7 `Voice`\n\n---",
+    "source": "skills",
+    "section": "SKILLS.md \u2014 Aditya AI Studio"
+  },
+  {
+    "text": "1. Skills at a Glance\n| Group | Skills |\n|---|---|\n| Programming | Python, SQL, JavaScript, TypeScript |\n| Machine Learning & Deep Learning | Machine Learning, Deep Learning |\n| NLP | Natural Language Processing, Transformers, Sentence Transformers |\n| AI Systems | LangChain, RAG |\n| Backend | FastAPI, REST APIs |\n| Frontend | React, Next.js, SharePoint Framework (SPFx) |\n| DevOps & Cloud | Docker, GitHub Actions, Azure, Git, Linux |\n\n---",
+    "source": "skills",
+    "section": "1. Skills at a Glance"
+  },
+  {
+    "text": "Python \u2014 Core\nPrimary language for all AI/ML work: model training and inference, embeddings, and the FastAPI backend. Comfortable with data pipelines, async services, and clean, typed, testable code.\n`AI` `ML` `NLP` \u00b7 Demonstrated in: EmoSens, Chat with Code, Smart Shortlist, Voice AI Assistant",
+    "source": "skills",
+    "section": "Python \u2014 Core"
+  },
+  {
+    "text": "TypeScript \u2014 Core\nStrict-typed frontend development across the entire app. Used for reusable, well-typed React components and a maintainable, feature-based codebase.\n`Web` \u00b7 Demonstrated in: Aditya AI Studio (this site), Chat with Code (frontend)",
+    "source": "skills",
+    "section": "TypeScript \u2014 Core"
+  },
+  {
+    "text": "JavaScript \u2014 Proficient\nFoundation underlying the frontend stack; used for browser APIs, interactivity, and tooling.\n`Web`",
+    "source": "skills",
+    "section": "JavaScript \u2014 Proficient"
+  },
+  {
+    "text": "SQL \u2014 Proficient\nRelational querying for analytics and structured data; designing schemas for future analytics, visitor memory, and contact storage.\n`Web`\n\n---",
+    "source": "skills",
+    "section": "SQL \u2014 Proficient"
+  },
+  {
+    "text": "Machine Learning \u2014 Core\nEnd-to-end ML workflow: framing the problem, preparing data, training, evaluating (precision/recall/F1, confusion matrices), and shipping models behind an API.\n`ML` `AI` \u00b7 Demonstrated in: EmoSens, Smart Shortlist",
+    "source": "skills",
+    "section": "Machine Learning \u2014 Core"
+  },
+  {
+    "text": "Deep Learning \u2014 Core\nNeural architectures for language tasks, including fine-tuning transformer models and building hybrid classification pipelines.\n`ML` `AI` `NLP` \u00b7 Demonstrated in: EmoSens (hybrid BERT/RoBERTa emotion classifier)\n\n---",
+    "source": "skills",
+    "section": "Deep Learning \u2014 Core"
+  },
+  {
+    "text": "Natural Language Processing \u2014 Core\nText classification, semantic understanding, and retrieval. Handles the full lifecycle from preprocessing and chunking to evaluation and inference.\n`NLP` `AI` \u00b7 Demonstrated in: EmoSens, Chat with Code, Smart Shortlist",
+    "source": "skills",
+    "section": "Natural Language Processing \u2014 Core"
+  },
+  {
+    "text": "Transformers \u2014 Core\nWorking directly with BERT/RoBERTa-family models for classification and representation. Fine-tuning, tokenization, and context-window management.\n`NLP` `AI` \u00b7 Demonstrated in: EmoSens",
+    "source": "skills",
+    "section": "Transformers \u2014 Core"
+  },
+  {
+    "text": "Sentence Transformers \u2014 Core\nSentence-level embeddings for semantic similarity, ranking, and retrieval. Cosine-similarity search over encoded content.\n`NLP` `Search` `AI` \u00b7 Demonstrated in: Smart Shortlist, Semantic Search demo\n\n---",
+    "source": "skills",
+    "section": "Sentence Transformers \u2014 Core"
+  },
+  {
+    "text": "RAG (Retrieval-Augmented Generation) \u2014 Core\nDesign and implementation of grounded RAG pipelines: ingest \u2192 chunk \u2192 embed \u2192 retrieve (top-k) \u2192 generate, with guardrails against hallucination and out-of-scope answers.\n`AI` `NLP` `Search` \u00b7 Demonstrated in: Chat with Portfolio (this site), Chat with Code",
+    "source": "skills",
+    "section": "RAG (Retrieval-Augmented Generation) \u2014 Core"
+  },
+  {
+    "text": "LangChain \u2014 Proficient\nOrchestrating retrievers, prompts, and LLM calls; composing chains for RAG and conversational flows with per-session memory.\n`AI` `NLP` \u00b7 Demonstrated in: Chat with Code, Chat with Portfolio\n\n---",
+    "source": "skills",
+    "section": "LangChain \u2014 Proficient"
+  },
+  {
+    "text": "FastAPI \u2014 Core\nBuilding the inference API: streaming (SSE) chat, emotion, and semantic-search endpoints, with Pydantic validation, rate limiting, and auto-generated OpenAPI docs.\n`Web` `AI` \u00b7 Demonstrated in: Aditya AI Studio backend, Voice AI Assistant",
+    "source": "skills",
+    "section": "FastAPI \u2014 Core"
+  },
+  {
+    "text": "REST APIs \u2014 Core\nClean, versioned, well-documented API design: consistent error shapes, validation, timeouts/retries around providers, and CORS-restricted access.\n`Web` \u00b7 Demonstrated in: all backend services\n\n---",
+    "source": "skills",
+    "section": "REST APIs \u2014 Core"
+  },
+  {
+    "text": "React \u2014 Core\nComponent-driven UI with hooks, composition, and a shared design-system of primitives.\n`Web` \u00b7 Demonstrated in: Aditya AI Studio",
+    "source": "skills",
+    "section": "React \u2014 Core"
+  },
+  {
+    "text": "Next.js \u2014 Core\nApp Router, static optimization, route-level code-splitting, streaming UI, and SEO/metadata \u2014 tuned for Lighthouse >95.\n`Web` \u00b7 Demonstrated in: Aditya AI Studio",
+    "source": "skills",
+    "section": "Next.js \u2014 Core"
+  },
+  {
+    "text": "SharePoint Framework (SPFx) \u2014 Working\nBuilding custom web parts and extensions within the Microsoft 365 / SharePoint ecosystem.\n`Web`\n\n---",
+    "source": "skills",
+    "section": "SharePoint Framework (SPFx) \u2014 Working"
+  },
+  {
+    "text": "Docker \u2014 Proficient\nContainerizing services for reproducible builds and future portable deployment.\n`Web`",
+    "source": "skills",
+    "section": "Docker \u2014 Proficient"
+  },
+  {
+    "text": "GitHub Actions \u2014 Proficient\nCI/CD pipelines: lint, type-check, and build on every PR; automated deploys on merge to `main`.\n`Web`",
+    "source": "skills",
+    "section": "GitHub Actions \u2014 Proficient"
+  },
+  {
+    "text": "Azure \u2014 Working\nCloud hosting target for future unified deployment of frontend and inference services.\n`Web`",
+    "source": "skills",
+    "section": "Azure \u2014 Working"
+  },
+  {
+    "text": "Git \u2014 Core\nVersion control, branching strategy, and PR-based collaboration.\n`Web`",
+    "source": "skills",
+    "section": "Git \u2014 Core"
+  },
+  {
+    "text": "Linux \u2014 Proficient\nShell, service management, and server operation for backend deployment and debugging.\n`Web`\n\n---",
+    "source": "skills",
+    "section": "Linux \u2014 Proficient"
+  },
+  {
+    "text": "9. Skill \u2192 Project Matrix\n| Skill | EmoSens | Chat with Code | Voice AI Assistant | Smart Shortlist |\n|---|:---:|:---:|:---:|:---:|\n| Python | \u2713 | \u2713 | \u2713 | \u2713 |\n| Deep Learning | \u2713 | | | |\n| Transformers | \u2713 | | | |\n| Sentence Transformers | | \u2713 | | \u2713 |\n| NLP | \u2713 | \u2713 | \u2713 | \u2713 |\n| RAG | | \u2713 | \u2713 | |\n| LangChain | | \u2713 | \u2713 | |\n| FastAPI | \u2713 | \u2713 | \u2713 | \u2713 |\n| React / Next.js | | \u2713 | \u2713 | |\n| Docker | \u2713 | \u2713 | \u2713 | \u2713 |\n\n---",
+    "source": "skills",
+    "section": "9. Skill \u2192 Project Matrix"
+  },
+  {
+    "text": "10. Search Keywords (for the semantic index)\nTo improve recall in the Semantic Search demo, each skill is also associated with common synonyms and adjacent terms:\n\n- **NLP:** language models, text classification, tokenization, embeddings\n- **RAG:** retrieval augmented generation, grounding, vector search, context injection\n- **Sentence Transformers:** embeddings, cosine similarity, semantic similarity, ranking\n- **Transformers:** BERT, RoBERTa, attention, fine-tuning\n- **FastAPI:** backend, API, streaming, SSE, Python web service\n- **Next.js:** React framework, SSR, static generation, frontend\n- **Docker:** containers, deployment, reproducible builds\n- **Vision (adjacent):** image classification, computer vision *(roadmap area)*\n\n---\n\n*Maintenance note:* when adding a skill, update (1) the at-a-glance table, (2) the detailed entry with proficiency + category tags + demonstrating projects, (3) the skill\u2192project matrix, and (4) the search keywords. This keeps the Skills UI, Project Explorer filters, and semantic search in sync.",
+    "source": "skills",
+    "section": "10. Search Keywords (for the semantic index)"
+  }
+]

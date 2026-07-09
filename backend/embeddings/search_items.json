@@ -1,0 +1,122 @@
+[
+  {
+    "title": "Python",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "TypeScript",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "JavaScript",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "SQL",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Machine Learning",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Deep Learning",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Natural Language Processing",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Transformers",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Sentence Transformers",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "RAG (Retrieval-Augmented Generation)",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "LangChain",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "FastAPI",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "REST APIs",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "React",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Next.js",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "SharePoint Framework (SPFx)",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Docker",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "GitHub Actions",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Azure",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Git",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "Linux",
+    "type": "skill",
+    "url": "/skills"
+  },
+  {
+    "title": "EmoSens",
+    "type": "project",
+    "url": "/projects/emosens"
+  },
+  {
+    "title": "Chat with Code",
+    "type": "project",
+    "url": "/projects/chat-with-code"
+  },
+  {
+    "title": "Smart Shortlist",
+    "type": "project",
+    "url": "/projects/smart-shortlist"
+  }
+]

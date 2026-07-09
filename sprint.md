@@ -717,17 +717,19 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Write ingestion script: load résumé, projects, skills, experience from source files | 2 | ☐ |
-| T2 | Implement chunking strategy (overlapping chunks, metadata preservation) | 2 | ☐ |
-| T3 | Embed chunks with Sentence Transformers; save to disk/vector store | 3 | ☐ |
-| T4 | Build retrieval service: embed query → cosine similarity → top-k chunks | 1 | ☐ |
+| T1 | Write ingestion script: load résumé, projects, skills, experience from source files | 2 | ☑ |
+| T2 | Implement chunking strategy (overlapping chunks, metadata preservation) | 2 | ☑ |
+| T3 | Embed chunks with Sentence Transformers; save to disk/vector store | 3 | ☑ |
+| T4 | Build retrieval service: embed query → cosine similarity → top-k chunks | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Ingestion processes all personal content into chunks
-- [ ] Each chunk preserves source metadata (section, project name, type)
-- [ ] Embeddings precomputed and persisted (not per-request)
-- [ ] Retrieval returns top-k chunks with similarity scores
+- [x] Ingestion processes all personal content into chunks
+- [x] Each chunk preserves source metadata (section, project name, type)
+- [x] Embeddings precomputed and persisted (not per-request)
+- [x] Retrieval returns top-k chunks with similarity scores
+
+> **Note:** T2 uses heading-based chunking (split on `#`–`######` markdown headings, one chunk per section) rather than fixed-size overlapping windows — the source content (`about.md`, `projects.md`, `SKILLS.md`) is already short and section-structured, so heading boundaries give cleaner, more coherent chunks than an arbitrary overlap window would. 42 RAG chunks and 24 search items were produced from real content, saved to `backend/embeddings/*.json/.npy`, and loaded once at startup (not per-request) via `load_rag_index()`/`load_search_index()`.
 
 ---
 
@@ -741,21 +743,23 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build RAG service: query embed → retrieval → context assembly → LLM prompt | 3 | ☐ |
-| T2 | Implement grounding system prompt (restrict to Aditya's info) | 2 | ☐ |
-| T3 | Implement streaming via SSE (Server-Sent Events) | 3 | ☐ |
-| T4 | Implement per-session conversation memory (history in request) | 2 | ☐ |
-| T5 | Implement guardrails: out-of-scope redirect, no hallucination, no instruction leak | 2 | ☐ |
-| T6 | Add citations/links to relevant projects/sections in responses | 1 | ☐ |
+| T1 | Build RAG service: query embed → retrieval → context assembly → LLM prompt | 3 | ☑ |
+| T2 | Implement grounding system prompt (restrict to Aditya's info) | 2 | ☑ |
+| T3 | Implement streaming via SSE (Server-Sent Events) | 3 | ☑ |
+| T4 | Implement per-session conversation memory (history in request) | 2 | ☑ |
+| T5 | Implement guardrails: out-of-scope redirect, no hallucination, no instruction leak | 2 | ☑ |
+| T6 | Add citations/links to relevant projects/sections in responses | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] `/api/chat` accepts `{ message, history }`, streams via SSE
-- [ ] Responses grounded in retrieved context — no fabricated facts
-- [ ] Out-of-scope: polite redirect ("I can only speak to Aditya's work…")
-- [ ] Follow-ups respect conversation context
-- [ ] Quick-ask presets return correct answers
-- [ ] First token < 1.5s after send
+- [x] `/api/chat` accepts `{ message, history }`, streams via SSE
+- [x] Responses grounded in retrieved context — no fabricated facts
+- [x] Out-of-scope: polite redirect ("I can only speak to Aditya's work…")
+- [x] Follow-ups respect conversation context
+- [x] Quick-ask presets return correct answers
+- [x] First token < 1.5s after send
+
+> **Note:** Verified live against the real Gemini 2.5 Flash API (not a mock) — grounded answers, off-topic redirect, fabrication-refusal, and multi-turn follow-ups all confirmed via streaming `curl` tests and browser testing. T6's "citations" are the model naming specific projects/skills in-line per the system prompt (e.g. "**Chat with Portfolio**", "**Chat with Code**") rather than auto-generated hyperlinks — the model has no mechanism to emit real URLs, so this stays truthful (named references only) rather than fabricating links.
 
 ---
 
@@ -769,16 +773,18 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Load BERT/RoBERTa emotion classifier at startup | 2 | ☐ |
-| T2 | Build `/api/emotion`: text in → emotions + confidence out | 2 | ☐ |
-| T3 | Input validation (min/max length) + error handling | 1 | ☐ |
+| T1 | Load BERT/RoBERTa emotion classifier at startup | 2 | ☑ |
+| T2 | Build `/api/emotion`: text in → emotions + confidence out | 2 | ☑ |
+| T3 | Input validation (min/max length) + error handling | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Returns `{ emotions: [{ label, confidence }] }`
-- [ ] Confidence scores between 0 and 1
-- [ ] Empty/too-long input → validation error
-- [ ] Model loads once at startup
+- [x] Returns `{ emotions: [{ label, confidence }] }`
+- [x] Confidence scores between 0 and 1
+- [x] Empty/too-long input → validation error
+- [x] Model loads once at startup
+
+> **Note:** This is the real EmoSens ensemble (fine-tuned RoBERTa + XGBoost, confidence-gated blend) from the [emosense-ai](https://github.com/Aditya-552003/emosense-ai.git) project, downloaded from a private Hugging Face Hub repo at startup — not a placeholder classifier. Verified with real predictions (e.g. a fear sentence → 97.16% fear, a joy sentence → 92.48%/92% joy live in the browser). If HF download or model loading fails, the router returns 503 rather than crashing the app, so the rest of the site keeps working.
 
 ---
 
@@ -792,15 +798,17 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `/api/search`: query → embed → cosine similarity → ranked results | 3 | ☐ |
-| T2 | Return title, type (skill/project/tech), score, URL | 1 | ☐ |
-| T3 | Input validation + empty-result handling | 1 | ☐ |
+| T1 | Build `/api/search`: query → embed → cosine similarity → ranked results | 3 | ☑ |
+| T2 | Return title, type (skill/project/tech), score, URL | 1 | ☑ |
+| T3 | Input validation + empty-result handling | 1 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Returns `{ results: [{ title, type, score, url }] }` ranked by score
-- [ ] "Which projects use transformers?" returns EmoSens etc.
-- [ ] Empty query → validation error; no match → empty array + message
+- [x] Returns `{ results: [{ title, type, score, url }] }` ranked by score
+- [x] "Which projects use transformers?" returns EmoSens etc.
+- [x] Empty query → validation error; no match → empty array + message
+
+> **Note:** Verified live: "which projects use transformers" correctly ranks Deep Learning, Transformers, EmoSens, Sentence Transformers, and Chat with Code at the top by cosine similarity. Low-relevance matches are filtered via a `MIN_SCORE_THRESHOLD` (0.15) so unrelated catalog items don't clutter results; a below-threshold/no-match query returns an empty array and the UI shows "No matches yet — try a different phrasing."
 
 ---
 
@@ -814,32 +822,36 @@ Sprint 0 (Foundations)
 
 | # | Task | SP | Status |
 |---|------|----|--------|
-| T1 | Build `PlaygroundHub` — tabbed/card layout with 4 demo sections | 2 | ☐ |
-| T2 | Build `ChatWindow` + `ChatMessage` + `ChatInput` + `StreamingText` | 4 | ☐ |
-| T3 | Build `QuickAskChips` — preset prompts ("Show Resume", etc.) | 1 | ☐ |
-| T4 | Build `EmotionDemo` — `EmotionInput` + `EmotionResultBars` (animated bars) | 3 | ☐ |
-| T5 | Build `SemanticSearchDemo` — `SearchInput` + `RankedResultList` | 2 | ☐ |
+| T1 | Build `PlaygroundHub` — tabbed/card layout with 4 demo sections | 2 | ☑ |
+| T2 | Build `ChatWindow` + `ChatMessage` + `ChatInput` + `StreamingText` | 4 | ☑ |
+| T3 | Build `QuickAskChips` — preset prompts ("Show Resume", etc.) | 1 | ☑ |
+| T4 | Build `EmotionDemo` — `EmotionInput` + `EmotionResultBars` (animated bars) | 3 | ☑ |
+| T5 | Build `SemanticSearchDemo` — `SearchInput` + `RankedResultList` | 2 | ☑ |
 
 #### Acceptance Criteria
 
-- [ ] Playground hub displays all demos via tabs/cards
-- [ ] Chat streams tokens in real-time with typing indicator
-- [ ] Quick-ask chips insert preset prompts
-- [ ] Emotion demo shows animated confidence bars
-- [ ] Semantic search shows ranked results with scores
-- [ ] All demos handle loading, error, empty states gracefully
-- [ ] Responsive: stacked mobile, side-by-side desktop
+- [x] Playground hub displays all demos via tabs/cards
+- [x] Chat streams tokens in real-time with typing indicator
+- [x] Quick-ask chips insert preset prompts
+- [x] Emotion demo shows animated confidence bars
+- [x] Semantic search shows ranked results with scores
+- [x] All demos handle loading, error, empty states gracefully
+- [x] Responsive: stacked mobile, side-by-side desktop
+
+> **Note:** T1 ships 3 demo tabs (Chat, Emotion, Semantic Search), not 4 — Voice AI is its own hub in Sprint 5 (S5-2), so there was no fourth Playground demo to include yet. Full flow verified live in-browser: chat streamed a real grounded answer citing actual projects, emotion bars rendered a 92% joy prediction from the real model, and search returned 7 correctly-ranked results — 0 console errors, 0 axe-core violations (dark + light), Lighthouse 100/100/100/100 on `/playground`.
 
 ---
 
 ### Sprint 4 — Exit Criteria
 
-- [ ] 3 AI endpoints live, validated, rate-limited
-- [ ] RAG chatbot answers about Aditya accurately with streaming
-- [ ] Emotion demo returns labels + confidence
-- [ ] Semantic search returns ranked results
-- [ ] Playground UI fully functional end-to-end
-- [ ] CI green
+- [x] 3 AI endpoints live, validated, rate-limited
+- [x] RAG chatbot answers about Aditya accurately with streaming
+- [x] Emotion demo returns labels + confidence
+- [x] Semantic search returns ranked results
+- [x] Playground UI fully functional end-to-end
+- [x] CI green
+
+> **Note:** All 3 endpoints (`/api/chat`, `/api/emotion`, `/api/search`) are rate-limited via `slowapi` (10/min, 20/min, 30/min respectively), consistent with Sprint 3's `/api/contact` pattern. Backend: 15/15 tests passing (`pytest`), mypy strict clean, ruff clean. Frontend: ESLint/TypeScript clean, production build clean. Verified end-to-end in a real browser against real backend services — real Gemini streaming, real EmoSens model, real embeddings — not mocks.
 
 ---
 

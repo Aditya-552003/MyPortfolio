@@ -1,20 +1,16 @@
 from fastapi.testclient import TestClient
 
-from app.main import app
-
-client = TestClient(app)
-
 VALID_PAYLOAD = {"name": "Ada Lovelace", "email": "ada@example.com", "message": "Hello there!"}
 
 
-def test_contact_accepts_valid_submission() -> None:
+def test_contact_accepts_valid_submission(client: TestClient) -> None:
     response = client.post("/api/contact", json=VALID_PAYLOAD)
 
     assert response.status_code == 200
     assert response.json() == {"success": True}
 
 
-def test_contact_rejects_missing_name() -> None:
+def test_contact_rejects_missing_name(client: TestClient) -> None:
     payload = {**VALID_PAYLOAD, "name": ""}
 
     response = client.post("/api/contact", json=payload)
@@ -24,7 +20,7 @@ def test_contact_rejects_missing_name() -> None:
     assert body["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_contact_rejects_invalid_email() -> None:
+def test_contact_rejects_invalid_email(client: TestClient) -> None:
     payload = {**VALID_PAYLOAD, "email": "not-an-email"}
 
     response = client.post("/api/contact", json=payload)
@@ -33,7 +29,7 @@ def test_contact_rejects_invalid_email() -> None:
     assert response.json()["error"]["code"] == "VALIDATION_ERROR"
 
 
-def test_contact_silently_accepts_honeypot_spam() -> None:
+def test_contact_silently_accepts_honeypot_spam(client: TestClient) -> None:
     payload = {**VALID_PAYLOAD, "honeypot": "I am a bot"}
 
     response = client.post("/api/contact", json=payload)
@@ -42,7 +38,7 @@ def test_contact_silently_accepts_honeypot_spam() -> None:
     assert response.json() == {"success": True}
 
 
-def test_contact_rate_limits_repeated_requests() -> None:
+def test_contact_rate_limits_repeated_requests(client: TestClient) -> None:
     # The limiter's in-memory bucket persists across tests in this module, so don't
     # assume a precise starting count — just drive enough requests to trip the
     # 5/minute limit and confirm the shape of the response when it does.
@@ -53,7 +49,7 @@ def test_contact_rate_limits_repeated_requests() -> None:
     assert rate_limited[0].json()["error"]["code"] == "RATE_LIMITED"
 
 
-def test_not_found_uses_consistent_error_shape() -> None:
+def test_not_found_uses_consistent_error_shape(client: TestClient) -> None:
     response = client.get("/api/does-not-exist")
 
     assert response.status_code == 404

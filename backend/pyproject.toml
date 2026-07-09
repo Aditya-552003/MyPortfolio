@@ -28,5 +28,10 @@ exclude = ["tests/"]
 module = "tests.*"
 disallow_untyped_defs = false
 
+[[tool.mypy.overrides]]
+# Heavy ML libraries that ship no py.typed marker / stub package.
+module = ["joblib", "scipy.*", "transformers.*", "torch.*", "xgboost.*", "sklearn.*", "sentence_transformers.*"]
+ignore_missing_imports = true
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
