@@ -1,34 +1,24 @@
-# Render Blueprint — import at https://dashboard.render.com/blueprints
-# Set secret env vars (GEMINI_API_KEY, FRONTEND_ORIGIN) in the dashboard after deploy.
+# Render Blueprint — hybrid lite API (512Mi, no torch).
+# Emotion demo runs on Hugging Face Spaces — see backend/emotion_space/README.md
 
 services:
   - type: web
     name: aditya-ai-studio-api
     runtime: docker
-    dockerfilePath: ./backend/Dockerfile
+    dockerfilePath: ./backend/Dockerfile.lite
     dockerContext: ./backend
     plan: starter
-    # Free/Starter (512Mi): LOW_MEMORY_MODE uses keyword RAG/search (no torch at runtime).
-    # Emotion demo is off until you upgrade to Standard (2GB+).
     region: oregon
     healthCheckPath: /api/health
     autoDeploy: true
     envVars:
       - key: ENVIRONMENT
         value: production
+      - key: BACKEND_MODE
+        value: lite
       - key: LOG_LEVEL
         value: INFO
-      - key: LOW_MEMORY_MODE
-        value: "true"
-      - key: DEFER_ML_LOAD
-        value: "true"
-      - key: LOAD_EMOTION_MODEL
-        value: "false"
       - key: FRONTEND_ORIGIN
         sync: false
       - key: GEMINI_API_KEY
         sync: false
-      - key: HF_TOKEN
-        sync: false
-      - key: HF_MODEL_REPO
-        value: DSAditya552003/emosense-ai-model

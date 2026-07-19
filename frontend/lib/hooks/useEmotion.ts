@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { apiPost } from "@/lib/api";
+import { emotionApiPost } from "@/lib/api";
 
 export interface EmotionPayload {
   text: string;
@@ -18,10 +18,10 @@ export interface EmotionResponse {
   emotions: EmotionPrediction[];
 }
 
-/** Stub — the `/api/emotion` backend endpoint lands in Sprint 4 (S4-3). */
+/** Calls `/api/emotion` on the main API (local) or HF Space (hybrid production). */
 export function useEmotion(): UseMutationResult<EmotionResponse, Error, EmotionPayload> {
   return useMutation({
     mutationFn: (payload: EmotionPayload) =>
-      apiPost<EmotionResponse, EmotionPayload>("/api/emotion", payload),
+      emotionApiPost<EmotionResponse, EmotionPayload>("/api/emotion", payload),
   });
 }

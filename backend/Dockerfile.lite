@@ -1,0 +1,20 @@
+# Aditya AI Studio — Lite API (Render 512Mi)
+
+FROM python:3.11-slim-bookworm
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PORT=8000 \
+    BACKEND_MODE=lite
+
+WORKDIR /app
+
+COPY requirements-lite.txt requirements.txt
+RUN pip install -r requirements.txt
+
+COPY app ./app
+
+EXPOSE 8000
+
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}

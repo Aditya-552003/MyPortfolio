@@ -1,12 +1,27 @@
 # Deployment Guide — Aditya AI Studio
 
-Production stack per PRD §16:
+## Recommended production layout (hybrid, free tier)
+
+| Service | Host | Cost | Notes |
+|---------|------|------|-------|
+| Frontend | [Vercel](https://vercel.com) | Free | `frontend/` |
+| Main API (contact, chat, search, voice) | [Render](https://render.com) Starter 512Mi | Free | **Lite mode** — no torch |
+| Emotion demo only | [HF Space](https://huggingface.co/spaces) | Free | ~16GB RAM for EmoSens |
+
+```
+Browser → Vercel (Next.js)
+              ├─→ Render lite API     /api/chat, /api/search, /api/voice, /api/contact
+              └─→ HF Space emotion API /api/emotion
+```
 
 | Layer | Platform | Config |
 |-------|----------|--------|
-| Frontend | [Vercel](https://vercel.com) | `frontend/vercel.json` |
-| Backend | [Render](https://render.com) | `backend/render.yaml` + `backend/Dockerfile` |
+| Frontend | Vercel | `frontend/vercel.json` |
+| Main API (lite) | Render | `backend/render.yaml` + `backend/Dockerfile.lite` |
+| Emotion API | HF Space | `backend/Dockerfile.emotion` |
 | CI/CD | GitHub Actions | `.github/workflows/ci.yml`, `deploy.yml` |
+
+Local development uses **full mode** (`BACKEND_MODE=full`) with everything on `localhost:8000`.
 
 ---
 
@@ -20,35 +35,44 @@ Production stack per PRD §16:
 
    | Variable | Value |
    |----------|-------|
-   | `NEXT_PUBLIC_API_URL` | Your Render backend URL, e.g. `https://aditya-ai-studio-api.onrender.com` |
+   | `NEXT_PUBLIC_API_URL` | Render lite API URL, e.g. `https://aditya-ai-studio-api.onrender.com` |
+   | `NEXT_PUBLIC_EMOTION_API_URL` | HF Space URL, e.g. `https://aditya-emosens.hf.space` |
    | `NEXT_PUBLIC_SENTRY_DSN` | *(optional)* Sentry project DSN |
 
 4. Connect custom domain in Vercel → DNS (see §2).
 5. Copy **Project ID** and **Org ID** from Vercel project settings for GitHub secrets.
 
-### Backend (Render)
+### Backend — Render (lite API)
 
 1. **New → Blueprint** → point at this repo → select `backend/render.yaml`.
+   - Or manually: **Root Directory** `backend`, **Dockerfile** `Dockerfile.lite`.
 2. Set secret env vars in Render dashboard:
 
    | Variable | Value |
    |----------|-------|
    | `ENVIRONMENT` | `production` |
+   | `BACKEND_MODE` | `lite` *(set automatically by blueprint)* |
    | `FRONTEND_ORIGIN` | Your Vercel URL, e.g. `https://aditya-ai-studio.vercel.app` |
-   | `GEMINI_API_KEY` | Google AI Studio key *(required)* |
-   | `LOW_MEMORY_MODE` | `true` on **Starter/free (512Mi)** — keyword RAG/search, no torch |
-   | `LOAD_EMOTION_MODEL` | `false` on 512Mi *(emotion demo off)* |
-   | `DEFER_ML_LOAD` | `true` *(default in render.yaml)* |
-   | `HF_TOKEN` | Only if `LOAD_EMOTION_MODEL=true` on a 2GB+ plan |
+   | `GEMINI_API_KEY` | Google AI Studio key |
 
-3. **Memory tiers:**
-   - **Starter / free (512Mi):** Set `LOW_MEMORY_MODE=true` and `LOAD_EMOTION_MODEL=false`. Chat, semantic search (keyword), voice, and contact work via Gemini + precomputed JSON. Emotion demo shows “unavailable”.
-   - **Standard (2GB+):** Set `LOW_MEMORY_MODE=false`, `LOAD_EMOTION_MODEL=true`, add `HF_TOKEN` for full semantic search + EmoSens.
+   No `HF_TOKEN` needed on Render — emotion runs on HF Space.
 
-4. Health check path: `/api/health` (configured in `render.yaml`).
+3. **Memory:** Lite mode fits **Starter 512Mi**. Chat uses static markdown context + Gemini; search uses keyword matching (no embeddings).
+
+4. Health check path: `/api/health` (returns `emotion_external: true`, `emotion: false` — emotion is checked against HF from the frontend).
+
 5. Copy the **Deploy Hook** URL from Render → Settings → Deploy Hook.
 
-> **Cold starts:** Render free tier may spin down after inactivity. First request can take 30–60s. On 512Mi, `/api/health` should return `ok` with `mode: low_memory` once Gemini is configured.
+### Emotion — Hugging Face Space
+
+Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)**:
+
+1. Create a **Docker** Space connected to this repo.
+2. Set **Root directory** to `backend`, **Dockerfile** to `Dockerfile.emotion`.
+3. Add secrets: `HF_TOKEN`, `HF_MODEL_REPO`, `FRONTEND_ORIGIN`.
+4. Copy the Space URL into Vercel as `NEXT_PUBLIC_EMOTION_API_URL`.
+
+> **Cold starts:** Render lite API wakes in ~5–15s. HF Space first request after sleep may take 1–2 min while EmoSens loads.
 
 ---
 
@@ -63,7 +87,7 @@ Production stack per PRD §16:
 
 Update `frontend/config/site.ts` → `url` to match your production domain (used in sitemap, canonicals, JSON-LD).
 
-Update Render `FRONTEND_ORIGIN` to the same URL (CORS lock).
+Update Render `FRONTEND_ORIGIN` and HF Space `FRONTEND_ORIGIN` to the same URL (CORS).
 
 ---
 
@@ -105,6 +129,8 @@ cd frontend && vercel --prod
 
 # Backend — push to main or POST to Render deploy hook
 curl -X POST "$RENDER_DEPLOY_HOOK_URL"
+
+# HF Space — push to main (auto-deploy) or rebuild in Space settings
 ```
 
 ---
@@ -114,6 +140,7 @@ curl -X POST "$RENDER_DEPLOY_HOOK_URL"
 ```bash
 FRONTEND_URL=https://your-domain.com \
 API_URL=https://your-api.onrender.com \
+EMOTION_API_URL=https://your-space.hf.space \
 bash scripts/smoke-test-production.sh
 ```
 
@@ -127,7 +154,14 @@ Run Lighthouse on production. Complete [LAUNCH_CHECKLIST.md](./LAUNCH_CHECKLIST.
 |--------|------|
 | Backend uptime | GitHub Actions `uptime.yml` (every 15 min) |
 | Backend logs | Render logs (JSON structured, `X-Request-ID` per request) |
+| Emotion Space | HF Space logs + `/api/health` |
 | Frontend errors | Sentry Browser SDK (when `NEXT_PUBLIC_SENTRY_DSN` set on Vercel) |
 | CI failures | GitHub Actions notifications |
 
 Enable GitHub Actions email/Slack notifications for failed `uptime` or `deploy` workflows.
+
+---
+
+## 7. Full mode (optional, paid Render)
+
+For a single-host deployment with vector RAG + embedding search + EmoSens, use `backend/Dockerfile` with `BACKEND_MODE=full` on **Render Standard (2GB+)**. Not required for the hybrid free-tier layout above.

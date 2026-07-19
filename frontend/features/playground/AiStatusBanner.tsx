@@ -3,10 +3,10 @@
 import type { ReactNode } from "react";
 
 import { Skeleton } from "@/components/ui/Skeleton";
-import { useHealth, type HealthServices } from "@/lib/hooks/useHealth";
+import { useHealth } from "@/lib/hooks/useHealth";
 import { cn } from "@/lib/utils/cn";
 
-const LABELS: Record<keyof HealthServices, string> = {
+const LABELS: Record<"chat" | "emotion" | "search" | "voice", string> = {
   chat: "Chat",
   emotion: "Emotion",
   search: "Search",
@@ -32,11 +32,10 @@ export function AiStatusBanner(): ReactNode {
     );
   }
 
-  const { status, services, mode } = health.data;
-  const offline = (Object.keys(LABELS) as Array<keyof HealthServices>).filter(
+  const { status, services } = health.data;
+  const offline = (Object.keys(LABELS) as Array<keyof typeof LABELS>).filter(
     (key) => !services[key],
   );
-  const emotionHostLimited = mode === "low_memory" && !services.emotion;
 
   return (
     <div
@@ -49,11 +48,7 @@ export function AiStatusBanner(): ReactNode {
       )}
     >
       {status === "ok" ? (
-        emotionHostLimited ? (
-          <span>Chat, search, and voice are ready. Emotion demo needs more server memory.</span>
-        ) : (
-          <span>All AI services ready.</span>
-        )
+        <span>All AI services ready.</span>
       ) : (
         <span>
           Some AI services are unavailable

@@ -2,26 +2,69 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { apiFetch } from "@/lib/api";
+import { API_BASE_URL, EMOTION_API_BASE_URL, EMOTION_API_EXTERNAL, apiFetch } from "@/lib/api";
 
 export interface HealthServices {
   chat: boolean;
   emotion: boolean;
   search: boolean;
   voice: boolean;
+  mode?: "full" | "lite";
+  emotion_external?: boolean;
 }
 
 export interface HealthResponse {
   status: "ok" | "degraded";
   services: HealthServices;
-  mode?: "full" | "low_memory";
 }
 
-/** Polls `/api/health` so the UI can show AI service readiness. */
+interface EmotionHealthBody {
+  status?: string;
+  model_loaded?: boolean;
+}
+
+async function fetchEmotionReady(): Promise<boolean> {
+  try {
+    const response = await fetch(`${EMOTION_API_BASE_URL}/api/health`, {
+      method: "GET",
+      headers: { Accept: "application/json" },
+    });
+    if (!response.ok) {
+      return false;
+    }
+    const body = (await response.json()) as EmotionHealthBody;
+    return Boolean(body.model_loaded ?? body.status === "ok");
+  } catch {
+    return false;
+  }
+}
+
+/** Polls main `/api/health` and, in hybrid mode, the external emotion Space health. */
 export function useHealth() {
   return useQuery({
-    queryKey: ["health"],
-    queryFn: () => apiFetch<HealthResponse>("/api/health"),
+    queryKey: ["health", API_BASE_URL, EMOTION_API_BASE_URL],
+    queryFn: async (): Promise<HealthResponse> => {
+      const main = await apiFetch<HealthResponse>("/api/health");
+      const needsExternalEmotion =
+        EMOTION_API_EXTERNAL || Boolean(main.services.emotion_external);
+
+      if (needsExternalEmotion) {
+        const emotionReady = await fetchEmotionReady();
+        return {
+          ...main,
+          services: { ...main.services, emotion: emotionReady },
+          status:
+            main.services.chat &&
+            main.services.search &&
+            main.services.voice &&
+            emotionReady
+              ? "ok"
+              : "degraded",
+        };
+      }
+
+      return main;
+    },
     refetchInterval: 30_000,
     retry: 1,
     staleTime: 10_000,

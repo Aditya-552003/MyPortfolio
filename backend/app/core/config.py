@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -16,10 +16,14 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     hf_token: str = ""
     hf_model_repo: str = "DSAditya552003/emosense-ai-model"
-    # Render free/starter (512Mi): keyword RAG + no local torch. Emotion demo off.
-    low_memory_mode: bool = False
+    # `lite` = no torch/embeddings (Render 512Mi). Emotion runs on a separate HF Space.
+    backend_mode: Literal["full", "lite"] = "full"
     defer_ml_load: bool = False
     load_emotion_model: bool = True
+
+    @property
+    def is_lite(self) -> bool:
+        return self.backend_mode == "lite"
 
     @model_validator(mode="after")
     def production_origin_must_not_be_localhost(self) -> Self:

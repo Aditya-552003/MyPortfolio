@@ -35,4 +35,11 @@ health="$(curl -fsS "${API_URL}/api/health")"
 echo "$health" | grep -q '"status"' || { echo "FAIL health response"; exit 1; }
 echo "OK   /api/health"
 
+if [ -n "${EMOTION_API_URL:-}" ]; then
+  echo "Smoke testing emotion Space: $EMOTION_API_URL/api/health"
+  emotion="$(curl -fsS "${EMOTION_API_URL}/api/health")"
+  echo "$emotion" | grep -q '"status"' || { echo "FAIL emotion health response"; exit 1; }
+  echo "OK   emotion /api/health"
+fi
+
 echo "All smoke checks passed."

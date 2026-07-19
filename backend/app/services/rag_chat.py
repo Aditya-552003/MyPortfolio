@@ -18,6 +18,7 @@ from google import genai
 from google.genai import types
 
 from app.core.config import get_settings
+from app.services.lite_context import get_lite_context
 from app.services.prompt_guard import REFUSAL_MESSAGE, is_prompt_injection_attempt
 from app.services.retrieval import RagChunk, retrieve
 
@@ -88,8 +89,13 @@ class RagChatService:
             yield REFUSAL_MESSAGE
             return
 
-        matches = retrieve(message, top_k=TOP_K_CHUNKS)
-        system_prompt = SYSTEM_PROMPT_TEMPLATE.format(context=_format_context(matches))
+        settings = get_settings()
+        if settings.is_lite:
+            context = get_lite_context()
+        else:
+            matches = retrieve(message, top_k=TOP_K_CHUNKS)
+            context = _format_context(matches)
+        system_prompt = SYSTEM_PROMPT_TEMPLATE.format(context=context)
 
         contents = [
             types.Content(
