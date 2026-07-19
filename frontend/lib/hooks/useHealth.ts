@@ -23,20 +23,33 @@ interface EmotionHealthBody {
   model_loaded?: boolean;
 }
 
+async function probeGradioEmotion(): Promise<boolean> {
+  try {
+    const response = await fetch(`${EMOTION_API_BASE_URL}/gradio_api/call/predict_emotion`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({ data: ["health check"] }),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
 async function fetchEmotionReady(): Promise<boolean> {
   try {
     const response = await fetch(`${EMOTION_API_BASE_URL}/api/health`, {
       method: "GET",
       headers: { Accept: "application/json" },
     });
-    if (!response.ok) {
-      return false;
+    if (response.ok) {
+      const body = (await response.json()) as EmotionHealthBody;
+      return Boolean(body.model_loaded ?? body.status === "ok");
     }
-    const body = (await response.json()) as EmotionHealthBody;
-    return Boolean(body.model_loaded ?? body.status === "ok");
   } catch {
-    return false;
+    // REST /api/health may be unavailable on HF Gradio — fall back to Gradio API probe.
   }
+  return probeGradioEmotion();
 }
 
 /** Polls main `/api/health` and, in hybrid mode, the external emotion Space health. */

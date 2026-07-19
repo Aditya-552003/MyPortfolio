@@ -3,7 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import type { UseMutationResult } from "@tanstack/react-query";
 
-import { emotionApiPost } from "@/lib/api";
+import { emotionPredict } from "@/lib/api";
 
 export interface EmotionPayload {
   text: string;
@@ -18,10 +18,9 @@ export interface EmotionResponse {
   emotions: EmotionPrediction[];
 }
 
-/** Calls `/api/emotion` on the main API (local) or HF Space (hybrid production). */
+/** REST `/api/emotion` locally; HF Space falls back to Gradio API if REST is unavailable. */
 export function useEmotion(): UseMutationResult<EmotionResponse, Error, EmotionPayload> {
   return useMutation({
-    mutationFn: (payload: EmotionPayload) =>
-      emotionApiPost<EmotionResponse, EmotionPayload>("/api/emotion", payload),
+    mutationFn: (payload: EmotionPayload) => emotionPredict(payload.text),
   });
 }

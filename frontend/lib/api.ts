@@ -86,7 +86,59 @@ export async function emotionApiPost<TResponse, TBody = unknown>(
   return response.json() as Promise<TResponse>;
 }
 
-/** Multipart upload (e.g. voice STT) — lets the browser set the boundary Content-Type. */
+export async function emotionPredict(text: string): Promise<{ emotions: { label: string; confidence: number }[] }> {
+  try {
+    return await emotionApiPost("/api/emotion", { text });
+  } catch (err) {
+    if (!EMOTION_API_EXTERNAL || !(err instanceof ApiError) || (err.status !== 404 && err.status !== 405)) {
+      throw err;
+    }
+  }
+
+  let response: Response;
+  try {
+    response = await fetch(`${EMOTION_API_BASE_URL}/gradio_api/call/predict_emotion`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [text] }),
+    });
+  } catch {
+    throw new ApiError(0, "NETWORK_ERROR", "Couldn't reach the emotion service. Check your connection.");
+  }
+
+  if (!response.ok) {
+    throw new ApiError(response.status, "UNKNOWN_ERROR", "Emotion service unavailable.");
+  }
+
+  const queued = (await response.json()) as { event_id?: string };
+  if (!queued.event_id) {
+    throw new ApiError(502, "INVALID_RESPONSE", "Emotion service returned an invalid response.");
+  }
+
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    const resultRes = await fetch(
+      `${EMOTION_API_BASE_URL}/gradio_api/call/predict_emotion/${queued.event_id}`,
+    );
+    if (!resultRes.ok) {
+      continue;
+    }
+    const result = (await resultRes.json()) as { status?: string; data?: unknown[] };
+    if (result.status === "PROCESSING") {
+      continue;
+    }
+    const raw = result.data?.[0];
+    if (typeof raw === "object" && raw !== null && "error" in raw) {
+      throw new ApiError(503, "MODEL_UNAVAILABLE", String((raw as { error: string }).error));
+    }
+    if (Array.isArray(raw)) {
+      return { emotions: raw as { label: string; confidence: number }[] };
+    }
+    throw new ApiError(502, "INVALID_RESPONSE", "Unexpected emotion result format.");
+  }
+
+  throw new ApiError(504, "TIMEOUT", "Emotion inference timed out — the Space may be waking up.");
+}
 export async function apiUpload<TResponse>(path: string, formData: FormData): Promise<TResponse> {
   let response: Response;
   try {
