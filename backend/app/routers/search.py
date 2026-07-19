@@ -4,8 +4,6 @@ from app.core.config import get_settings
 from app.core.rate_limit import limiter
 from app.models.search import SearchRequest, SearchResponse, SearchResultItem
 from app.services.lite_search import is_lite_search_ready, keyword_search
-from app.services.search_index import get_search_index
-from app.services.search_index import search as embedding_search
 
 router = APIRouter(tags=["search"])
 
@@ -29,6 +27,9 @@ async def semantic_search(request: Request, payload: SearchRequest) -> SearchRes
             if score >= threshold
         ]
         return SearchResponse(results=results)
+
+    from app.services.search_index import get_search_index
+    from app.services.search_index import search as embedding_search
 
     index = get_search_index()
     if not index.is_ready:

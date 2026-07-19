@@ -4,10 +4,8 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from app.core.config import get_settings
-from app.services.emotion_model import get_emotion_registry
 from app.services.lite_search import is_lite_search_ready
 from app.services.rag_chat import get_rag_chat_service
-from app.services.search_index import get_search_index
 from app.services.voice import get_voice_service
 
 router = APIRouter(tags=["health"])
@@ -43,6 +41,9 @@ def get_health() -> HealthResponse:
             emotion_external=True,
         )
     else:
+        from app.services.emotion_model import get_emotion_registry
+        from app.services.search_index import get_search_index
+
         services = ServiceStatus(
             chat=get_rag_chat_service().is_available,
             emotion=get_emotion_registry().loaded,

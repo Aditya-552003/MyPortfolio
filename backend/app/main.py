@@ -22,9 +22,6 @@ from app.core.rate_limit import limiter
 from app.routers import chat, contact, health, search, voice
 from app.services.lite_context import load_lite_context
 from app.services.lite_search import init_lite_search
-from app.services.ml_startup import load_emotion_sync, start_background_ml_load
-from app.services.retrieval import load_rag_index
-from app.services.search_index import load_search_index
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -36,6 +33,10 @@ async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
         load_lite_context()
         init_lite_search()
     else:
+        from app.services.ml_startup import load_emotion_sync, start_background_ml_load
+        from app.services.retrieval import load_rag_index
+        from app.services.search_index import load_search_index
+
         load_rag_index()
         load_search_index()
         if settings.defer_ml_load:

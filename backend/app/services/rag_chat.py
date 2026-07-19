@@ -13,6 +13,7 @@ import logging
 import queue
 import threading
 from collections.abc import AsyncIterator, Sequence
+from typing import TYPE_CHECKING
 
 from google import genai
 from google.genai import types
@@ -20,7 +21,9 @@ from google.genai import types
 from app.core.config import get_settings
 from app.services.lite_context import get_lite_context
 from app.services.prompt_guard import REFUSAL_MESSAGE, is_prompt_injection_attempt
-from app.services.retrieval import RagChunk, retrieve
+
+if TYPE_CHECKING:
+    from app.services.retrieval import RagChunk
 
 logger = logging.getLogger("app.rag_chat")
 
@@ -59,7 +62,7 @@ class RagChatUnavailableError(RuntimeError):
     """Raised when the chat service has no configured LLM client or generation fails."""
 
 
-def _format_context(matches: Sequence[tuple[RagChunk, float]]) -> str:
+def _format_context(matches: Sequence[tuple["RagChunk", float]]) -> str:
     if not matches:
         return "(No matching context was found for this question.)"
     lines = [f"[{chunk.source}/{chunk.section}] {chunk.text}" for chunk, _score in matches]
@@ -93,6 +96,8 @@ class RagChatService:
         if settings.is_lite:
             context = get_lite_context()
         else:
+            from app.services.retrieval import retrieve
+
             matches = retrieve(message, top_k=TOP_K_CHUNKS)
             context = _format_context(matches)
         system_prompt = SYSTEM_PROMPT_TEMPLATE.format(context=context)
