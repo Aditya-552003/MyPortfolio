@@ -11,3 +11,7 @@ export { useSemanticSearch } from "./useSemanticSearch";
 export type { SearchPayload, SearchResponse, SearchResult } from "./useSemanticSearch";
 export { useChat } from "./useChat";
 export type { ChatMessage, UseChatResult } from "./useChat";
+export { useVoice } from "./useVoice";
+export type { UseVoiceResult, VoicePhase, VoiceTurn } from "./useVoice";
+export { useHealth } from "./useHealth";
+export type { HealthResponse, HealthServices } from "./useHealth";

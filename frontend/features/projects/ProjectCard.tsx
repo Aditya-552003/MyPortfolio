@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/Card";
 import type { Project } from "@/content/types";
 
 import { CATEGORY_ICONS } from "./categoryIcons";
+import { getProjectVisual } from "./projectVisuals";
 
 export interface ProjectCardProps {
   project: Project;
@@ -13,19 +14,19 @@ export interface ProjectCardProps {
 
 export function ProjectCard({ project }: ProjectCardProps): ReactNode {
   const Icon = CATEGORY_ICONS[project.categories[0] ?? "AI"];
+  const visual = getProjectVisual(project.slug);
 
   return (
     <Link href={`/projects/${project.slug}`} className="block h-full">
       <Card variant="standard" hover="glow" className="h-full overflow-hidden p-0">
         <div
-          className="flex aspect-video items-center justify-center"
+          className="relative flex aspect-video items-center justify-center"
           style={{
-            backgroundImage:
-              "radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--primary) 25%, transparent), transparent 65%), radial-gradient(circle at 75% 70%, color-mix(in srgb, var(--secondary) 25%, transparent), transparent 65%)",
+            backgroundImage: visual.backgroundImage,
             backgroundColor: "var(--surface)",
           }}
         >
-          <Icon className="text-muted size-10" aria-hidden />
+          <Icon className="text-foreground/70 relative size-10" aria-hidden />
         </div>
         <div className="p-6">
           <h3 className="text-foreground font-semibold">{project.title}</h3>

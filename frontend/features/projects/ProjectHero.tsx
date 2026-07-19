@@ -7,6 +7,7 @@ import { GithubIcon } from "@/components/ui/icons/BrandIcons";
 import type { Project } from "@/content/types";
 
 import { CATEGORY_ICONS } from "./categoryIcons";
+import { getProjectVisual } from "./projectVisuals";
 
 export interface ProjectHeroProps {
   project: Project;
@@ -14,18 +15,32 @@ export interface ProjectHeroProps {
 
 export function ProjectHero({ project }: ProjectHeroProps): ReactNode {
   const Icon = CATEGORY_ICONS[project.categories[0] ?? "AI"];
+  const visual = getProjectVisual(project.slug);
 
   return (
     <div className="border-border overflow-hidden rounded-[var(--radius-lg)] border">
       <div
-        className="flex aspect-[3/1] items-center justify-center"
+        className="relative flex aspect-[3/1] min-h-40 items-center justify-center overflow-hidden"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 25% 30%, color-mix(in srgb, var(--primary) 30%, transparent), transparent 65%), radial-gradient(circle at 75% 70%, color-mix(in srgb, var(--secondary) 30%, transparent), transparent 65%)",
+          backgroundImage: visual.backgroundImage,
           backgroundColor: "var(--surface)",
         }}
       >
-        <Icon className="text-muted size-16" aria-hidden />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        />
+        <div className="relative flex flex-col items-center gap-3 px-4 text-center">
+          <Icon className="text-foreground/80 size-14 drop-shadow-sm sm:size-16" aria-hidden />
+          <span className="text-muted text-xs font-medium tracking-[0.18em] uppercase">
+            {visual.label}
+          </span>
+        </div>
       </div>
       <div className="border-border bg-surface flex flex-col gap-4 border-t p-6 sm:flex-row sm:items-center sm:justify-between">
         <div>

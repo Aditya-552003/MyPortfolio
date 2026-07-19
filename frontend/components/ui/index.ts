@@ -19,3 +19,4 @@ export { ToastProvider, useToast } from "./Toast";
 export type { ToastVariant } from "./Toast";
 export { FormField } from "./FormField";
 export type { FormFieldProps } from "./FormField";
+export { ErrorBoundary } from "./ErrorBoundary";

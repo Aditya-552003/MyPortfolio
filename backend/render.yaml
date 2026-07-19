@@ -1,0 +1,26 @@
+# Render Blueprint — import at https://dashboard.render.com/blueprints
+# Set secret env vars (GEMINI_API_KEY, HF_TOKEN, FRONTEND_ORIGIN) in the dashboard after deploy.
+
+services:
+  - type: web
+    name: aditya-ai-studio-api
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    plan: starter
+    region: oregon
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: HF_MODEL_REPO
+        value: DSAditya552003/emosense-ai-model

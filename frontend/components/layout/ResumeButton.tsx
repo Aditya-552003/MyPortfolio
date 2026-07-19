@@ -14,7 +14,7 @@ export function ResumeButton({ className }: ResumeButtonProps): ReactNode {
       href={siteConfig.resumeUrl}
       download
       className={cn(
-        "border-border text-foreground hover:bg-surface inline-flex h-10 items-center gap-2 rounded-[var(--radius-md)] border px-4 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
+        "border-border text-foreground hover:bg-surface inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-md)] border px-4 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
         className,
       )}
     >

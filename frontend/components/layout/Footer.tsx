@@ -30,7 +30,7 @@ export function Footer(): ReactNode {
                 target={link.href.startsWith("http") ? "_blank" : undefined}
                 rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                 aria-label={link.label}
-                className="text-muted hover:bg-surface hover:text-foreground inline-flex size-9 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)]"
+                className="text-muted hover:bg-surface hover:text-foreground inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full transition-colors duration-[var(--duration-fast)]"
               >
                 {Icon ? <Icon className="size-4" aria-hidden /> : link.label}
               </a>

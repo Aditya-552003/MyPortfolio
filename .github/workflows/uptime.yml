@@ -1,0 +1,38 @@
+name: Uptime
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping-backend:
+    name: Backend health check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check /api/health
+        env:
+          API_URL: ${{ vars.PRODUCTION_API_URL }}
+        run: |
+          if [ -z "$API_URL" ]; then
+            echo "PRODUCTION_API_URL not set — configure in repo Settings → Variables."
+            exit 0
+          fi
+          curl -fsS --max-time 30 "${API_URL}/api/health" | grep -q '"status"'
+          echo "Backend healthy at ${API_URL}"
+
+  ping-frontend:
+    name: Frontend liveness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check homepage
+        env:
+          FRONTEND_URL: ${{ vars.PRODUCTION_FRONTEND_URL }}
+        run: |
+          if [ -z "$FRONTEND_URL" ]; then
+            echo "PRODUCTION_FRONTEND_URL not set — configure in repo Settings → Variables."
+            exit 0
+          fi
+          code="$(curl -fsS -o /dev/null -w "%{http_code}" --max-time 30 "${FRONTEND_URL}/")"
+          test "$code" = "200"
+          echo "Frontend OK (${code}) at ${FRONTEND_URL}"

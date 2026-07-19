@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 
 import { SectionContainer } from "@/components/ui/SectionContainer";
 import { CertificationsList } from "@/features/certifications";
 import { EducationTimeline, ExperienceTimeline } from "@/features/experience";
 import { GitHubStats } from "@/features/github";
+import { GitHubStatsSkeleton } from "@/features/github/GitHubStatsSkeleton";
 
 const description = "Aditya's experience, education, certifications, and live GitHub activity.";
 
@@ -56,7 +57,9 @@ export default function ExperiencePage(): ReactNode {
           GitHub activity
         </h2>
         <div className="mt-6">
-          <GitHubStats />
+          <Suspense fallback={<GitHubStatsSkeleton />}>
+            <GitHubStats />
+          </Suspense>
         </div>
       </section>
     </SectionContainer>

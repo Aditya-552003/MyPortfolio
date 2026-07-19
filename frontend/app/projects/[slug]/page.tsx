@@ -3,8 +3,10 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { ProjectStructuredData } from "@/components/layout/ProjectStructuredData";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionContainer } from "@/components/ui/SectionContainer";
+import { siteConfig } from "@/config/site";
 import { projects } from "@/content/projects";
 import {
   ApiEndpointsList,
@@ -36,6 +38,19 @@ export async function generateMetadata({ params }: ProjectDetailPageProps): Prom
     title: project.title,
     description: project.tagline,
     alternates: { canonical: `/projects/${slug}` },
+    openGraph: {
+      title: project.title,
+      description: project.tagline,
+      url: `${siteConfig.url}/projects/${slug}`,
+      type: "article",
+      images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: project.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description: project.tagline,
+      images: ["/opengraph-image"],
+    },
   };
 }
 
@@ -70,6 +85,7 @@ export default async function ProjectDetailPage({
 
   return (
     <SectionContainer className="flex flex-col gap-12 py-16 sm:py-24">
+      <ProjectStructuredData project={project} />
       <ProjectHero project={project} />
 
       <DetailSection id="overview-heading" title="Overview">
@@ -114,7 +130,7 @@ export default async function ProjectDetailPage({
       ) : null}
 
       <DetailSection id="screenshots-heading" title="Screenshots">
-        <ScreenshotGallery />
+        <ScreenshotGallery projectTitle={project.title} />
       </DetailSection>
 
       {project.apiEndpoints ? (

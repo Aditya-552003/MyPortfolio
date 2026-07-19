@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import type { ReactNode } from "react";
 
@@ -15,6 +16,7 @@ export interface ContributionGraphProps {
  */
 export function ContributionGraph({ username, profileUrl }: ContributionGraphProps): ReactNode {
   const [failed, setFailed] = useState(false);
+  const chartUrl = `https://ghchart.rshah.org/0ea5e9/${username}`;
 
   if (failed) {
     return (
@@ -34,12 +36,12 @@ export function ContributionGraph({ username, profileUrl }: ContributionGraphPro
   }
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element -- third-party dynamic SVG, not a Next-optimizable local asset
-    <img
-      src={`https://ghchart.rshah.org/0ea5e9/${username}`}
+    <Image
+      src={chartUrl}
       alt={`${username}'s GitHub contribution graph`}
       width={800}
       height={112}
+      loading="lazy"
       className="h-auto w-full max-w-full"
       onError={() => setFailed(true)}
     />

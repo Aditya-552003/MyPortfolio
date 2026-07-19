@@ -8,6 +8,7 @@ from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.core.body_limit import BodySizeLimitMiddleware
 from app.core.config import get_settings
 from app.core.errors import (
     http_exception_handler,
@@ -18,7 +19,7 @@ from app.core.errors import (
 from app.core.logging import configure_logging
 from app.core.middleware import RequestLoggingMiddleware
 from app.core.rate_limit import limiter
-from app.routers import chat, contact, emotion, health, search
+from app.routers import chat, contact, emotion, health, search, voice
 from app.services.emotion_model import load_emotion_model
 from app.services.retrieval import load_rag_index
 from app.services.search_index import load_search_index
@@ -39,6 +40,7 @@ app = FastAPI(title="Aditya AI Studio API", version="0.1.0", lifespan=lifespan)
 
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
+app.add_middleware(BodySizeLimitMiddleware)
 app.add_middleware(RequestLoggingMiddleware)
 
 app.add_middleware(
@@ -70,3 +72,4 @@ app.include_router(contact.router)
 app.include_router(emotion.router)
 app.include_router(search.router)
 app.include_router(chat.router)
+app.include_router(voice.router)

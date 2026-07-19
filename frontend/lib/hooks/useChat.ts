@@ -2,6 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 
+import { findCachedAnswer } from "@/lib/chatFallbacks";
+
 export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
@@ -11,7 +13,9 @@ export interface UseChatResult {
   messages: readonly ChatMessage[];
   isStreaming: boolean;
   error: string | null;
+  canRetry: boolean;
   sendMessage: (message: string) => Promise<void>;
+  retryLast: () => Promise<void>;
 }
 
 interface ChatStreamPayload {
@@ -21,6 +25,7 @@ interface ChatStreamPayload {
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+const CHAT_TIMEOUT_MS = 10_000;
 
 function parseSseEvents(buffer: string): { events: ChatStreamPayload[]; rest: string } {
   const parts = buffer.split("\n\n");
@@ -42,15 +47,27 @@ function parseSseEvents(buffer: string): { events: ChatStreamPayload[]; rest: st
   return { events, rest };
 }
 
+function applyCachedFallback(message: string): string {
+  return (
+    findCachedAnswer(message) ??
+    "The live assistant is offline right now. Browse Projects, Skills, or Experience on this site — or retry in a moment."
+  );
+}
+
 /** Streams a RAG-grounded reply from `/api/chat` (Server-Sent Events over fetch). */
 export function useChat(): UseChatResult {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [canRetry, setCanRetry] = useState(false);
   const historyRef = useRef<ChatMessage[]>([]);
+  const lastUserMessageRef = useRef<string | null>(null);
 
   const sendMessage = useCallback(async (message: string): Promise<void> => {
     setError(null);
+    setCanRetry(false);
+    lastUserMessageRef.current = message;
+
     const userMessage: ChatMessage = { role: "user", content: message };
     const historyForRequest = historyRef.current;
     historyRef.current = [...historyRef.current, userMessage];
@@ -59,12 +76,15 @@ export function useChat(): UseChatResult {
     setIsStreaming(true);
 
     let assistantContent = "";
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), CHAT_TIMEOUT_MS);
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, history: historyForRequest }),
+        signal: controller.signal,
       });
 
       if (!response.ok || !response.body) {
@@ -107,15 +127,43 @@ export function useChat(): UseChatResult {
         { role: "assistant", content: assistantContent },
       ];
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-      // Drop the user message + empty assistant placeholder so a failed turn doesn't
-      // linger in history and get resent on the next attempt.
-      historyRef.current = historyForRequest;
-      setMessages((current) => current.slice(0, -2));
+      const timedOut = err instanceof DOMException && err.name === "AbortError";
+      const fallback = applyCachedFallback(message);
+      const errorMessage = timedOut
+        ? "That took too long (over 10s). Showing a cached answer — tap Retry for a live reply."
+        : err instanceof Error
+          ? err.message
+          : "Something went wrong.";
+
+      setError(errorMessage);
+      setCanRetry(true);
+      setMessages((current) => {
+        const next = [...current];
+        next[next.length - 1] = {
+          role: "assistant",
+          content: `${fallback}\n\n_(Cached fallback — live chat unavailable.)_`,
+        };
+        return next;
+      });
+      historyRef.current = [
+        ...historyForRequest,
+        userMessage,
+        { role: "assistant", content: fallback },
+      ];
     } finally {
+      window.clearTimeout(timeoutId);
       setIsStreaming(false);
     }
   }, []);
 
-  return { messages, isStreaming, error, sendMessage };
+  const retryLast = useCallback(async () => {
+    const last = lastUserMessageRef.current;
+    if (!last) return;
+    // Drop the failed turn (user + fallback assistant) before resending.
+    historyRef.current = historyRef.current.slice(0, -2);
+    setMessages((current) => current.slice(0, -2));
+    await sendMessage(last);
+  }, [sendMessage]);
+
+  return { messages, isStreaming, error, canRetry, sendMessage, retryLast };
 }

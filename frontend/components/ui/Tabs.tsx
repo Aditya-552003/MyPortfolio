@@ -11,7 +11,7 @@ export function TabsList({ className, ...rest }: TabsPrimitive.TabsListProps): R
   return (
     <TabsPrimitive.List
       className={cn(
-        "border-border bg-surface inline-flex items-center gap-1 rounded-[var(--radius-md)] border p-1",
+        "border-border bg-surface inline-flex h-auto min-h-11 w-full flex-wrap items-center gap-1 rounded-[var(--radius-md)] border p-1",
         className,
       )}
       {...rest}
@@ -23,7 +23,7 @@ export function TabsTrigger({ className, ...rest }: TabsPrimitive.TabsTriggerPro
   return (
     <TabsPrimitive.Trigger
       className={cn(
-        "text-muted rounded-[var(--radius-sm)] px-4 py-2 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
+        "text-muted inline-flex min-h-11 items-center rounded-[var(--radius-sm)] px-4 py-2.5 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
         "hover:text-foreground",
         "data-[state=active]:bg-primary data-[state=active]:text-on-primary",
         className,

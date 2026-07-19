@@ -5,16 +5,25 @@ import type { ReactNode } from "react";
 import { AppShell } from "@/components/layout/AppShell";
 import { StructuredData } from "@/components/layout/StructuredData";
 import { ThemeScript } from "@/components/layout/ThemeScript";
+import { MonitoringProvider } from "@/components/MonitoringProvider";
 import { siteConfig } from "@/config/site";
 import "@/styles/globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
 const title = `${siteConfig.name} — ${siteConfig.tagline}`;
+const ogImage = {
+  url: "/opengraph-image",
+  width: 1200,
+  height: 630,
+  alt: siteConfig.name,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -36,11 +45,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title,
     description: siteConfig.description,
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description: siteConfig.description,
+    images: [ogImage.url],
   },
 };
 
@@ -52,7 +63,9 @@ export default function RootLayout({ children }: { children: ReactNode }): React
         <StructuredData />
       </head>
       <body className="bg-background text-foreground flex min-h-full flex-col">
-        <AppShell>{children}</AppShell>
+        <MonitoringProvider>
+          <AppShell>{children}</AppShell>
+        </MonitoringProvider>
       </body>
     </html>
   );

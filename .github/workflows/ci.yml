@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_call:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -41,6 +42,13 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Audit client bundle for secrets
+        run: npm run audit:client
+
+      - name: npm audit (high+)
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
   backend:
     name: Backend — lint, type-check, test
     runs-on: ubuntu-latest
@@ -67,6 +75,12 @@ jobs:
 
       - name: Test (pytest)
         run: pytest -q
+
+      - name: pip audit (high+)
+        run: |
+          pip install pip-audit
+          pip-audit -r requirements.txt --severity high
+        continue-on-error: true
 
       - name: Verify app starts
         run: |

@@ -17,10 +17,10 @@ const buttonVariants = cva(
         icon: "bg-transparent text-foreground hover:bg-surface active:bg-border/40 rounded-full",
       },
       size: {
-        sm: "h-9 px-3 text-sm",
-        md: "h-11 px-5 text-sm",
-        lg: "h-13 px-7 text-base",
-        icon: "h-10 w-10 p-0",
+        sm: "h-9 px-3 text-sm min-h-11 min-w-11",
+        md: "h-11 px-5 text-sm min-h-11",
+        lg: "h-13 px-7 text-base min-h-11",
+        icon: "h-11 w-11 min-h-11 min-w-11 p-0",
       },
     },
     defaultVariants: {

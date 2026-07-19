@@ -3,22 +3,29 @@
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
+import { Button } from "@/components/ui/Button";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
 import { useToast } from "@/components/ui/Toast";
 import { useChat } from "@/lib/hooks/useChat";
+import { useReducedMotion } from "@/lib/hooks/useReducedMotion";
 
 import { ChatInput } from "./ChatInput";
 import { ChatMessage } from "./ChatMessage";
 import { QuickAskChips } from "./QuickAskChips";
 
-export function ChatWindow(): ReactNode {
-  const { messages, isStreaming, error, sendMessage } = useChat();
+function ChatWindowInner(): ReactNode {
+  const { messages, isStreaming, error, canRetry, sendMessage, retryLast } = useChat();
   const { showToast } = useToast();
+  const reducedMotion = useReducedMotion();
   const scrollRef = useRef<HTMLDivElement>(null);
   const lastError = useRef<string | null>(null);
 
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
-  }, [messages]);
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  }, [messages, reducedMotion]);
 
   useEffect(() => {
     if (error && error !== lastError.current) {
@@ -58,9 +65,34 @@ export function ChatWindow(): ReactNode {
           ))
         )}
       </div>
+      {canRetry ? (
+        <div className="border-border flex items-center justify-between gap-3 border-t px-3 py-2">
+          <p className="text-muted text-xs">Live reply timed out or failed.</p>
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            disabled={isStreaming}
+            onClick={() => void retryLast()}
+          >
+            Retry
+          </Button>
+        </div>
+      ) : null}
       <div className="border-border border-t p-3">
         <ChatInput onSend={handleSend} disabled={isStreaming} />
       </div>
     </div>
+  );
+}
+
+export function ChatWindow(): ReactNode {
+  return (
+    <ErrorBoundary
+      fallbackTitle="Chat hit an unexpected error"
+      fallbackMessage="Try refreshing this tab, or use Voice / Semantic Search instead."
+    >
+      <ChatWindowInner />
+    </ErrorBoundary>
   );
 }

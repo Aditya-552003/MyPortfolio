@@ -10,7 +10,7 @@ const cardVariants = cva(
       variant: {
         standard: "bg-surface border border-border",
         glass:
-          "border border-border bg-surface backdrop-blur-[var(--glass-blur)] supports-[not(backdrop-filter:blur(1px))]:bg-background",
+          "border border-[var(--glass-border)] bg-[var(--glass-surface)] backdrop-blur-[var(--glass-blur)] supports-[not(backdrop-filter:blur(1px))]:bg-background",
       },
       hover: {
         none: "",
