@@ -14,7 +14,7 @@ pinned: false
 
 Host the **emotion demo only** for the hybrid portfolio deploy. The main API stays on Render (lite mode).
 
-> **Use Gradio, not Docker.** Docker Spaces on HF require **Pro**. Gradio on CPU Basic is free (~16 GB RAM).
+> **Use Gradio, not Docker.** Docker Spaces on HF require **Pro**. **CPU basic** (needed for public visitors) also requires **Pro** as of mid-2026. Free Spaces default to **ZeroGPU** — OK for owner testing, **not for anonymous portfolio traffic** (zero GPU quota).
 
 ## Deploy (HF git — no Repository tab)
 

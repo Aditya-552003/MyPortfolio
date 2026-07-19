@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 import { AiStatusBanner } from "@/features/playground/AiStatusBanner";
 import { ChatWindow } from "@/features/playground/chat";
+import { EMOTION_ENABLED } from "@/lib/api";
 
 function TabSkeleton(): ReactNode {
   return <Skeleton className="h-[32rem] w-full rounded-[var(--radius-lg)]" />;
@@ -44,7 +45,7 @@ export function PlaygroundHub(): ReactNode {
         <TabsList className="h-auto w-full flex-wrap">
           <TabsTrigger value="chat">Chat with Portfolio</TabsTrigger>
           <TabsTrigger value="voice">Voice</TabsTrigger>
-          <TabsTrigger value="emotion">Emotion Detection</TabsTrigger>
+          {EMOTION_ENABLED ? <TabsTrigger value="emotion">Emotion Detection</TabsTrigger> : null}
           <TabsTrigger value="search">Semantic Search</TabsTrigger>
           <TabsTrigger value="rag">How RAG Works</TabsTrigger>
         </TabsList>
@@ -61,15 +62,17 @@ export function PlaygroundHub(): ReactNode {
             </ErrorBoundary>
           ) : null}
         </TabsContent>
-        <TabsContent value="emotion">
-          {activeTab === "emotion" ? (
-            <ErrorBoundary fallbackTitle="Emotion demo error">
-              <Suspense fallback={<TabSkeleton />}>
-                <EmotionDemo />
-              </Suspense>
-            </ErrorBoundary>
-          ) : null}
-        </TabsContent>
+        {EMOTION_ENABLED ? (
+          <TabsContent value="emotion">
+            {activeTab === "emotion" ? (
+              <ErrorBoundary fallbackTitle="Emotion demo error">
+                <Suspense fallback={<TabSkeleton />}>
+                  <EmotionDemo />
+                </Suspense>
+              </ErrorBoundary>
+            ) : null}
+          </TabsContent>
+        ) : null}
         <TabsContent value="search">
           {activeTab === "search" ? (
             <ErrorBoundary fallbackTitle="Search demo error">

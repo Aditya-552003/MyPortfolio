@@ -6,7 +6,9 @@
 |---------|------|------|-------|
 | Frontend | [Vercel](https://vercel.com) | Free | `frontend/` |
 | Main API (contact, chat, search, voice) | [Render](https://render.com) Starter 512Mi | Free | **Lite mode** — no torch |
-| Emotion demo only | [HF Space](https://huggingface.co/spaces) | Free | ~16GB RAM for EmoSens |
+| Emotion demo only | [HF Space](https://huggingface.co/spaces) | Free ZeroGPU* / Pro for CPU | ~16GB RAM for EmoSens |
+
+\* **July 2026 HF free tier:** new Spaces default to **ZeroGPU**, which has **no quota for anonymous visitors** and cannot downgrade to CPU basic without **HF Pro**. For a public portfolio, either subscribe to Pro, pause the Space and disable the emotion tab (`NEXT_PUBLIC_EMOTION_ENABLED=false`), or host EmoSens elsewhere (e.g. Oracle Cloud free ARM).
 
 ```
 Browser → Vercel (Next.js)
@@ -63,14 +65,19 @@ Local development uses **full mode** (`BACKEND_MODE=full`) with everything on `l
 
 5. Copy the **Deploy Hook** URL from Render → Settings → Deploy Hook.
 
-### Emotion — Hugging Face Space
+### Emotion — Hugging Face Space (or disable on free tier)
 
-Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)**:
+**HF Pro required for CPU basic** on Spaces created with ZeroGPU. Without Pro, public visitors hit ZeroGPU quota errors.
 
-1. Create a **Gradio** Space (not Docker — Docker requires HF Pro).
-2. Connect this repo; set **Root directory** to `backend/emotion_space`.
-3. Add secrets: `HF_TOKEN`, `HF_MODEL_REPO`, `FRONTEND_ORIGIN`.
-4. Copy the Space URL into Vercel as `NEXT_PUBLIC_EMOTION_API_URL`.
+**Free-tier production (recommended now):**
+
+1. **Pause** the HF Space (Settings → pause) to avoid charges.
+2. On Vercel set `NEXT_PUBLIC_EMOTION_ENABLED=false` and redeploy — hides the Emotion tab; Chat/Search/Voice still work via Render.
+3. Link visitors to the [EmoSens project page](/projects/emosens) for model details.
+
+**With HF Pro ($9/mo):** switch Hardware to **CPU basic**, set `NEXT_PUBLIC_EMOTION_ENABLED=true` and `NEXT_PUBLIC_EMOTION_API_URL`.
+
+Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)** for Space setup.
 
 > **Cold starts:** Render lite API wakes in ~5–15s. HF Space first request after sleep may take 1–2 min while EmoSens loads.
 

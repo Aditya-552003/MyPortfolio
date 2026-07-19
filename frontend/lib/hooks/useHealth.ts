@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { API_BASE_URL, EMOTION_API_BASE_URL, EMOTION_API_EXTERNAL, apiFetch } from "@/lib/api";
+import { API_BASE_URL, EMOTION_API_BASE_URL, EMOTION_API_EXTERNAL, EMOTION_ENABLED, apiFetch } from "@/lib/api";
 
 export interface HealthServices {
   chat: boolean;
@@ -55,11 +55,21 @@ async function fetchEmotionReady(): Promise<boolean> {
 /** Polls main `/api/health` and, in hybrid mode, the external emotion Space health. */
 export function useHealth() {
   return useQuery({
-    queryKey: ["health", API_BASE_URL, EMOTION_API_BASE_URL],
+    queryKey: ["health", API_BASE_URL, EMOTION_API_BASE_URL, EMOTION_ENABLED],
     queryFn: async (): Promise<HealthResponse> => {
       const main = await apiFetch<HealthResponse>("/api/health");
       const needsExternalEmotion =
-        EMOTION_API_EXTERNAL || Boolean(main.services.emotion_external);
+        EMOTION_ENABLED &&
+        (EMOTION_API_EXTERNAL || Boolean(main.services.emotion_external));
+
+      if (!EMOTION_ENABLED) {
+        return {
+          ...main,
+          services: { ...main.services, emotion: true },
+          status:
+            main.services.chat && main.services.search && main.services.voice ? "ok" : "degraded",
+        };
+      }
 
       if (needsExternalEmotion) {
         const emotionReady = await fetchEmotionReady();

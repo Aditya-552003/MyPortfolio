@@ -6,6 +6,9 @@ export const EMOTION_API_BASE_URL =
 
 export const EMOTION_API_EXTERNAL = EMOTION_API_BASE_URL !== API_BASE_URL;
 
+/** Set to "false" on Vercel when HF ZeroGPU quota blocks public emotion inference. */
+export const EMOTION_ENABLED = process.env.NEXT_PUBLIC_EMOTION_ENABLED !== "false";
+
 interface ApiErrorBody {
   error: { code: string; message: string };
 }

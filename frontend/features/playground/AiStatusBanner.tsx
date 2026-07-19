@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 
 import { Skeleton } from "@/components/ui/Skeleton";
+import { EMOTION_ENABLED } from "@/lib/api";
 import { useHealth } from "@/lib/hooks/useHealth";
 import { cn } from "@/lib/utils/cn";
 
@@ -33,9 +34,10 @@ export function AiStatusBanner(): ReactNode {
   }
 
   const { status, services } = health.data;
-  const offline = (Object.keys(LABELS) as Array<keyof typeof LABELS>).filter(
-    (key) => !services[key],
+  const serviceKeys = (Object.keys(LABELS) as Array<keyof typeof LABELS>).filter(
+    (key) => EMOTION_ENABLED || key !== "emotion",
   );
+  const offline = serviceKeys.filter((key) => !services[key]);
 
   return (
     <div
