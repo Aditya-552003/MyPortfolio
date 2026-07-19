@@ -89,11 +89,72 @@ export async function emotionApiPost<TResponse, TBody = unknown>(
   return response.json() as Promise<TResponse>;
 }
 
+interface EmosensePredictResponse {
+  success?: boolean;
+  predicted_emotion?: string;
+  confidence?: number;
+  probabilities?: Record<string, number>;
+}
+
+function mapEmosenseResponse(body: EmosensePredictResponse): {
+  emotions: { label: string; confidence: number }[];
+} {
+  if (body.probabilities && typeof body.probabilities === "object") {
+    const emotions = Object.entries(body.probabilities)
+      .map(([label, confidence]) => ({ label, confidence }))
+      .sort((a, b) => b.confidence - a.confidence);
+    return { emotions };
+  }
+
+  if (body.predicted_emotion && typeof body.confidence === "number") {
+    return { emotions: [{ label: body.predicted_emotion, confidence: body.confidence }] };
+  }
+
+  throw new ApiError(502, "INVALID_RESPONSE", "Unexpected emotion response from emosense-ai.");
+}
+
+/** Emosense-ai Space: POST /predict { text } → probabilities map. */
+async function predictViaEmosense(text: string): Promise<{ emotions: { label: string; confidence: number }[] }> {
+  let response: Response;
+  try {
+    response = await fetch(`${EMOTION_API_BASE_URL}/predict`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+  } catch {
+    throw new ApiError(0, "NETWORK_ERROR", "Couldn't reach the emotion service. Check your connection.");
+  }
+
+  if (!response.ok) {
+    throw await parseError(response);
+  }
+
+  const body = (await response.json()) as EmosensePredictResponse;
+  if (body.success === false) {
+    throw new ApiError(503, "MODEL_UNAVAILABLE", "Emotion model returned an error.");
+  }
+
+  return mapEmosenseResponse(body);
+}
+
+function shouldTryEmotionFallback(err: unknown): boolean {
+  return err instanceof ApiError && (err.status === 404 || err.status === 405);
+}
+
 export async function emotionPredict(text: string): Promise<{ emotions: { label: string; confidence: number }[] }> {
   try {
     return await emotionApiPost("/api/emotion", { text });
   } catch (err) {
-    if (!EMOTION_API_EXTERNAL || !(err instanceof ApiError) || (err.status !== 404 && err.status !== 405)) {
+    if (!EMOTION_API_EXTERNAL || !shouldTryEmotionFallback(err)) {
+      throw err;
+    }
+  }
+
+  try {
+    return await predictViaEmosense(text);
+  } catch (err) {
+    if (!shouldTryEmotionFallback(err)) {
       throw err;
     }
   }

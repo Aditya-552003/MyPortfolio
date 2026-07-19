@@ -18,7 +18,7 @@ export interface EmotionResponse {
   emotions: EmotionPrediction[];
 }
 
-/** REST `/api/emotion` locally; HF Space falls back to Gradio API if REST is unavailable. */
+/** REST `/api/emotion` locally; external Spaces try emosense `/predict` or Gradio API. */
 export function useEmotion(): UseMutationResult<EmotionResponse, Error, EmotionPayload> {
   return useMutation({
     mutationFn: (payload: EmotionPayload) => emotionPredict(payload.text),
