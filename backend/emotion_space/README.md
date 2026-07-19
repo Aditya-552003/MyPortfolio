@@ -4,7 +4,8 @@ emoji: 🎭
 colorFrom: blue
 colorTo: purple
 sdk: gradio
-sdk_version: 5.12.0
+sdk_version: "5.12.0"
+python_version: "3.11"
 app_file: app.py
 pinned: false
 ---
@@ -58,6 +59,11 @@ git push
 | `HF_MODEL_REPO` | `DSAditya552003/emosense-ai-model` |
 | `FRONTEND_ORIGIN` | Your Vercel URL |
 | `ENVIRONMENT` | `production` |
+
+### 5. Hardware (Settings → Hardware)
+
+Prefer **CPU basic** (free, 16 GB RAM) for this CPU inference workload.  
+If you stay on **ZeroGPU**, `requirements.txt` pins `torch==2.11.0` (HF-supported max).
 
 ## Auto-sync from GitHub (optional)
 
