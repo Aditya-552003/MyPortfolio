@@ -6,21 +6,21 @@
 |---------|------|------|-------|
 | Frontend | [Vercel](https://vercel.com) | Free | `frontend/` |
 | Main API (contact, chat, search, voice) | [Render](https://render.com) Starter 512Mi | Free | **Lite mode** — no torch |
-| Emotion demo only | [HF Space](https://huggingface.co/spaces) | Free ZeroGPU* / Pro for CPU | ~16GB RAM for EmoSens |
+| Emotion demo only | Oracle Always Free / HF Pro | $0 / ~$9/mo | See [ORACLE_EMOTION.md](./ORACLE_EMOTION.md) |
 
-\* **July 2026 HF free tier:** new Spaces default to **ZeroGPU**, which has **no quota for anonymous visitors** and cannot downgrade to CPU basic without **HF Pro**. For a public portfolio, either subscribe to Pro, pause the Space and disable the emotion tab (`NEXT_PUBLIC_EMOTION_ENABLED=false`), or host EmoSens elsewhere (e.g. Oracle Cloud free ARM).
+\* **July 2026 HF free tier:** ZeroGPU has **no quota for anonymous visitors** and CPU basic requires **HF Pro**. For $0 public emotion, use **[ORACLE_EMOTION.md](./ORACLE_EMOTION.md)** or set `NEXT_PUBLIC_EMOTION_ENABLED=false`.
 
 ```
 Browser → Vercel (Next.js)
               ├─→ Render lite API     /api/chat, /api/search, /api/voice, /api/contact
-              └─→ HF Space emotion API /api/emotion
+              └─→ Emotion API (Oracle / HF Pro)  /api/emotion
 ```
 
 | Layer | Platform | Config |
 |-------|----------|--------|
 | Frontend | Vercel | `frontend/vercel.json` |
 | Main API (lite) | Render | `backend/render.yaml` + `backend/Dockerfile.lite` |
-| Emotion API | HF Space | `backend/Dockerfile.emotion` |
+| Emotion API | Oracle / HF | `backend/deploy/oracle/` or HF Space |
 | CI/CD | GitHub Actions | `.github/workflows/ci.yml`, `deploy.yml` |
 
 Local development uses **full mode** (`BACKEND_MODE=full`) with everything on `localhost:8000`.
@@ -77,7 +77,9 @@ Local development uses **full mode** (`BACKEND_MODE=full`) with everything on `l
 
 **With HF Pro ($9/mo):** switch Hardware to **CPU basic**, set `NEXT_PUBLIC_EMOTION_ENABLED=true` and `NEXT_PUBLIC_EMOTION_API_URL`.
 
-Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)** for Space setup.
+Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)** for HF Space setup.
+
+**Free alternative (recommended):** **[ORACLE_EMOTION.md](./ORACLE_EMOTION.md)** — Ampere VM + Docker + Cloudflare Tunnel for HTTPS.
 
 > **Cold starts:** Render lite API wakes in ~5–15s. HF Space first request after sleep may take 1–2 min while EmoSens loads.
 

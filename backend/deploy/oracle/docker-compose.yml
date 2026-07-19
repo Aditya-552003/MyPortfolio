@@ -1,0 +1,13 @@
+# EmoSens emotion API — Oracle Cloud Always Free
+# Run from backend/deploy/oracle/ after copying .env.example → .env
+
+services:
+  emotion:
+    build:
+      context: ../..
+      dockerfile: Dockerfile.emotion
+    ports:
+      - "8000:7860"
+    env_file:
+      - .env
+    restart: unless-stopped
