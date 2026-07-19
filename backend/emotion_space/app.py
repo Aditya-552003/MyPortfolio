@@ -24,6 +24,7 @@ if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 
 import gradio as gr
+import spaces
 from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
@@ -56,7 +57,9 @@ def _to_response(text: str) -> dict[str, list[dict[str, float | str]]]:
     }
 
 
+@spaces.GPU(duration=120)
 def predict_for_ui(text: str) -> list[dict[str, float | str]] | dict[str, str]:
+    """Gradio handler — must carry @spaces.GPU when Space uses ZeroGPU hardware."""
     if not text.strip():
         return []
     try:
@@ -95,7 +98,11 @@ app.add_middleware(
 @app.post("/api/emotion")
 async def api_emotion(body: EmotionRequest) -> dict[str, list[dict[str, float | str]]]:
     try:
-        return _to_response(body.text)
+        # Reuse the ZeroGPU-decorated handler (no-op passthrough on CPU Basic).
+        result = predict_for_ui(body.text)
+        if isinstance(result, dict) and "error" in result:
+            raise HTTPException(status_code=503, detail=str(result["error"]))
+        return {"emotions": result}
     except EmotionModelUnavailableError as exc:
         raise HTTPException(status_code=503, detail=str(exc)) from exc
 
