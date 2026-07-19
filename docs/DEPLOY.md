@@ -67,8 +67,8 @@ Local development uses **full mode** (`BACKEND_MODE=full`) with everything on `l
 
 Follow **[backend/emotion_space/README.md](../backend/emotion_space/README.md)**:
 
-1. Create a **Docker** Space connected to this repo.
-2. Set **Root directory** to `backend`, **Dockerfile** to `Dockerfile.emotion`.
+1. Create a **Gradio** Space (not Docker — Docker requires HF Pro).
+2. Connect this repo; set **Root directory** to `backend/emotion_space`.
 3. Add secrets: `HF_TOKEN`, `HF_MODEL_REPO`, `FRONTEND_ORIGIN`.
 4. Copy the Space URL into Vercel as `NEXT_PUBLIC_EMOTION_API_URL`.
 

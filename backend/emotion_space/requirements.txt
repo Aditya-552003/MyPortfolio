@@ -1,0 +1,18 @@
+# EmoSens HF Gradio Space — CPU torch build.
+--extra-index-url https://download.pytorch.org/whl/cpu
+numpy<2
+pandas==2.3.3
+scipy==1.15.3
+scikit-learn==1.6.1
+xgboost==3.2.0
+joblib==1.5.3
+safetensors==0.8.0
+transformers==5.13.0
+torch==2.13.0
+huggingface-hub
+
+gradio==5.12.0
+fastapi==0.115.6
+pydantic==2.13.4
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
