@@ -1,0 +1,33 @@
+# Sync EmoSens bundle to Hugging Face Space (when HF has no GitHub Repository link).
+
+name: Sync Emotion Space
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/emotion_space/**"
+      - "backend/app/**"
+      - ".github/workflows/sync-emotion-space.yml"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bundle Space files
+        run: |
+          mkdir -p bundle
+          cp backend/emotion_space/app.py bundle/
+          cp backend/emotion_space/requirements.txt bundle/
+          cp backend/emotion_space/README.md bundle/
+          cp -r backend/app bundle/app
+
+      - name: Upload to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          pip install -U "huggingface_hub[cli]"
+          hf upload DSAditya552003/MyPortfolio bundle/ . --repo-type=space --commit-message="Sync EmoSens from GitHub"

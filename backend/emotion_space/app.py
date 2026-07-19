@@ -10,8 +10,16 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# Monorepo: emotion_space/ sits under backend/; HF clones the full repo.
-BACKEND_ROOT = Path(__file__).resolve().parent.parent
+# Monorepo: backend/emotion_space/app.py → backend/app/
+# Standalone HF Space: app.py and app/ sit in the same directory.
+_SPACE_ROOT = Path(__file__).resolve().parent
+if (_SPACE_ROOT / "app").is_dir():
+    BACKEND_ROOT = _SPACE_ROOT
+elif (_SPACE_ROOT.parent / "app").is_dir():
+    BACKEND_ROOT = _SPACE_ROOT.parent
+else:
+    BACKEND_ROOT = _SPACE_ROOT.parent
+
 if str(BACKEND_ROOT) not in sys.path:
     sys.path.insert(0, str(BACKEND_ROOT))
 

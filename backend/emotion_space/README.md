@@ -13,51 +13,73 @@ pinned: false
 
 Host the **emotion demo only** for the hybrid portfolio deploy. The main API stays on Render (lite mode).
 
-> **Use Gradio, not Docker.** As of mid-2026, Docker Spaces on HF require a **Pro** subscription. Gradio on CPU Basic is the free option (~16 GB RAM).
+> **Use Gradio, not Docker.** Docker Spaces on HF require **Pro**. Gradio on CPU Basic is free (~16 GB RAM).
 
-## Create the Space
+## Deploy (HF git — no Repository tab)
 
-1. Go to [huggingface.co/new-space](https://huggingface.co/new-space)
-2. **SDK:** **Gradio** (not Docker)
-3. **Visibility:** Public
-4. Connect this GitHub repo
+Many blank Spaces only show **Settings → Variables and secrets**, not GitHub linking.
+Use HF's git remote instead:
 
-## Space settings (Settings → Repository)
+### 1. Clone your Space
 
-| Setting | Value |
-|---------|--------|
-| **Root directory** | `backend/emotion_space` |
+```powershell
+git clone https://huggingface.co/spaces/DSAditya552003/MyPortfolio hf-emotion
+cd hf-emotion
+```
 
-HF clones the full monorepo; the root directory tells it where `app.py` and `requirements.txt` live.
+When prompted for a password, paste an HF **write token** from [huggingface.co/settings/tokens](https://huggingface.co/settings/tokens).
 
-## Secrets (Settings → Variables and secrets)
+### 2. Copy files from this monorepo
+
+From your portfolio repo root (adjust paths if needed):
+
+```powershell
+Copy-Item ..\portfolio\backend\emotion_space\app.py .
+Copy-Item ..\portfolio\backend\emotion_space\requirements.txt .
+Copy-Item ..\portfolio\backend\emotion_space\README.md .
+Copy-Item -Recurse -Force ..\portfolio\backend\app .\app
+```
+
+The Space needs both `app.py` **and** the `app/` package (model code).
+
+### 3. Push
+
+```powershell
+git add app.py requirements.txt README.md app
+git commit -m "Deploy EmoSens Gradio Space"
+git push
+```
+
+### 4. Space secrets (Settings → Variables and secrets)
 
 | Variable | Value |
 |----------|--------|
 | `HF_TOKEN` | Hugging Face read token |
 | `HF_MODEL_REPO` | `DSAditya552003/emosense-ai-model` |
-| `FRONTEND_ORIGIN` | Your Vercel URL, e.g. `https://aditya-ai-studio.vercel.app` |
+| `FRONTEND_ORIGIN` | Your Vercel URL |
 | `ENVIRONMENT` | `production` |
+
+## Auto-sync from GitHub (optional)
+
+Add `HF_TOKEN` (write access) to **GitHub → Settings → Secrets → Actions**.
+Pushes to `main` that touch `backend/emotion_space/` or `backend/app/` run
+`.github/workflows/sync-emotion-space.yml` and upload to this Space.
 
 ## After deploy
 
-Copy the Space URL into Vercel:
+Vercel env:
 
 ```
-NEXT_PUBLIC_EMOTION_API_URL=https://YOUR-USERNAME-aditya-emosens.hf.space
+NEXT_PUBLIC_EMOTION_API_URL=https://DSAditya552003-MyPortfolio.hf.space
 ```
 
 Test:
 
 ```bash
-curl https://YOUR-SPACE.hf.space/api/health
-curl -X POST https://YOUR-SPACE.hf.space/api/emotion \
+curl https://DSAditya552003-MyPortfolio.hf.space/api/health
+curl -X POST https://DSAditya552003-MyPortfolio.hf.space/api/emotion \
   -H "Content-Type: application/json" \
   -d '{"text":"I am thrilled about this project!"}'
 ```
 
 First request after sleep may take 1–2 minutes while EmoSens loads.
-
-## Docker (Pro only)
-
-`Dockerfile.emotion` + `main.py` remain for HF Pro or other Docker hosts. Free HF users should use this Gradio `app.py` instead.
