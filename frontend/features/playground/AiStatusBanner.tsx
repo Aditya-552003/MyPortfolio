@@ -32,10 +32,11 @@ export function AiStatusBanner(): ReactNode {
     );
   }
 
-  const { status, services } = health.data;
+  const { status, services, mode } = health.data;
   const offline = (Object.keys(LABELS) as Array<keyof HealthServices>).filter(
     (key) => !services[key],
   );
+  const emotionHostLimited = mode === "low_memory" && !services.emotion;
 
   return (
     <div
@@ -48,7 +49,11 @@ export function AiStatusBanner(): ReactNode {
       )}
     >
       {status === "ok" ? (
-        <span>All AI services ready.</span>
+        emotionHostLimited ? (
+          <span>Chat, search, and voice are ready. Emotion demo needs more server memory.</span>
+        ) : (
+          <span>All AI services ready.</span>
+        )
       ) : (
         <span>
           Some AI services are unavailable

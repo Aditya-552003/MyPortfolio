@@ -57,6 +57,9 @@ def get_emotion_registry() -> EmotionModelRegistry:
 
 def load_emotion_model() -> None:
     """Loads all model artifacts once. Safe to call at startup; never raises."""
+    if _registry.loaded or _registry.load_error:
+        return
+
     settings = get_settings()
 
     if not settings.hf_token:

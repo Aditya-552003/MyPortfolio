@@ -20,7 +20,7 @@ from app.core.logging import configure_logging
 from app.core.middleware import RequestLoggingMiddleware
 from app.core.rate_limit import limiter
 from app.routers import chat, contact, emotion, health, search, voice
-from app.services.emotion_model import load_emotion_model
+from app.services.ml_startup import load_emotion_sync, start_background_ml_load
 from app.services.retrieval import load_rag_index
 from app.services.search_index import load_search_index
 
@@ -30,9 +30,16 @@ configure_logging(settings.log_level)
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncGenerator[None]:
-    load_emotion_model()
+    # JSON indexes only in LOW_MEMORY_MODE (~few MB). Full mode also loads .npy vectors.
     load_rag_index()
     load_search_index()
+
+    # torch + EmoSens only when LOW_MEMORY_MODE=false and LOAD_EMOTION_MODEL=true.
+    if settings.defer_ml_load:
+        await start_background_ml_load()
+    else:
+        load_emotion_sync()
+
     yield
 
 

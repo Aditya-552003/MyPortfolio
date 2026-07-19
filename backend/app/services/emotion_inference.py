@@ -16,7 +16,7 @@ behavior matches the accuracy already advertised on the EmoSens project page.
 import torch
 from scipy.sparse import hstack
 
-from app.services.emotion_model import get_emotion_registry
+from app.services.emotion_model import get_emotion_registry, load_emotion_model
 from app.services.emotion_preprocessing import clean_text, nrc_features
 
 ROBERTA_CONFIDENCE_THRESHOLD = 0.75
@@ -30,6 +30,8 @@ class EmotionModelUnavailableError(RuntimeError):
 def predict_emotions(text: str) -> list[tuple[str, float]]:
     """Returns `(label, confidence)` pairs for all classes, sorted descending."""
     registry = get_emotion_registry()
+    if not registry.loaded and not registry.load_error:
+        load_emotion_model()
     if not registry.loaded:
         raise EmotionModelUnavailableError(registry.load_error or "Emotion model not loaded.")
 

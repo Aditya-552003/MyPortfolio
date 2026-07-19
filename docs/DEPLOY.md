@@ -35,13 +35,20 @@ Production stack per PRD §16:
    |----------|-------|
    | `ENVIRONMENT` | `production` |
    | `FRONTEND_ORIGIN` | Your Vercel URL, e.g. `https://aditya-ai-studio.vercel.app` |
-   | `GEMINI_API_KEY` | Google AI Studio key |
-   | `HF_TOKEN` | Hugging Face read token (EmoSens model) |
+   | `GEMINI_API_KEY` | Google AI Studio key *(required)* |
+   | `LOW_MEMORY_MODE` | `true` on **Starter/free (512Mi)** — keyword RAG/search, no torch |
+   | `LOAD_EMOTION_MODEL` | `false` on 512Mi *(emotion demo off)* |
+   | `DEFER_ML_LOAD` | `true` *(default in render.yaml)* |
+   | `HF_TOKEN` | Only if `LOAD_EMOTION_MODEL=true` on a 2GB+ plan |
 
-3. Health check path: `/api/health` (configured in `render.yaml`).
-4. Copy the **Deploy Hook** URL from Render → Settings → Deploy Hook.
+3. **Memory tiers:**
+   - **Starter / free (512Mi):** Set `LOW_MEMORY_MODE=true` and `LOAD_EMOTION_MODEL=false`. Chat, semantic search (keyword), voice, and contact work via Gemini + precomputed JSON. Emotion demo shows “unavailable”.
+   - **Standard (2GB+):** Set `LOW_MEMORY_MODE=false`, `LOAD_EMOTION_MODEL=true`, add `HF_TOKEN` for full semantic search + EmoSens.
 
-> **Cold starts:** Render free/starter tiers may take 30–60s to load torch + models on first request. The health endpoint returns `degraded` until models load — this is expected.
+4. Health check path: `/api/health` (configured in `render.yaml`).
+5. Copy the **Deploy Hook** URL from Render → Settings → Deploy Hook.
+
+> **Cold starts:** Render free tier may spin down after inactivity. First request can take 30–60s. On 512Mi, `/api/health` should return `ok` with `mode: low_memory` once Gemini is configured.
 
 ---
 

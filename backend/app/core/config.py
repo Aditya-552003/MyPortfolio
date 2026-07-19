@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     gemini_api_key: str = ""
     hf_token: str = ""
     hf_model_repo: str = "DSAditya552003/emosense-ai-model"
+    # Render free/starter (512Mi): keyword RAG + no local torch. Emotion demo off.
+    low_memory_mode: bool = False
+    defer_ml_load: bool = False
+    load_emotion_model: bool = True
 
     @model_validator(mode="after")
     def production_origin_must_not_be_localhost(self) -> Self:

@@ -1,5 +1,5 @@
 # Render Blueprint — import at https://dashboard.render.com/blueprints
-# Set secret env vars (GEMINI_API_KEY, HF_TOKEN, FRONTEND_ORIGIN) in the dashboard after deploy.
+# Set secret env vars (GEMINI_API_KEY, FRONTEND_ORIGIN) in the dashboard after deploy.
 
 services:
   - type: web
@@ -8,6 +8,8 @@ services:
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
     plan: starter
+    # Free/Starter (512Mi): LOW_MEMORY_MODE uses keyword RAG/search (no torch at runtime).
+    # Emotion demo is off until you upgrade to Standard (2GB+).
     region: oregon
     healthCheckPath: /api/health
     autoDeploy: true
@@ -16,6 +18,12 @@ services:
         value: production
       - key: LOG_LEVEL
         value: INFO
+      - key: LOW_MEMORY_MODE
+        value: "true"
+      - key: DEFER_ML_LOAD
+        value: "true"
+      - key: LOAD_EMOTION_MODEL
+        value: "false"
       - key: FRONTEND_ORIGIN
         sync: false
       - key: GEMINI_API_KEY

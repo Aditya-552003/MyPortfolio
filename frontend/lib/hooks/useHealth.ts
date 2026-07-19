@@ -14,6 +14,7 @@ export interface HealthServices {
 export interface HealthResponse {
   status: "ok" | "degraded";
   services: HealthServices;
+  mode?: "full" | "low_memory";
 }
 
 /** Polls `/api/health` so the UI can show AI service readiness. */
