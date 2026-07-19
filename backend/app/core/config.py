@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Literal, Self
+from typing import Literal
 
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -26,7 +26,7 @@ class Settings(BaseSettings):
         return self.backend_mode == "lite"
 
     @model_validator(mode="after")
-    def production_origin_must_not_be_localhost(self) -> Self:
+    def production_origin_must_not_be_localhost(self) -> "Settings":
         if self.environment == "production":
             origin = self.frontend_origin.lower()
             if "localhost" in origin or "127.0.0.1" in origin:
