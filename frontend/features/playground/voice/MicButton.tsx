@@ -24,7 +24,7 @@ export function MicButton({ isRecording, disabled, onStart, onStop }: MicButtonP
       aria-label={isRecording ? "Stop recording" : "Start recording"}
       onClick={isRecording ? onStop : onStart}
       className={cn(
-        "relative size-16 border border-border bg-surface text-foreground",
+        "border-border bg-surface text-foreground relative size-16 border",
         isRecording && "border-error text-error",
       )}
     >

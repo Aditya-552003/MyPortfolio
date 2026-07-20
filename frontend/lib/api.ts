@@ -1,8 +1,7 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 /** Emotion demo — defaults to main API locally; set to HF Space URL in production hybrid deploy. */
-export const EMOTION_API_BASE_URL =
-  process.env.NEXT_PUBLIC_EMOTION_API_URL?.trim() || API_BASE_URL;
+export const EMOTION_API_BASE_URL = process.env.NEXT_PUBLIC_EMOTION_API_URL?.trim() || API_BASE_URL;
 
 export const EMOTION_API_EXTERNAL = EMOTION_API_BASE_URL !== API_BASE_URL;
 
@@ -79,7 +78,11 @@ export async function emotionApiPost<TResponse, TBody = unknown>(
       body: JSON.stringify(body),
     });
   } catch {
-    throw new ApiError(0, "NETWORK_ERROR", "Couldn't reach the emotion service. Check your connection.");
+    throw new ApiError(
+      0,
+      "NETWORK_ERROR",
+      "Couldn't reach the emotion service. Check your connection.",
+    );
   }
 
   if (!response.ok) {
@@ -114,7 +117,9 @@ function mapEmosenseResponse(body: EmosensePredictResponse): {
 }
 
 /** Emosense-ai Space: POST /predict { text } → probabilities map. */
-async function predictViaEmosense(text: string): Promise<{ emotions: { label: string; confidence: number }[] }> {
+async function predictViaEmosense(
+  text: string,
+): Promise<{ emotions: { label: string; confidence: number }[] }> {
   let response: Response;
   try {
     response = await fetch(`${EMOTION_API_BASE_URL}/predict`, {
@@ -123,7 +128,11 @@ async function predictViaEmosense(text: string): Promise<{ emotions: { label: st
       body: JSON.stringify({ text }),
     });
   } catch {
-    throw new ApiError(0, "NETWORK_ERROR", "Couldn't reach the emotion service. Check your connection.");
+    throw new ApiError(
+      0,
+      "NETWORK_ERROR",
+      "Couldn't reach the emotion service. Check your connection.",
+    );
   }
 
   if (!response.ok) {
@@ -142,7 +151,9 @@ function shouldTryEmotionFallback(err: unknown): boolean {
   return err instanceof ApiError && (err.status === 404 || err.status === 405);
 }
 
-export async function emotionPredict(text: string): Promise<{ emotions: { label: string; confidence: number }[] }> {
+export async function emotionPredict(
+  text: string,
+): Promise<{ emotions: { label: string; confidence: number }[] }> {
   try {
     return await emotionApiPost("/api/emotion", { text });
   } catch (err) {
@@ -167,7 +178,11 @@ export async function emotionPredict(text: string): Promise<{ emotions: { label:
       body: JSON.stringify({ data: [text] }),
     });
   } catch {
-    throw new ApiError(0, "NETWORK_ERROR", "Couldn't reach the emotion service. Check your connection.");
+    throw new ApiError(
+      0,
+      "NETWORK_ERROR",
+      "Couldn't reach the emotion service. Check your connection.",
+    );
   }
 
   if (!response.ok) {

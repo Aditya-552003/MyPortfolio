@@ -10,7 +10,12 @@ export interface ScreenshotGalleryProps {
 }
 
 function screenshotAlt(src: string, projectTitle?: string): string {
-  const filename = src.split("/").pop()?.replace(/\.[^.]+$/, "").replace(/[-_]/g, " ") ?? "screenshot";
+  const filename =
+    src
+      .split("/")
+      .pop()
+      ?.replace(/\.[^.]+$/, "")
+      .replace(/[-_]/g, " ") ?? "screenshot";
   return projectTitle ? `${projectTitle} — ${filename}` : filename;
 }
 

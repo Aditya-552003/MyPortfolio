@@ -85,7 +85,7 @@ export function VoiceAssistant(): ReactNode {
         transcript={transcript}
         reply={reply}
         isStreaming={phase === "thinking"}
-        className="border-border rounded-[var(--radius-md)] border bg-background/40 p-4"
+        className="border-border bg-background/40 rounded-[var(--radius-md)] border p-4"
       />
 
       {(transcript || reply || error) && phase !== "recording" ? (

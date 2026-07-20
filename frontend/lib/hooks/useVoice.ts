@@ -5,12 +5,7 @@ import { useCallback, useRef, useState } from "react";
 import { ApiError, apiPostBlob, apiUpload } from "@/lib/api";
 
 export type VoicePhase =
-  | "idle"
-  | "recording"
-  | "transcribing"
-  | "thinking"
-  | "speaking"
-  | "text-only";
+  "idle" | "recording" | "transcribing" | "thinking" | "speaking" | "text-only";
 
 export interface VoiceTurn {
   transcript: string;
@@ -62,10 +57,7 @@ function parseSseEvents(buffer: string): { events: ChatStreamPayload[]; rest: st
   return { events, rest };
 }
 
-async function streamChatReply(
-  message: string,
-  onToken: (token: string) => void,
-): Promise<string> {
+async function streamChatReply(message: string, onToken: (token: string) => void): Promise<string> {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), CHAT_TIMEOUT_MS);
 
@@ -147,73 +139,69 @@ export function useVoice(): UseVoiceResult {
     setTextOnlyFallback(false);
   }, [cleanupMedia]);
 
-  const runRoundTrip = useCallback(
-    async (audioBlob: Blob) => {
-      setPhase("transcribing");
-      setError(null);
-      setTextOnlyFallback(false);
+  const runRoundTrip = useCallback(async (audioBlob: Blob) => {
+    setPhase("transcribing");
+    setError(null);
+    setTextOnlyFallback(false);
 
-      let spokenQuestion = "";
-      try {
-        const formData = new FormData();
-        formData.append("audio", audioBlob, "recording.webm");
-        const stt = await apiUpload<SttResponse>("/api/voice/stt", formData);
-        spokenQuestion = stt.transcript.trim();
-        if (!spokenQuestion) {
-          throw new Error("No speech detected — try again.");
-        }
-        setTranscript(spokenQuestion);
-      } catch (err) {
-        const message =
-          err instanceof ApiError
+    let spokenQuestion = "";
+    try {
+      const formData = new FormData();
+      formData.append("audio", audioBlob, "recording.webm");
+      const stt = await apiUpload<SttResponse>("/api/voice/stt", formData);
+      spokenQuestion = stt.transcript.trim();
+      if (!spokenQuestion) {
+        throw new Error("No speech detected — try again.");
+      }
+      setTranscript(spokenQuestion);
+    } catch (err) {
+      const message =
+        err instanceof ApiError
+          ? err.message
+          : err instanceof Error
             ? err.message
-            : err instanceof Error
-              ? err.message
-              : "Speech recognition failed.";
-        setError(message);
-        setTextOnlyFallback(true);
-        setPhase("text-only");
-        return;
-      }
+            : "Speech recognition failed.";
+      setError(message);
+      setTextOnlyFallback(true);
+      setPhase("text-only");
+      return;
+    }
 
-      setPhase("thinking");
-      let answer = "";
-      try {
-        answer = await streamChatReply(spokenQuestion, (token) => {
-          setReply((current) => current + token);
-        });
-        if (!answer.trim()) {
-          throw new Error("No reply was generated.");
-        }
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Chat is temporarily unavailable.";
-        setError(message);
-        setPhase("text-only");
-        setTextOnlyFallback(true);
-        return;
+    setPhase("thinking");
+    let answer = "";
+    try {
+      answer = await streamChatReply(spokenQuestion, (token) => {
+        setReply((current) => current + token);
+      });
+      if (!answer.trim()) {
+        throw new Error("No reply was generated.");
       }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Chat is temporarily unavailable.";
+      setError(message);
+      setPhase("text-only");
+      setTextOnlyFallback(true);
+      return;
+    }
 
-      setPhase("speaking");
-      try {
-        const blob = await apiPostBlob("/api/voice/tts", { text: answer });
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        audioElementRef.current = audio;
-        audio.onended = () => {
-          URL.revokeObjectURL(url);
-          setPhase("idle");
-        };
-        await audio.play();
-      } catch {
-        // TTS is optional — keep the streamed text reply visible.
-        setTextOnlyFallback(true);
-        setPhase("text-only");
-        setError("Voice playback unavailable — showing text reply instead.");
-      }
-    },
-    [],
-  );
+    setPhase("speaking");
+    try {
+      const blob = await apiPostBlob("/api/voice/tts", { text: answer });
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audioElementRef.current = audio;
+      audio.onended = () => {
+        URL.revokeObjectURL(url);
+        setPhase("idle");
+      };
+      await audio.play();
+    } catch {
+      // TTS is optional — keep the streamed text reply visible.
+      setTextOnlyFallback(true);
+      setPhase("text-only");
+      setError("Voice playback unavailable — showing text reply instead.");
+    }
+  }, []);
 
   const startRecording = useCallback(async () => {
     setError(null);

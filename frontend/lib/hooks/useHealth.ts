@@ -2,7 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { API_BASE_URL, EMOTION_API_BASE_URL, EMOTION_API_EXTERNAL, EMOTION_ENABLED, apiFetch } from "@/lib/api";
+import {
+  API_BASE_URL,
+  EMOTION_API_BASE_URL,
+  EMOTION_API_EXTERNAL,
+  EMOTION_ENABLED,
+  apiFetch,
+} from "@/lib/api";
 
 export interface HealthServices {
   chat: boolean;
@@ -90,8 +96,7 @@ export function useHealth() {
     queryFn: async (): Promise<HealthResponse> => {
       const main = await apiFetch<HealthResponse>("/api/health");
       const needsExternalEmotion =
-        EMOTION_ENABLED &&
-        (EMOTION_API_EXTERNAL || Boolean(main.services.emotion_external));
+        EMOTION_ENABLED && (EMOTION_API_EXTERNAL || Boolean(main.services.emotion_external));
 
       if (!EMOTION_ENABLED) {
         return {
@@ -116,10 +121,7 @@ export function useHealth() {
           ...main,
           services: { ...main.services, emotion: emotionReady },
           status:
-            main.services.chat &&
-            main.services.search &&
-            main.services.voice &&
-            emotionReady
+            main.services.chat && main.services.search && main.services.voice && emotionReady
               ? "ok"
               : "degraded",
         };
