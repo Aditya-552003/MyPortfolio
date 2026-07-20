@@ -11,23 +11,16 @@ MIN_SCORE_THRESHOLD = 0.15
 LITE_MIN_SCORE_THRESHOLD = 0.2
 
 
-@router.post("/api/search", response_model=SearchResponse)
-@limiter.limit("30/minute")
-async def semantic_search(request: Request, payload: SearchRequest) -> SearchResponse:
-    settings = get_settings()
+def _lite_search_results(query: str) -> list[SearchResultItem]:
+    lite_matches = keyword_search(query, top_k=10)
+    return [
+        SearchResultItem(title=item.title, type=item.type, score=score, url=item.url)
+        for item, score in lite_matches
+        if score >= LITE_MIN_SCORE_THRESHOLD
+    ]
 
-    if settings.is_lite:
-        if not is_lite_search_ready():
-            raise HTTPException(status_code=503, detail="Search catalog unavailable.")
-        lite_matches = keyword_search(payload.query, top_k=10)
-        threshold = LITE_MIN_SCORE_THRESHOLD
-        results = [
-            SearchResultItem(title=item.title, type=item.type, score=score, url=item.url)
-            for item, score in lite_matches
-            if score >= threshold
-        ]
-        return SearchResponse(results=results)
 
+def _embedding_search_results(query: str) -> list[SearchResultItem]:
     from app.services.search_index import get_search_index
     from app.services.search_index import search as embedding_search
 
@@ -37,10 +30,22 @@ async def semantic_search(request: Request, payload: SearchRequest) -> SearchRes
             status_code=503, detail=index.load_error or "Search index unavailable."
         )
 
-    embedding_matches = embedding_search(payload.query, top_k=10)
-    results = [
+    embedding_matches = embedding_search(query, top_k=10)
+    return [
         SearchResultItem(title=item.title, type=item.type, score=score, url=item.url)
         for item, score in embedding_matches
         if score >= MIN_SCORE_THRESHOLD
     ]
-    return SearchResponse(results=results)
+
+
+@router.post("/api/search", response_model=SearchResponse)
+@limiter.limit("30/minute")
+async def semantic_search(request: Request, payload: SearchRequest) -> SearchResponse:
+    settings = get_settings()
+
+    if settings.is_lite:
+        if not is_lite_search_ready():
+            raise HTTPException(status_code=503, detail="Search catalog unavailable.")
+        return SearchResponse(results=_lite_search_results(payload.query))
+
+    return SearchResponse(results=_embedding_search_results(payload.query))
