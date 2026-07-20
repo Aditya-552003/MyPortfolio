@@ -36,4 +36,11 @@ def test_health_includes_service_readiness(client: TestClient) -> None:
     assert response.status_code == 200
     body = response.json()
     assert body["status"] in ("ok", "degraded")
-    assert set(body["services"]) == {"chat", "emotion", "search", "voice"}
+    assert set(body["services"]) == {
+        "chat",
+        "emotion",
+        "search",
+        "voice",
+        "mode",
+        "emotion_external",
+    }
