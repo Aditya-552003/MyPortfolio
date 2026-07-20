@@ -35,12 +35,6 @@ export async function GitHubStats(): Promise<ReactNode> {
 
   return (
     <div className="flex flex-col gap-6">
-      {username === "octocat" ? (
-        <Badge variant="warning" className="w-fit">
-          Sample data (octocat) — set a real GitHub username in config/site.ts
-        </Badge>
-      ) : null}
-
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
         <StatBadge label="Public repos" value={stats.profile.publicRepos} />
         <StatBadge label="Followers" value={stats.profile.followers} />
