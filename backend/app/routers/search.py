@@ -19,11 +19,11 @@ async def semantic_search(request: Request, payload: SearchRequest) -> SearchRes
     if settings.is_lite:
         if not is_lite_search_ready():
             raise HTTPException(status_code=503, detail="Search catalog unavailable.")
-        matches = keyword_search(payload.query, top_k=10)
+        lite_matches = keyword_search(payload.query, top_k=10)
         threshold = LITE_MIN_SCORE_THRESHOLD
         results = [
             SearchResultItem(title=item.title, type=item.type, score=score, url=item.url)
-            for item, score in matches
+            for item, score in lite_matches
             if score >= threshold
         ]
         return SearchResponse(results=results)
@@ -37,10 +37,10 @@ async def semantic_search(request: Request, payload: SearchRequest) -> SearchRes
             status_code=503, detail=index.load_error or "Search index unavailable."
         )
 
-    matches = embedding_search(payload.query, top_k=10)
+    embedding_matches = embedding_search(payload.query, top_k=10)
     results = [
         SearchResultItem(title=item.title, type=item.type, score=score, url=item.url)
-        for item, score in matches
+        for item, score in embedding_matches
         if score >= MIN_SCORE_THRESHOLD
     ]
     return SearchResponse(results=results)
