@@ -37,7 +37,7 @@ export function HeroAboutTransition(): ReactNode {
           className="absolute inset-0 w-full h-full"
           style={{
             scale: cameraScale,
-            transformOrigin: "33.5% 49%",
+            transformOrigin: "33.5% 42%",
           }}
         >
           <Hero
@@ -49,11 +49,11 @@ export function HeroAboutTransition(): ReactNode {
 
         {/* Layer 2: About Section emerging from inside the expanded counter of letter 'D' */}
         <motion.div
-          className="absolute inset-0 w-full h-full z-20 pointer-events-auto bg-[var(--background)] overflow-y-auto"
+          className="absolute inset-0 w-full h-full z-20 pointer-events-auto bg-[var(--background)] overflow-hidden"
           style={{
             clipPath: useTransform(
               clipProgress,
-              (v) => `circle(${v}% at 33.5% 49%)`
+              (v) => `circle(${v}% at 33.5% 42%)`
             ),
           }}
         >

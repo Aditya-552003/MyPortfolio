@@ -10,12 +10,14 @@ const bebasNeue = Bebas_Neue({
   weight: "400",
   subsets: ["latin"],
   display: "swap",
+  fallback: ["Impact", "sans-serif"],
 });
 
 const caveat = Caveat({
   weight: ["600", "700"],
   subsets: ["latin"],
   display: "swap",
+  fallback: ["cursive", "sans-serif"],
 });
 
 type IntroPhase = "liquid" | "zoom" | "portrait" | "traits" | "complete";
@@ -103,7 +105,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
       onMouseLeave={handleMouseLeave}
       aria-label="Hero Section"
       style={{
-        height: "calc(100vh - 4rem)",
+        height: "100vh",
         minHeight: "650px",
         width: "100%",
       }}
@@ -118,7 +120,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           initial={{ opacity: 1 }}
           animate={{ opacity: isPortraitOrLater ? 0 : 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0 z-[100] flex items-center justify-center bg-background pointer-events-none"
+          className="absolute inset-0 z-[100] flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 bg-background pointer-events-none"
         >
           <motion.div
             initial={{ scale: 0.55 }}
@@ -130,7 +132,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
             <span
               className={`${bebasNeue.className} uppercase whitespace-nowrap text-foreground/15`}
               style={{
-                fontSize: "clamp(6rem, 30vw, 36rem)",
+                fontSize: "clamp(5.5rem, 28vw, 36rem)",
                 lineHeight: "0.85",
                 letterSpacing: "0.04em",
                 WebkitTextStroke: "1px var(--hero-text-stroke, #EDE8D0)",
@@ -146,7 +148,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
               transition={{ duration: 1.15, ease: [0.25, 1, 0.5, 1] }}
               className={`${bebasNeue.className} absolute uppercase whitespace-nowrap text-[var(--hero-text-solid,#EDE8D0)]`}
               style={{
-                fontSize: "clamp(6rem, 30vw, 36rem)",
+                fontSize: "clamp(5.5rem, 28vw, 36rem)",
                 lineHeight: "0.85",
                 letterSpacing: "0.04em",
               }}
@@ -163,7 +165,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
       {/* Layer 1: Massive Solid Background Typography ("ADITYA") */}
       <div
         style={{ zIndex: 1 }}
-        className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 overflow-hidden pointer-events-none"
       >
         <motion.div
           suppressHydrationWarning
@@ -171,7 +173,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
             zIndex: 1,
             x: isMounted && introPhase === "complete" ? textX : 0,
             y: isMounted && introPhase === "complete" ? textY : 0,
-            fontSize: "clamp(6rem, 30vw, 36rem)",
+            fontSize: "clamp(5.5rem, 28vw, 36rem)",
             lineHeight: "0.85",
             letterSpacing: "0.04em",
             color: "var(--hero-text-solid, #EDE8D0)",
@@ -195,7 +197,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           suppressHydrationWarning
           style={{
             position: "absolute",
-            top: "8%",
+            top: "5%",
             left: "24%",
             zIndex: 10,
             x: isMounted && introPhase === "complete" ? arrowX : 0,
@@ -227,8 +229,8 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           suppressHydrationWarning
           style={{
             position: "absolute",
-            top: "40%",
-            left: "4%",
+            top: "30%",
+            left: "3%",
             zIndex: 10,
             x: isMounted && introPhase === "complete" ? arrowX : 0,
             y: isMounted && introPhase === "complete" ? arrowY : 0,
@@ -261,7 +263,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           suppressHydrationWarning
           style={{
             position: "absolute",
-            top: "8%",
+            top: "5%",
             right: "10%",
             zIndex: 10,
             x: isMounted && introPhase === "complete" ? arrowX : 0,
@@ -293,7 +295,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           suppressHydrationWarning
           style={{
             position: "absolute",
-            bottom: "12%",
+            bottom: "29%",
             left: "10%",
             zIndex: 10,
             x: isMounted && introPhase === "complete" ? arrowX : 0,
@@ -327,7 +329,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
           suppressHydrationWarning
           style={{
             position: "absolute",
-            bottom: "10%",
+            bottom: "27%",
             right: "10%",
             zIndex: 10,
             x: isMounted && introPhase === "complete" ? arrowX : 0,
@@ -368,8 +370,9 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
             zIndex: 3,
             x: isMounted && introPhase === "complete" ? portraitX : 0,
             y: isMounted && introPhase === "complete" ? portraitY : 0,
-            height: "98%",
-            maxHeight: "960px",
+            height: "90%",
+            left: "2%"
+
           }}
           initial={{ opacity: 0, scale: 0.85, y: 80 }}
           animate={isPortraitOrLater ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 80 }}
@@ -388,9 +391,9 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
               height: "100%",
               width: "auto",
               objectFit: "contain",
-              objectPosition: "center",
-              transform: "translateX(4%) scale(1.3)",
-              transformOrigin: "center",
+              objectPosition: "bottom center",
+              transform: "translateX(2%) scale(1.22)",
+              transformOrigin: "bottom center",
             }}
           />
         </motion.div>
@@ -399,7 +402,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
       {/* Layer 4: Outlined Foreground Typography Overlay over Portrait */}
       <div
         style={{ zIndex: 4 }}
-        className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none"
+        className="absolute inset-0 flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 overflow-hidden pointer-events-none"
       >
         <motion.div
           suppressHydrationWarning
@@ -407,7 +410,7 @@ export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}
             zIndex: 4,
             x: isMounted && introPhase === "complete" ? textX : 0,
             y: isMounted && introPhase === "complete" ? textY : 0,
-            fontSize: "clamp(6rem, 30vw, 36rem)",
+            fontSize: "clamp(5.5rem, 28vw, 36rem)",
             lineHeight: "0.85",
             letterSpacing: "0.04em",
             color: "transparent",

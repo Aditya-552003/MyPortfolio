@@ -9,6 +9,7 @@ const serifFont = Playfair_Display({
   weight: ["700", "900"],
   subsets: ["latin"],
   display: "swap",
+  fallback: ["Georgia", "serif"],
 });
 
 export function BackgroundTypography(): ReactNode {

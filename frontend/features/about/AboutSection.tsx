@@ -14,7 +14,7 @@ export function AboutSection(): ReactNode {
   return (
     <section
       aria-label="About Aditya"
-      className="relative z-10 w-full min-h-[65vh] sm:min-h-[75vh] flex flex-col justify-center border-t border-b border-border/30 bg-background text-foreground py-12 sm:py-20 lg:py-24 px-6 sm:px-12 md:px-16 lg:px-24 overflow-hidden select-none"
+      className="relative z-10 w-full h-full min-h-screen flex flex-col justify-center bg-background text-foreground py-12 sm:py-16 px-6 sm:px-12 md:px-16 lg:px-24 overflow-hidden select-none"
     >
       {/* LAYER 1: Subtle Decorative Background Typography */}
       <BackgroundTypography />

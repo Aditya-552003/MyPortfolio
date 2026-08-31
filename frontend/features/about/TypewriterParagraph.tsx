@@ -89,7 +89,7 @@ export function TypewriterParagraph(): ReactNode {
   return (
     <p
       ref={containerRef}
-      className="text-base sm:text-lg md:text-xl lg:text-[1.35rem] text-foreground/85 leading-relaxed sm:leading-loose md:leading-[1.85] max-w-4xl font-normal min-h-[140px]"
+      className="text-base sm:text-base md:text-lg lg:text-[1.1rem] text-foreground/85 leading-relaxed sm:leading-relaxed max-w-3xl font-normal min-h-[110px]"
     >
       {renderedElements}
       {!isTypingDone && (
