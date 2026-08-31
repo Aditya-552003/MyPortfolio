@@ -1,4 +1,3 @@
-import Script from "next/script";
 import type { ReactNode } from "react";
 
 const THEME_INIT_SCRIPT = `
@@ -20,13 +19,9 @@ const THEME_INIT_SCRIPT = `
  */
 export function ThemeScript(): ReactNode {
   return (
-    // The no-before-interactive-script-outside-document rule only accounts for the
-    // Pages Router; the App Router docs explicitly require this script to live in
-    // app/layout.tsx: https://nextjs.org/docs/app/api-reference/components/script
-    // eslint-disable-next-line @next/next/no-before-interactive-script-outside-document
-    <Script
+    <script
       id="theme-init"
-      strategy="beforeInteractive"
+      suppressHydrationWarning
       dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
     />
   );

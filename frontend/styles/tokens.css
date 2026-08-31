@@ -1,24 +1,22 @@
 /**
- * Design tokens — Aditya AI Studio (PRD §17).
- * Dark mode is the default (:root); light mode is an equal-quality
- * alternative applied via [data-theme="light"] on <html>.
- *
- * Brand hues are tuned per theme (and `--on-primary` added) so every
- * color/text pairing actually shipped meets WCAG AA (4.5:1) — verified
- * against axe-core, not just eyeballed against the PRD swatch values.
+ * Design tokens — Aditya AI Studio
+ * Primary Colors: Beige (#EDE8D0) & Dark Grey (#181818)
+ * Light Mode: Background #EDE8D0, Text #181818
+ * Dark Mode: Background #181818, Text #EDE8D0 (Vice Versa)
  */
 
-:root {
-  /* Color */
-  --background: #050816;
-  --foreground: #ffffff;
-  --muted: #94a3b8;
-  --surface: rgba(255, 255, 255, 0.04);
-  --border: rgba(255, 255, 255, 0.08);
-  --primary: #0ea5e9;
-  --on-primary: #050816;
-  --secondary: #a78bfa;
-  --accent: #22c55e;
+:root,
+:root[data-theme="dark"] {
+  /* Color - Dark Mode (Dark Grey Background #181818, Beige Text #EDE8D0) */
+  --background: #181818;
+  --foreground: #EDE8D0;
+  --muted: #C5BFAB;
+  --surface: rgba(237, 232, 208, 0.06);
+  --border: rgba(237, 232, 208, 0.15);
+  --primary: #EDE8D0;
+  --on-primary: #181818;
+  --secondary: #D4CEB8;
+  --accent: #EDE8D0;
   --error: #ef4444;
   --warning: #f59e0b;
 
@@ -29,9 +27,9 @@
   --radius-xl: 24px;
 
   /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.35);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.55);
 
   /* Motion */
   --duration-fast: 150ms;
@@ -42,28 +40,36 @@
 
   /* Glassmorphism */
   --glass-blur: 18px;
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-surface: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(237, 232, 208, 0.15);
+  --glass-surface: rgba(24, 24, 24, 0.85);
+
+  /* Hero Typography Tokens */
+  --hero-text-solid: #EDE8D0;
+  --hero-text-stroke: #EDE8D0;
 }
 
 :root[data-theme="light"] {
-  --background: #f1f5f9;
-  --foreground: #0f172a;
-  --muted: #475569;
-  --surface: rgba(255, 255, 255, 0.72);
-  --border: rgba(15, 23, 42, 0.1);
-  --primary: #0369a1;
-  --on-primary: #ffffff;
-  --secondary: #6d28d9;
-  --accent: #166534;
+  /* Color - Light Mode (Beige Background #EDE8D0, Dark Grey Text #181818) */
+  --background: #EDE8D0;
+  --foreground: #181818;
+  --muted: #585858;
+  --surface: rgba(24, 24, 24, 0.05);
+  --border: rgba(24, 24, 24, 0.15);
+  --primary: #181818;
+  --on-primary: #EDE8D0;
+  --secondary: #333333;
+  --accent: #181818;
   --error: #dc2626;
   --warning: #92400e;
 
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
-  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 12px 40px rgba(15, 23, 42, 0.12);
+  --shadow-sm: 0 1px 2px rgba(24, 24, 24, 0.08);
+  --shadow-md: 0 4px 16px rgba(24, 24, 24, 0.12);
+  --shadow-lg: 0 12px 40px rgba(24, 24, 24, 0.18);
 
   --glass-blur: 20px;
-  --glass-border: rgba(15, 23, 42, 0.1);
-  --glass-surface: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(24, 24, 24, 0.15);
+  --glass-surface: rgba(237, 232, 208, 0.85);
+
+  --hero-text-solid: #181818;
+  --hero-text-stroke: #EDE8D0;
 }

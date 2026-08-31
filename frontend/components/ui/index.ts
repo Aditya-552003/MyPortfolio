@@ -20,3 +20,5 @@ export type { ToastVariant } from "./Toast";
 export { FormField } from "./FormField";
 export type { FormFieldProps } from "./FormField";
 export { ErrorBoundary } from "./ErrorBoundary";
+export { default as FloatingMenu } from "./liquid-morph-floating-menu";
+export type { FloatingMenuProps, MenuItem } from "./liquid-morph-floating-menu";

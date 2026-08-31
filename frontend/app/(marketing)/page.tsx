@@ -4,8 +4,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { SectionContainer } from "@/components/ui/SectionContainer";
-import { AboutTeaser } from "@/features/about";
-import { Hero } from "@/features/hero";
+import { HeroAboutTransition } from "@/features/hero";
 import { PlaygroundTeaser } from "@/features/playground";
 import { ProjectsPreview } from "@/features/projects";
 import { SkillsHighlight } from "@/features/skills";
@@ -20,15 +19,9 @@ export const metadata: Metadata = {
 export default function HomePage(): ReactNode {
   return (
     <>
-      <Hero />
+      <HeroAboutTransition />
 
       <SectionContainer className="flex flex-col gap-16 py-16 sm:gap-20 sm:py-24">
-        <section aria-labelledby="about-teaser-heading">
-          <h2 id="about-teaser-heading" className="sr-only">
-            About
-          </h2>
-          <AboutTeaser />
-        </section>
 
         <section aria-labelledby="skills-heading">
           <h2 id="skills-heading" className="text-foreground text-2xl font-bold tracking-tight">

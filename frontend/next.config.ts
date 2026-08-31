@@ -21,11 +21,17 @@ const securityHeaders = [
 const nextConfig: NextConfig = {
   compress: true,
   images: {
+    qualities: [75, 95, 100],
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "ghchart.rshah.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
         pathname: "/**",
       },
     ],
@@ -36,24 +42,28 @@ const nextConfig: NextConfig = {
         source: "/:path*",
         headers: securityHeaders,
       },
-      {
-        source: "/_next/static/:path*",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
-          },
-        ],
-      },
-      {
-        source: "/:path*\\.(ico|png|jpg|jpeg|gif|webp|avif|svg|woff2)",
-        headers: [
-          {
-            key: "Cache-Control",
-            value: "public, max-age=86400, stale-while-revalidate=604800",
-          },
-        ],
-      },
+      ...(isProduction
+        ? [
+            {
+              source: "/_next/static/:path*",
+              headers: [
+                {
+                  key: "Cache-Control",
+                  value: "public, max-age=31536000, immutable",
+                },
+              ],
+            },
+            {
+              source: "/:path*\\.(ico|png|jpg|jpeg|gif|webp|avif|svg|woff2)",
+              headers: [
+                {
+                  key: "Cache-Control",
+                  value: "public, max-age=86400, stale-while-revalidate=604800",
+                },
+              ],
+            },
+          ]
+        : []),
     ];
   },
 };

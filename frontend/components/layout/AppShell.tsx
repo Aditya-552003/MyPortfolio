@@ -5,7 +5,7 @@ import { ToastProvider } from "@/components/ui/Toast";
 import { TooltipProvider } from "@/components/ui/Tooltip";
 
 import { Footer } from "./Footer";
-import { Navbar } from "./Navbar";
+import { PortfolioFloatingNav } from "./PortfolioFloatingNav";
 import { SkipToContent } from "./SkipToContent";
 
 export interface AppShellProps {
@@ -18,7 +18,7 @@ export function AppShell({ children }: AppShellProps): ReactNode {
       <TooltipProvider delayDuration={200}>
         <ToastProvider>
           <SkipToContent />
-          <Navbar />
+          <PortfolioFloatingNav />
           <main id="main-content" className="flex-1">
             {children}
           </main>

@@ -1,69 +1,72 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
-import { Card } from "@/components/ui/Card";
-import { Reveal } from "@/components/ui/Reveal";
-import { SectionContainer } from "@/components/ui/SectionContainer";
-import { Timeline, TimelineItem } from "@/components/ui/Timeline";
-import { about } from "@/content/about";
+import { BackgroundTypography } from "./BackgroundTypography";
+import { RoleSwitcher } from "./RoleSwitcher";
+import { SandMorph } from "./SandMorph";
+import { TypewriterParagraph } from "./TypewriterParagraph";
 
 export function AboutSection(): ReactNode {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
-    <SectionContainer className="flex flex-col gap-16 py-16 sm:py-24">
-      <h1 className="text-foreground text-4xl font-extrabold tracking-tight sm:text-5xl">
-        About Aditya
-      </h1>
+    <section
+      aria-label="About Aditya"
+      className="relative z-10 w-full min-h-[65vh] sm:min-h-[75vh] flex flex-col justify-center border-t border-b border-border/30 bg-background text-foreground py-12 sm:py-20 lg:py-24 px-6 sm:px-12 md:px-16 lg:px-24 overflow-hidden select-none"
+    >
+      {/* LAYER 1: Subtle Decorative Background Typography */}
+      <BackgroundTypography />
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Reveal>
-          <div className="flex flex-col gap-6">
-            <div>
-              <h2 className="text-primary text-sm font-semibold tracking-wide uppercase">Intro</h2>
-              <p className="text-foreground mt-2 text-lg">{about.intro}</p>
-            </div>
-            <div>
-              <h2 className="text-primary text-sm font-semibold tracking-wide uppercase">
-                Objective
-              </h2>
-              <p className="text-muted mt-2">{about.objective}</p>
-            </div>
-            <div>
-              <h2 className="text-primary text-sm font-semibold tracking-wide uppercase">
-                Current focus
-              </h2>
-              <p className="text-muted mt-2">{about.focus}</p>
-            </div>
-          </div>
-        </Reveal>
-
-        <Reveal delayMs={75}>
-          <Card variant="standard" className="h-full p-6">
-            <h2 className="text-primary text-sm font-semibold tracking-wide uppercase">Values</h2>
-            <ul className="mt-3 flex flex-col gap-3">
-              {about.values.map((value) => (
-                <li key={value} className="text-muted text-sm">
-                  {value}
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </Reveal>
-      </div>
-
-      <div>
-        <h2 className="text-foreground text-2xl font-bold tracking-tight">Journey</h2>
-        <Timeline className="mt-6 max-w-2xl">
-          {about.journey.map((milestone, index) => (
-            <TimelineItem
-              key={`${milestone.year}-${milestone.title}`}
-              dateRange={milestone.year}
-              title={milestone.title}
-              delayMs={index * 75}
+      {/* LAYER 2: Main Editorial Layout */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 items-center">
+          
+          {/* LEFT COLUMN: Editorial Header + Typewriter Paragraph */}
+          <div className="lg:col-span-7 xl:col-span-7 flex flex-col gap-6 sm:gap-8">
+            {/* TOP EDITORIAL INTRO BAR WITH ANIMATED ROLE SWITCHER IN FRONT OF 'ABOUT ME' */}
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap items-center justify-between gap-4 sm:gap-6 w-full"
             >
-              {milestone.description}
-            </TimelineItem>
-          ))}
-        </Timeline>
+              {/* ABOUT ME + ANIMATED ROLE SWITCHER IN FRONT */}
+              <div className="flex items-center gap-3 sm:gap-5 flex-wrap">
+                <span className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase text-primary shrink-0">
+                  ABOUT ME
+                </span>
+                <RoleSwitcher />
+              </div>
+            </motion.div>
+
+            {/* TYPEWRITER ANIMATED ABOUT PARAGRAPH WITH KEYWORD HIGHLIGHTING */}
+            <motion.div
+              initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="pt-1 sm:pt-2"
+            >
+              <TypewriterParagraph />
+            </motion.div>
+          </div>
+
+          {/* RIGHT COLUMN: Sand Particle Technology Logo Morphing Canvas */}
+          <motion.div
+            initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.9, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="lg:col-span-5 xl:col-span-5 flex items-center justify-center lg:justify-end w-full lg:translate-x-8 xl:translate-x-12"
+          >
+            <SandMorph />
+          </motion.div>
+
+        </div>
       </div>
-    </SectionContainer>
+    </section>
   );
 }

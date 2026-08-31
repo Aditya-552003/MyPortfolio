@@ -74,4 +74,36 @@
   .animate-gradient-drift {
     animation: gradient-drift 18s ease-in-out infinite;
   }
+
+  .hero-typography-solid {
+    font-size: clamp(6rem, 28vw, 36rem);
+    line-height: 0.85;
+    letter-spacing: 0.05em;
+    color: var(--hero-text-solid, #EDE8D0);
+  }
+
+  .hero-typography-stroke {
+    font-size: clamp(6rem, 28vw, 36rem);
+    line-height: 0.85;
+    letter-spacing: 0.05em;
+    color: transparent;
+    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #EDE8D0);
+  }
+
+  .hero-stroke-overlay {
+    color: transparent !important;
+    fill: none !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #EDE8D0) !important;
+    paint-order: stroke fill;
+  }
+
+  .hero-arrow-img {
+    mix-blend-mode: multiply;
+  }
+
+  html[data-theme="dark"] .hero-arrow-img,
+  :root:not([data-theme="light"]) .hero-arrow-img {
+    mix-blend-mode: screen;
+  }
 }
