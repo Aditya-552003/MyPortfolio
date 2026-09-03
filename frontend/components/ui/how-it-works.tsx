@@ -13,15 +13,7 @@ import {
 import { useTheme } from "@/lib/hooks/useTheme";
 import { cn } from "@/lib/utils";
 import { DotPattern } from "@/components/ui/dot-pattern";
-import {
-  Trophy,
-  Award,
-  Code2,
-  Brain,
-  Calendar,
-  Building2,
-  Sparkles,
-} from "lucide-react";
+import { Trophy, Award, Code2, Brain, Calendar, Building2, Sparkles } from "lucide-react";
 
 export interface Step {
   title: string;
@@ -74,15 +66,15 @@ const getBadgeIcon = (colorTheme?: string, isDark?: boolean) => {
   const iconColorClass = isDark ? "text-[#181818]" : "text-[#EDE8D0]";
   switch (colorTheme) {
     case "pink":
-      return <Trophy className={`w-3.5 h-3.5 ${iconColorClass}`} />;
+      return <Trophy className={`h-3.5 w-3.5 ${iconColorClass}`} />;
     case "blue":
-      return <Award className={`w-3.5 h-3.5 ${iconColorClass}`} />;
+      return <Award className={`h-3.5 w-3.5 ${iconColorClass}`} />;
     case "green":
-      return <Code2 className={`w-3.5 h-3.5 ${iconColorClass}`} />;
+      return <Code2 className={`h-3.5 w-3.5 ${iconColorClass}`} />;
     case "purple":
-      return <Brain className={`w-3.5 h-3.5 ${iconColorClass}`} />;
+      return <Brain className={`h-3.5 w-3.5 ${iconColorClass}`} />;
     default:
-      return <Sparkles className={`w-3.5 h-3.5 ${iconColorClass}`} />;
+      return <Sparkles className={`h-3.5 w-3.5 ${iconColorClass}`} />;
   }
 };
 
@@ -103,52 +95,58 @@ const Card = ({
 
   return (
     <div
-      className={`group relative w-full md:w-[310px] transition-all duration-500 hover:z-40 hover:scale-105 ${rotate || ""} ${className || ""}`}
+      className={`group relative w-full transition-all duration-500 hover:z-40 hover:scale-105 md:w-[310px] ${rotate || ""} ${className || ""}`}
     >
       {/* Outer Card Sticky Frame - Strictly Theme Matched */}
       <div
-        className={`p-2.5 rounded-[28px] border transition-all duration-500 relative overflow-hidden ${isDark
-          ? "bg-[#EDE8D0] border-[#181818]/30 shadow-[0px_14px_30px_rgba(0,0,0,0.45)]"
-          : "bg-[#181818] border-[#EDE8D0]/30 shadow-[0px_14px_30px_rgba(0,0,0,0.25)]"
-          }`}
+        className={`relative overflow-hidden rounded-[28px] border p-2.5 transition-all duration-500 ${
+          isDark
+            ? "border-[#181818]/30 bg-[#EDE8D0] shadow-[0px_14px_30px_rgba(0,0,0,0.45)]"
+            : "border-[#EDE8D0]/30 bg-[#181818] shadow-[0px_14px_30px_rgba(0,0,0,0.25)]"
+        }`}
       >
         {/* Pin Header - Strict Theme Matched */}
-        <div className="relative flex justify-center mb-2 z-20">
+        <div className="relative z-20 mb-2 flex justify-center">
           <Pin
-            className={`w-7 h-7 transition-all duration-300 drop-shadow-xs group-hover:scale-110 ${isDark ? "text-[#181818]" : "text-[#EDE8D0]"
-              }`}
+            className={`h-7 w-7 drop-shadow-xs transition-all duration-300 group-hover:scale-110 ${
+              isDark ? "text-[#181818]" : "text-[#EDE8D0]"
+            }`}
           />
         </div>
 
         {/* Inner Card Container - Theme Colors */}
         <div
-          className={`rounded-[20px] p-4 h-full flex flex-col relative overflow-hidden border transition-all duration-300 ${isDark
-            ? "bg-[#F5F1E3] border-[#181818]/20 text-[#181818]"
-            : "bg-[#222222] border-[#EDE8D0]/20 text-[#EDE8D0]"
-            }`}
+          className={`relative flex h-full flex-col overflow-hidden rounded-[20px] border p-4 transition-all duration-300 ${
+            isDark
+              ? "border-[#181818]/20 bg-[#F5F1E3] text-[#181818]"
+              : "border-[#EDE8D0]/20 bg-[#222222] text-[#EDE8D0]"
+          }`}
         >
           {/* Top Accent Line */}
           <div
-            className={`absolute top-0 left-0 right-0 h-1 transition-colors duration-300 ${isDark ? "bg-[#181818]/40" : "bg-[#EDE8D0]/40"
-              }`}
+            className={`absolute top-0 right-0 left-0 h-1 transition-colors duration-300 ${
+              isDark ? "bg-[#181818]/40" : "bg-[#EDE8D0]/40"
+            }`}
           />
 
           {/* Header Row: Badge with Lucide Icon & Date */}
-          <div className="flex items-center justify-between gap-2 mb-3 mt-1">
+          <div className="mt-1 mb-3 flex items-center justify-between gap-2">
             {badge ? (
               <span
-                className={`inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-extrabold tracking-wide uppercase px-2.5 py-1 rounded-full border shadow-2xs transition-colors duration-300 ${isDark
-                  ? "bg-[#181818]/10 text-[#181818] border-[#181818]/25"
-                  : "bg-[#EDE8D0]/10 text-[#EDE8D0] border-[#EDE8D0]/25"
-                  }`}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold tracking-wide uppercase shadow-2xs transition-colors duration-300 sm:text-[11px] ${
+                  isDark
+                    ? "border-[#181818]/25 bg-[#181818]/10 text-[#181818]"
+                    : "border-[#EDE8D0]/25 bg-[#EDE8D0]/10 text-[#EDE8D0]"
+                }`}
               >
                 {getBadgeIcon(colorTheme, isDark)}
                 {badge}
               </span>
             ) : (
               <span
-                className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${isDark ? "text-[#181818]" : "text-[#EDE8D0]"
-                  }`}
+                className={`text-2xl font-bold tracking-tight transition-colors duration-300 ${
+                  isDark ? "text-[#181818]" : "text-[#EDE8D0]"
+                }`}
               >
                 {number}
               </span>
@@ -156,14 +154,14 @@ const Card = ({
 
             {date && (
               <span
-                className={`inline-flex items-center gap-1 text-[11px] font-mono font-semibold tabular-nums px-2 py-0.5 rounded-full border transition-colors duration-300 ${isDark
-                  ? "bg-[#181818]/5 text-[#181818]/80 border-[#181818]/20"
-                  : "bg-[#EDE8D0]/5 text-[#EDE8D0]/80 border-[#EDE8D0]/20"
-                  }`}
+                className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono text-[11px] font-semibold tabular-nums transition-colors duration-300 ${
+                  isDark
+                    ? "border-[#181818]/20 bg-[#181818]/5 text-[#181818]/80"
+                    : "border-[#EDE8D0]/20 bg-[#EDE8D0]/5 text-[#EDE8D0]/80"
+                }`}
               >
                 <Calendar
-                  className={`w-3 h-3 ${isDark ? "text-[#181818]/70" : "text-[#EDE8D0]/70"
-                    }`}
+                  className={`h-3 w-3 ${isDark ? "text-[#181818]/70" : "text-[#EDE8D0]/70"}`}
                 />
                 {date}
               </span>
@@ -173,29 +171,30 @@ const Card = ({
           {/* Certificate Image Frame */}
           {image && (
             <div
-              className={`relative w-full h-32 mb-3 rounded-xl overflow-hidden border transition-all duration-300 flex items-center justify-center p-1.5 group/img shadow-inner ${isDark
-                ? "bg-[#181818]/5 border-[#181818]/15"
-                : "bg-[#000000]/30 border-[#EDE8D0]/15"
-                }`}
+              className={`group/img relative mb-3 flex h-32 w-full items-center justify-center overflow-hidden rounded-xl border p-1.5 shadow-inner transition-all duration-300 ${
+                isDark
+                  ? "border-[#181818]/15 bg-[#181818]/5"
+                  : "border-[#EDE8D0]/15 bg-[#000000]/30"
+              }`}
             >
               <img
                 src={image}
                 alt={title}
-                className="w-full h-full object-contain rounded-lg transition-transform duration-300 group-hover/img:scale-[1.03]"
+                className="h-full w-full rounded-lg object-contain transition-transform duration-300 group-hover/img:scale-[1.03]"
               />
             </div>
           )}
 
           {/* Issuer Subtitle with Building Icon */}
           {issuer && (
-            <div className="flex items-center gap-1.5 mb-1">
+            <div className="mb-1 flex items-center gap-1.5">
               <Building2
-                className={`w-3 h-3 ${isDark ? "text-[#181818]/70" : "text-[#EDE8D0]/70"
-                  }`}
+                className={`h-3 w-3 ${isDark ? "text-[#181818]/70" : "text-[#EDE8D0]/70"}`}
               />
               <span
-                className={`text-[10px] font-mono tracking-widest uppercase font-bold transition-colors duration-300 ${isDark ? "text-[#181818]/80" : "text-[#EDE8D0]/80"
-                  }`}
+                className={`font-mono text-[10px] font-bold tracking-widest uppercase transition-colors duration-300 ${
+                  isDark ? "text-[#181818]/80" : "text-[#EDE8D0]/80"
+                }`}
               >
                 {issuer}
               </span>
@@ -204,8 +203,9 @@ const Card = ({
 
           {/* Title */}
           <h3
-            className={`text-base sm:text-lg font-bold leading-snug tracking-tight transition-colors duration-300 ${isDark ? "text-[#181818]" : "text-[#EDE8D0]"
-              }`}
+            className={`text-base leading-snug font-bold tracking-tight transition-colors duration-300 sm:text-lg ${
+              isDark ? "text-[#181818]" : "text-[#EDE8D0]"
+            }`}
           >
             {title}
           </h3>
@@ -213,8 +213,9 @@ const Card = ({
           {/* Optional Description */}
           {description && (
             <p
-              className={`text-xs leading-relaxed mt-1.5 transition-colors duration-300 ${isDark ? "text-[#181818]/75" : "text-[#EDE8D0]/75"
-                }`}
+              className={`mt-1.5 text-xs leading-relaxed transition-colors duration-300 ${
+                isDark ? "text-[#181818]/75" : "text-[#EDE8D0]/75"
+              }`}
             >
               {description}
             </p>
@@ -240,31 +241,15 @@ const StampCard = ({
   ...cardProps
 }: StampCardProps) => {
   // 4th card (index === 3) is finely tuned to ratio 0.58 (balanced sweet spot between 0.45 and 0.70)
-  const stepRatio =
-    index === 3
-      ? 0.65
-      : totalCount > 1
-        ? (index / (totalCount - 1)) * 0.7
-        : 0;
+  const stepRatio = index === 3 ? 0.65 : totalCount > 1 ? (index / (totalCount - 1)) * 0.7 : 0;
   const start = Math.max(0, stepRatio - 0.05);
   const targetPoint = stepRatio;
 
-  const scale = useTransform(
-    progress,
-    [start, targetPoint, 1],
-    [1.8, 1, 1]
-  );
-  const opacity = useTransform(
-    progress,
-    [start, targetPoint, 1],
-    [0, 1, 1]
-  );
+  const scale = useTransform(progress, [start, targetPoint, 1], [1.8, 1, 1]);
+  const opacity = useTransform(progress, [start, targetPoint, 1], [0, 1, 1]);
 
   return (
-    <m.div
-      style={{ scale, opacity }}
-      className={`will-change-transform ${className}`}
-    >
+    <m.div style={{ scale, opacity }} className={`will-change-transform ${className}`}>
       <Card rotate={rotate} {...cardProps} />
     </m.div>
   );
@@ -295,11 +280,7 @@ const DEFAULT_CARD_POSITIONS: StepPosition[] = [
   { className: "md:absolute md:top-[680px] md:left-[15%]", rotate: "rotate-8" },
 ];
 
-export default function HowItWorks({
-  features,
-  className,
-  stepPositions,
-}: HowItWorksProps) {
+export default function HowItWorks({ features, className, stepPositions }: HowItWorksProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -313,11 +294,7 @@ export default function HowItWorks({
     restDelta: 0.001,
   });
 
-  const pathLength = useTransform(
-    smoothProgress,
-    [0, 0.7],
-    [0, 1]
-  );
+  const pathLength = useTransform(smoothProgress, [0, 0.7], [0, 1]);
 
   const data = features ?? [];
   const positions = stepPositions ?? DEFAULT_CARD_POSITIONS;
@@ -343,97 +320,96 @@ export default function HowItWorks({
             maskComposite: "intersect",
           }}
           className={cn(
-            "left-1/2 -translate-x-1/2 w-screen h-full fill-neutral-400 dark:fill-neutral-500 pointer-events-none"
+            "pointer-events-none left-1/2 h-full w-screen -translate-x-1/2 fill-neutral-400 dark:fill-neutral-500",
           )}
         />
 
-        <div className={`relative w-full max-w-5xl mx-auto px-4 ${className || ""}`}>
-          <div className="relative min-h-[920px] md:min-h-[890px] py-10">
-          {/* Path Container */}
-          <div className="relative w-full h-full min-h-[820px] md:min-h-[840px]">
-            {/* SVG Connecting Line */}
-            {data.length > 1 && (
-              <svg
-                className="pointer-events-none absolute inset-0 hidden w-full h-full md:block overflow-visible"
-                viewBox="0 0 1000 800"
-                preserveAspectRatio="none"
-              >
-                <defs>
-                  <marker
-                    id="arrow-head"
-                    viewBox="0 0 10 10"
-                    refX="5"
-                    refY="5"
-                    markerWidth="6"
-                    markerHeight="6"
-                    orient="auto-start-reverse"
-                  >
-                    <path
-                      d="M 0 1 L 8 5 L 0 9 z"
-                      fill="currentColor"
-                      className="text-primary/70"
-                    />
-                  </marker>
-                </defs>
+        <div className={`relative mx-auto w-full max-w-5xl px-4 ${className || ""}`}>
+          <div className="relative min-h-[920px] py-10 md:min-h-[890px]">
+            {/* Path Container */}
+            <div className="relative h-full min-h-[820px] w-full md:min-h-[840px]">
+              {/* SVG Connecting Line */}
+              {data.length > 1 && (
+                <svg
+                  className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible md:block"
+                  viewBox="0 0 1000 800"
+                  preserveAspectRatio="none"
+                >
+                  <defs>
+                    <marker
+                      id="arrow-head"
+                      viewBox="0 0 10 10"
+                      refX="5"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path
+                        d="M 0 1 L 8 5 L 0 9 z"
+                        fill="currentColor"
+                        className="text-primary/70"
+                      />
+                    </marker>
+                  </defs>
 
-                <defs>
-                  <mask id="dashed-line-mask">
-                    <m.path
-                      d={pathD}
-                      stroke="white"
-                      strokeWidth="14"
-                      fill="none"
-                      strokeLinecap="round"
-                      vectorEffect="non-scaling-stroke"
-                      style={{ pathLength }}
-                    />
-                  </mask>
-                </defs>
-                <path
-                  d={pathD}
-                  stroke="currentColor"
-                  className="text-primary/60 transition-colors duration-300"
-                  strokeWidth={strokeWidthNum}
-                  strokeDasharray="10 8"
-                  fill="none"
-                  strokeLinecap="round"
-                  vectorEffect="non-scaling-stroke"
-                  mask="url(#dashed-line-mask)"
-                  markerEnd="url(#arrow-head)"
-                />
-              </svg>
-            )}
+                  <defs>
+                    <mask id="dashed-line-mask">
+                      <m.path
+                        d={pathD}
+                        stroke="white"
+                        strokeWidth="14"
+                        fill="none"
+                        strokeLinecap="round"
+                        vectorEffect="non-scaling-stroke"
+                        style={{ pathLength }}
+                      />
+                    </mask>
+                  </defs>
+                  <path
+                    d={pathD}
+                    stroke="currentColor"
+                    className="text-primary/60 transition-colors duration-300"
+                    strokeWidth={strokeWidthNum}
+                    strokeDasharray="10 8"
+                    fill="none"
+                    strokeLinecap="round"
+                    vectorEffect="non-scaling-stroke"
+                    mask="url(#dashed-line-mask)"
+                    markerEnd="url(#arrow-head)"
+                  />
+                </svg>
+              )}
 
-            {data.map((step, index) => {
-              const pos =
-                positions[index % positions.length] ?? DEFAULT_CARD_POSITIONS[0];
-              const rotate = pos?.rotate ?? "";
-              const cardClassName = pos?.className ?? "";
+              {data.map((step, index) => {
+                const pos = positions[index % positions.length] ?? DEFAULT_CARD_POSITIONS[0];
+                const rotate = pos?.rotate ?? "";
+                const cardClassName = pos?.className ?? "";
 
-              return (
-                <StampCard
-                  key={step.title}
-                  index={index}
-                  totalCount={data.length}
-                  progress={smoothProgress}
-                  number={`0${index + 1}`}
-                  title={step.title}
-                  description={step.description}
-                  badge={step.badge}
-                  issuer={step.issuer}
-                  image={step.image}
-                  date={step.date}
-                  colorTheme={step.colorTheme || "blue"}
-                  colors={step.colors}
-                  rotate={rotate}
-                  className={cardClassName}
-                />
-              );
-            })}
+                return (
+                  <StampCard
+                    key={step.title}
+                    index={index}
+                    totalCount={data.length}
+                    progress={smoothProgress}
+                    number={`0${index + 1}`}
+                    title={step.title}
+                    description={step.description}
+                    badge={step.badge}
+                    issuer={step.issuer}
+                    image={step.image}
+                    date={step.date}
+                    colorTheme={step.colorTheme || "blue"}
+                    colors={step.colors}
+                    rotate={rotate}
+                    className={cardClassName}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </LazyMotion>
+    </LazyMotion>
   );
 }

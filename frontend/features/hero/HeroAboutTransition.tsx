@@ -29,32 +29,25 @@ export function HeroAboutTransition(): ReactNode {
   const clipProgress = useTransform(scrollYProgress, [0.35, 0.78], [0, 160]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-[280vh]">
+    <div ref={containerRef} className="relative h-[280vh] w-full">
       {/* Sticky viewport camera container pinning frame 0 instantly */}
-      <div className="sticky top-0 left-0 w-full h-screen overflow-hidden bg-[var(--background)]">
+      <div className="sticky top-0 left-0 h-screen w-full overflow-hidden bg-[var(--background)]">
         {/* Layer 1: Hero Section with camera zoom target centered on 'D' counter */}
         <motion.div
-          className="absolute inset-0 w-full h-full"
+          className="absolute inset-0 h-full w-full"
           style={{
             scale: cameraScale,
             transformOrigin: "33.5% 42%",
           }}
         >
-          <Hero
-            traitsOpacity={traitsOpacity}
-            traitsY={traitsY}
-            portraitOpacity={portraitOpacity}
-          />
+          <Hero traitsOpacity={traitsOpacity} traitsY={traitsY} portraitOpacity={portraitOpacity} />
         </motion.div>
 
         {/* Layer 2: About Section emerging from inside the expanded counter of letter 'D' */}
         <motion.div
-          className="absolute inset-0 w-full h-full z-20 pointer-events-auto bg-[var(--background)] overflow-hidden"
+          className="pointer-events-auto absolute inset-0 z-20 h-full w-full overflow-hidden bg-[var(--background)]"
           style={{
-            clipPath: useTransform(
-              clipProgress,
-              (v) => `circle(${v}% at 33.5% 42%)`
-            ),
+            clipPath: useTransform(clipProgress, (v) => `circle(${v}% at 33.5% 42%)`),
           }}
         >
           <AboutSection />

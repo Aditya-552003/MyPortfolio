@@ -79,7 +79,7 @@
     font-size: clamp(6rem, 28vw, 36rem);
     line-height: 0.85;
     letter-spacing: 0.05em;
-    color: var(--hero-text-solid, #EDE8D0);
+    color: var(--hero-text-solid, #ede8d0);
   }
 
   .hero-typography-stroke {
@@ -87,14 +87,14 @@
     line-height: 0.85;
     letter-spacing: 0.05em;
     color: transparent;
-    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #EDE8D0);
+    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #ede8d0);
   }
 
   .hero-stroke-overlay {
     color: transparent !important;
     fill: none !important;
     -webkit-text-fill-color: transparent !important;
-    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #EDE8D0) !important;
+    -webkit-text-stroke: 0.75px var(--hero-text-stroke, #ede8d0) !important;
     paint-order: stroke fill;
   }
 

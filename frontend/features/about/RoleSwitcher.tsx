@@ -37,12 +37,12 @@ export function RoleSwitcher(): ReactNode {
   const currentRole: RoleItem = ROLES[index] ?? DEFAULT_ROLE;
 
   return (
-    <div className="flex items-center gap-3 sm:gap-4 select-none">
+    <div className="flex items-center gap-3 select-none sm:gap-4">
       {/* 15. Thin Horizontal Line */}
-      <div className="h-[1px] w-10 sm:w-16 md:w-20 bg-border/70 shrink-0" aria-hidden="true" />
+      <div className="bg-border/70 h-[1px] w-10 shrink-0 sm:w-16 md:w-20" aria-hidden="true" />
 
       {/* 11 & 14. Animated Role + Secondary Descriptor */}
-      <div className="relative flex items-center gap-2 sm:gap-3 overflow-hidden py-1 min-h-[32px]">
+      <div className="relative flex min-h-[32px] items-center gap-2 overflow-hidden py-1 sm:gap-3">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentRole.role}
@@ -53,7 +53,7 @@ export function RoleSwitcher(): ReactNode {
             className="flex items-baseline gap-2 sm:gap-3"
           >
             {/* Primary Changing Role */}
-            <span className="text-sm sm:text-base md:text-lg font-semibold tracking-tight text-foreground whitespace-nowrap">
+            <span className="text-foreground text-sm font-semibold tracking-tight whitespace-nowrap sm:text-base md:text-lg">
               {currentRole.role}
             </span>
 
@@ -61,17 +61,17 @@ export function RoleSwitcher(): ReactNode {
             <motion.span
               animate={{ opacity: [1, 0, 1] }}
               transition={{ duration: 1.0, repeat: Infinity, ease: "easeInOut" }}
-              className="text-primary font-normal text-sm sm:text-base inline-block -ml-1"
+              className="text-primary -ml-1 inline-block text-sm font-normal sm:text-base"
               aria-hidden="true"
             >
               |
             </motion.span>
 
             {/* Bullet Separator */}
-            <span className="text-muted-foreground/40 text-xs sm:text-sm select-none">·</span>
+            <span className="text-muted-foreground/40 text-xs select-none sm:text-sm">·</span>
 
             {/* 14. Secondary Role Descriptor */}
-            <span className="text-[10px] sm:text-xs font-mono tracking-[0.2em] uppercase text-muted whitespace-nowrap opacity-75">
+            <span className="text-muted font-mono text-[10px] tracking-[0.2em] whitespace-nowrap uppercase opacity-75 sm:text-xs">
               {currentRole.descriptor}
             </span>
           </motion.div>

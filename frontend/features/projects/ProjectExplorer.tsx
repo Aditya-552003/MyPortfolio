@@ -38,9 +38,17 @@ export function ProjectExplorer(): ReactNode {
               <motion.div
                 key={project.slug}
                 layout
-                initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -50, scale: prefersReducedMotion ? 1 : 0.96 }}
+                initial={{
+                  opacity: 0,
+                  x: prefersReducedMotion ? 0 : -50,
+                  scale: prefersReducedMotion ? 1 : 0.96,
+                }}
                 animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: prefersReducedMotion ? 0 : -50, scale: prefersReducedMotion ? 1 : 0.96 }}
+                exit={{
+                  opacity: 0,
+                  x: prefersReducedMotion ? 0 : -50,
+                  scale: prefersReducedMotion ? 1 : 0.96,
+                }}
                 transition={transition}
               >
                 <ProjectCard project={project} />

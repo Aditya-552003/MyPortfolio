@@ -23,7 +23,10 @@ export default function ExperiencePage(): ReactNode {
       </h1>
 
       <section aria-labelledby="experience-heading">
-        <h2 id="experience-heading" className="text-foreground text-2xl font-bold tracking-tight pb-3 border-b border-border/60">
+        <h2
+          id="experience-heading"
+          className="text-foreground border-border/60 border-b pb-3 text-2xl font-bold tracking-tight"
+        >
           Work &amp; Experience
         </h2>
         <div className="mt-2">
@@ -32,7 +35,10 @@ export default function ExperiencePage(): ReactNode {
       </section>
 
       <section aria-labelledby="certifications-heading">
-        <h2 id="certifications-heading" className="text-foreground text-2xl font-bold tracking-tight pb-3 border-b border-border/60">
+        <h2
+          id="certifications-heading"
+          className="text-foreground border-border/60 border-b pb-3 text-2xl font-bold tracking-tight"
+        >
           Achievements &amp; Certifications
         </h2>
         <div className="mt-6">

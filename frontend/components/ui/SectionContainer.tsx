@@ -16,10 +16,7 @@ export function SectionContainer({
 }: SectionContainerProps): ReactNode {
   return (
     <Component
-      className={cn(
-        "mx-auto w-full max-w-7xl px-6 sm:px-12 md:px-16 lg:px-24",
-        className,
-      )}
+      className={cn("mx-auto w-full max-w-7xl px-6 sm:px-12 md:px-16 lg:px-24", className)}
       {...rest}
     >
       {children}

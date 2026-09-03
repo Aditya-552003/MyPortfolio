@@ -26,4 +26,3 @@ export { CircularTestimonials } from "./circular-testimonials";
 export type { CircularTestimonialsProps, Testimonial } from "./circular-testimonials";
 export { MarqueeLogoScroller } from "./marquee-logo-scroller";
 export type { MarqueeLogoScrollerProps, Logo } from "./marquee-logo-scroller";
-

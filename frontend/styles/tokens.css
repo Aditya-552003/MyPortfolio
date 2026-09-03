@@ -9,14 +9,14 @@
 :root[data-theme="dark"] {
   /* Color - Dark Mode (Dark Grey Background #181818, Beige Text #EDE8D0) */
   --background: #181818;
-  --foreground: #EDE8D0;
-  --muted: #C5BFAB;
+  --foreground: #ede8d0;
+  --muted: #c5bfab;
   --surface: rgba(237, 232, 208, 0.06);
   --border: rgba(237, 232, 208, 0.15);
-  --primary: #EDE8D0;
+  --primary: #ede8d0;
   --on-primary: #181818;
-  --secondary: #D4CEB8;
-  --accent: #EDE8D0;
+  --secondary: #d4ceb8;
+  --accent: #ede8d0;
   --error: #ef4444;
   --warning: #f59e0b;
 
@@ -44,19 +44,19 @@
   --glass-surface: rgba(24, 24, 24, 0.85);
 
   /* Hero Typography Tokens */
-  --hero-text-solid: #EDE8D0;
-  --hero-text-stroke: #EDE8D0;
+  --hero-text-solid: #ede8d0;
+  --hero-text-stroke: #ede8d0;
 }
 
 :root[data-theme="light"] {
   /* Color - Light Mode (Beige Background #EDE8D0, Dark Grey Text #181818) */
-  --background: #EDE8D0;
+  --background: #ede8d0;
   --foreground: #181818;
   --muted: #585858;
   --surface: rgba(24, 24, 24, 0.05);
   --border: rgba(24, 24, 24, 0.15);
   --primary: #181818;
-  --on-primary: #EDE8D0;
+  --on-primary: #ede8d0;
   --secondary: #333333;
   --accent: #181818;
   --error: #dc2626;
@@ -71,5 +71,5 @@
   --glass-surface: rgba(237, 232, 208, 0.85);
 
   --hero-text-solid: #181818;
-  --hero-text-stroke: #EDE8D0;
+  --hero-text-stroke: #ede8d0;
 }

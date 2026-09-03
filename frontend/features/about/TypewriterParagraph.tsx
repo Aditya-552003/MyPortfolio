@@ -12,7 +12,9 @@ interface Part {
 const PARAGRAPH_PARTS: Part[] = [
   { text: "I’m an " },
   { text: "AI/ML", highlight: true },
-  { text: " Engineer and Creative Developer passionate about building intelligent, scalable, and real-world solutions. My experience spans " },
+  {
+    text: " Engineer and Creative Developer passionate about building intelligent, scalable, and real-world solutions. My experience spans ",
+  },
   { text: "AI/ML", highlight: true },
   { text: ", " },
   { text: "NLP", highlight: true },
@@ -26,7 +28,9 @@ const PARAGRAPH_PARTS: Part[] = [
   { text: "SharePoint", highlight: true },
   { text: " platforms, " },
   { text: "Azure", highlight: true },
-  { text: "-integrated solutions, document management systems, and workflow-driven portals. I enjoy turning complex ideas into practical applications while continuously exploring emerging technologies." },
+  {
+    text: "-integrated solutions, document management systems, and workflow-driven portals. I enjoy turning complex ideas into practical applications while continuously exploring emerging technologies.",
+  },
 ];
 
 const TOTAL_CHARS = PARAGRAPH_PARTS.reduce((sum, p) => sum + p.text.length, 0);
@@ -70,9 +74,9 @@ export function TypewriterParagraph(): ReactNode {
 
     if (part.highlight) {
       renderedElements.push(
-        <span key={i} className="text-foreground font-semibold border-b border-primary/40">
+        <span key={i} className="text-foreground border-primary/40 border-b font-semibold">
           {slice}
-        </span>
+        </span>,
       );
     } else {
       renderedElements.push(<span key={i}>{slice}</span>);
@@ -84,14 +88,14 @@ export function TypewriterParagraph(): ReactNode {
   return (
     <p
       ref={containerRef}
-      className="text-base sm:text-base md:text-lg lg:text-[1.1rem] text-foreground/85 leading-relaxed sm:leading-relaxed max-w-3xl font-normal min-h-[110px]"
+      className="text-foreground/85 min-h-[110px] max-w-3xl text-base leading-relaxed font-normal sm:text-base sm:leading-relaxed md:text-lg lg:text-[1.1rem]"
     >
       {renderedElements}
       {!isTypingDone && (
         <motion.span
           animate={{ opacity: [1, 0, 1] }}
           transition={{ duration: 0.6, repeat: Infinity }}
-          className="inline-block text-primary font-semibold ml-0.5 select-none"
+          className="text-primary ml-0.5 inline-block font-semibold select-none"
           aria-hidden="true"
         >
           |

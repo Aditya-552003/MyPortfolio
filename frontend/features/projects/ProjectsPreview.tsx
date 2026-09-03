@@ -6,9 +6,12 @@ import { projects } from "@/content/projects";
 import { useTheme } from "@/lib/hooks/useTheme";
 
 const projectImages: Record<string, string> = {
-  emosens: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-  "chat-with-code": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
-  "smart-shortlist": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+  emosens:
+    "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+  "chat-with-code":
+    "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
+  "smart-shortlist":
+    "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
 };
 
 export function ProjectsPreview(): ReactNode {
@@ -19,11 +22,13 @@ export function ProjectsPreview(): ReactNode {
     name: p.title,
     designation: `${p.categories.join(" • ")} — ${p.tagline}`,
     quote: p.overview,
-    src: projectImages[p.slug] ?? "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
+    src:
+      projectImages[p.slug] ??
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
   }));
 
   return (
-    <div className="w-full flex justify-center py-4">
+    <div className="flex w-full justify-center py-4">
       <CircularTestimonials
         testimonials={testimonials}
         autoplay={true}

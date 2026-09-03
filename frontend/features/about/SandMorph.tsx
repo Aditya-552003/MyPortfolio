@@ -46,7 +46,11 @@ export function SandMorph(): ReactNode {
   const animationFrameRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
   const logoPointsRef = useRef<Record<string, Point[]>>({});
-  const mouseRef = useRef<{ x: number; y: number; active: boolean }>({ x: -9999, y: -9999, active: false });
+  const mouseRef = useRef<{ x: number; y: number; active: boolean }>({
+    x: -9999,
+    y: -9999,
+    active: false,
+  });
   const animStateRef = useRef({
     logoIndex: 0,
     phase: "form" as "form" | "hold" | "dissolve",
@@ -116,7 +120,7 @@ export function SandMorph(): ReactNode {
           img.onerror = () => {
             resolve();
           };
-        })
+        }),
     );
 
     await Promise.all(loadPromises);
@@ -149,7 +153,8 @@ export function SandMorph(): ReactNode {
         // Random initial scattered position inside canvas
         const rx = (Math.random() - 0.5) * 2;
         const ry = (Math.random() - 0.5) * 2;
-        const pt = initialPoints.length > 0 ? initialPoints[i % initialPoints.length] : { x: rx, y: ry };
+        const pt =
+          initialPoints.length > 0 ? initialPoints[i % initialPoints.length] : { x: rx, y: ry };
 
         particles.push({
           x: rx,
@@ -221,7 +226,8 @@ export function SandMorph(): ReactNode {
             for (let i = 0; i < currentParticles.length; i++) {
               const p = currentParticles[i];
               if (!p) continue;
-              const npt = nextPoints.length > 0 ? nextPoints[i % nextPoints.length] : { x: p.x, y: p.y };
+              const npt =
+                nextPoints.length > 0 ? nextPoints[i % nextPoints.length] : { x: p.x, y: p.y };
               if (npt) {
                 p.targetX = npt.x;
                 p.targetY = npt.y;
@@ -336,17 +342,17 @@ export function SandMorph(): ReactNode {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center lg:items-end w-full max-w-md mx-auto lg:mr-0 lg:ml-auto select-none py-2">
+    <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center py-2 select-none lg:mr-0 lg:ml-auto lg:items-end">
       {/* CANVAS CONTAINER */}
       <div
         ref={containerRef}
-        className="relative w-full h-[280px] sm:h-[340px] md:h-[380px] flex items-center justify-center cursor-pointer"
+        className="relative flex h-[280px] w-full cursor-pointer items-center justify-center sm:h-[340px] md:h-[380px]"
       >
         <canvas
           ref={canvasRef}
           onPointerMove={handlePointerMove}
           onPointerLeave={handlePointerLeave}
-          className="w-full h-full touch-none"
+          className="h-full w-full touch-none"
         />
       </div>
     </div>

@@ -1,14 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import {
-  LazyMotion,
-  domAnimation,
-  m,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { LazyMotion, domAnimation, m, useScroll, useSpring, useTransform } from "framer-motion";
 import { useTheme } from "@/lib/hooks/useTheme";
 import { Calendar, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -46,7 +39,8 @@ const defaultItems: ShowcaseItem[] = [
   },
   {
     title: "Decode Python with DSA",
-    description: "Completed comprehensive data structures, algorithms, and problem solving in Python.",
+    description:
+      "Completed comprehensive data structures, algorithms, and problem solving in Python.",
     year: "2025",
     link: "#",
     image: "/achivements/PW.png",
@@ -106,10 +100,10 @@ function TimelineCardItem({
       <m.div
         style={{ scale: nodeScale }}
         className={cn(
-          "absolute -left-[32px] sm:-left-[48px] top-6 size-7 rounded-full border-2 flex items-center justify-center transition-colors duration-300 shadow-md group-hover:rotate-12 z-20",
+          "absolute top-6 -left-[32px] z-20 flex size-7 items-center justify-center rounded-full border-2 shadow-md transition-colors duration-300 group-hover:rotate-12 sm:-left-[48px]",
           isDark
             ? "border-[#EDE8D0] bg-[#222222] text-[#EDE8D0] group-hover:bg-[#EDE8D0] group-hover:text-[#181818]"
-            : "border-[#181818] bg-[#F5F1E3] text-[#181818] group-hover:bg-[#181818] group-hover:text-[#EDE8D0]"
+            : "border-[#181818] bg-[#F5F1E3] text-[#181818] group-hover:bg-[#181818] group-hover:text-[#EDE8D0]",
         )}
       >
         <Briefcase className="size-3.5" />
@@ -119,36 +113,36 @@ function TimelineCardItem({
       <m.div
         style={{ opacity, scale, y: cardY }}
         className={cn(
-          "p-6 sm:p-8 rounded-3xl border transition-all duration-500 hover:shadow-2xl relative overflow-hidden backdrop-blur-xl group/card",
+          "group/card relative overflow-hidden rounded-3xl border p-6 backdrop-blur-xl transition-all duration-500 hover:shadow-2xl sm:p-8",
           isDark
-            ? "bg-[#222222] border-white/15 text-[#EDE8D0] shadow-[0_12px_35px_rgba(0,0,0,0.4)] hover:border-white/40"
-            : "bg-[#F5F1E3] border-[#181818]/15 text-[#181818] shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-[#181818]/40"
+            ? "border-white/15 bg-[#222222] text-[#EDE8D0] shadow-[0_12px_35px_rgba(0,0,0,0.4)] hover:border-white/40"
+            : "border-[#181818]/15 bg-[#F5F1E3] text-[#181818] shadow-[0_10px_30px_rgba(0,0,0,0.08)] hover:border-[#181818]/40",
         )}
       >
         {/* Top Accent Line */}
         <div
           className={cn(
-            "absolute top-0 left-0 right-0 h-1.5 transition-colors duration-300",
-            isDark ? "bg-[#EDE8D0]/40" : "bg-[#181818]/40"
+            "absolute top-0 right-0 left-0 h-1.5 transition-colors duration-300",
+            isDark ? "bg-[#EDE8D0]/40" : "bg-[#181818]/40",
           )}
         />
 
         {/* Hover Shine Sweep Effect */}
         <div
           className={cn(
-            "absolute inset-0 -translate-x-full group-hover/card:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none z-30",
+            "pointer-events-none absolute inset-0 z-30 -translate-x-full transition-transform duration-1000 ease-in-out group-hover/card:translate-x-full",
             isDark
               ? "bg-gradient-to-r from-transparent via-white/10 to-transparent"
-              : "bg-gradient-to-r from-transparent via-black/5 to-transparent"
+              : "bg-gradient-to-r from-transparent via-black/5 to-transparent",
           )}
         />
 
         {/* Header Row: Title & Date Badge */}
-        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-3">
+        <div className="mb-3 flex flex-col justify-between gap-3 sm:flex-row sm:items-start">
           <h3
             className={cn(
-              "font-extrabold text-xl sm:text-2xl tracking-tight leading-snug transition-colors duration-300",
-              isDark ? "text-[#EDE8D0]" : "text-[#181818]"
+              "text-xl leading-snug font-extrabold tracking-tight transition-colors duration-300 sm:text-2xl",
+              isDark ? "text-[#EDE8D0]" : "text-[#181818]",
             )}
           >
             {item.title}
@@ -156,10 +150,10 @@ function TimelineCardItem({
 
           <span
             className={cn(
-              "inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-mono font-bold border tabular-nums shrink-0 self-start sm:self-auto shadow-2xs transition-colors duration-300",
+              "inline-flex shrink-0 items-center gap-1.5 self-start rounded-full border px-3.5 py-1 font-mono text-xs font-bold tabular-nums shadow-2xs transition-colors duration-300 sm:self-auto",
               isDark
-                ? "bg-[#EDE8D0]/10 text-[#EDE8D0] border-[#EDE8D0]/25"
-                : "bg-[#181818]/10 text-[#181818] border-[#181818]/25"
+                ? "border-[#EDE8D0]/25 bg-[#EDE8D0]/10 text-[#EDE8D0]"
+                : "border-[#181818]/25 bg-[#181818]/10 text-[#181818]",
             )}
           >
             <Calendar className="size-3.5" />
@@ -170,8 +164,8 @@ function TimelineCardItem({
         {/* Description */}
         <p
           className={cn(
-            "text-xs sm:text-sm leading-relaxed mb-5 opacity-90 transition-colors duration-300 max-w-3xl",
-            isDark ? "text-[#EDE8D0]/85" : "text-[#181818]/85"
+            "mb-5 max-w-3xl text-xs leading-relaxed opacity-90 transition-colors duration-300 sm:text-sm",
+            isDark ? "text-[#EDE8D0]/85" : "text-[#181818]/85",
           )}
         >
           {item.description}
@@ -179,15 +173,15 @@ function TimelineCardItem({
 
         {/* Skills / Tech Stack Tags */}
         {item.tags && item.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 pt-2 border-t border-current/10">
+          <div className="flex flex-wrap gap-2 border-t border-current/10 pt-2">
             {item.tags.map((tag) => (
               <span
                 key={tag}
                 className={cn(
-                  "inline-flex items-center rounded-full px-3.5 py-1 text-[10px] sm:text-xs font-bold border shadow-2xs transition-all duration-300 hover:scale-105",
+                  "inline-flex items-center rounded-full border px-3.5 py-1 text-[10px] font-bold shadow-2xs transition-all duration-300 hover:scale-105 sm:text-xs",
                   isDark
-                    ? "bg-[#EDE8D0]/10 text-[#EDE8D0] border-[#EDE8D0]/25 hover:bg-[#EDE8D0]/20"
-                    : "bg-[#181818]/10 text-[#181818] border-[#181818]/25 hover:bg-[#181818]/20"
+                    ? "border-[#EDE8D0]/25 bg-[#EDE8D0]/10 text-[#EDE8D0] hover:bg-[#EDE8D0]/20"
+                    : "border-[#181818]/25 bg-[#181818]/10 text-[#181818] hover:bg-[#181818]/20",
                 )}
               >
                 {tag}
@@ -282,7 +276,7 @@ export function ProjectShowcase({
         className={`relative w-full px-0 ${title ? "py-4" : "py-0"} ${className}`}
       >
         {title && (
-          <h2 className="text-muted-foreground text-xs font-bold tracking-[0.25em] uppercase mb-8">
+          <h2 className="text-muted-foreground mb-8 text-xs font-bold tracking-[0.25em] uppercase">
             {title}
           </h2>
         )}
@@ -305,10 +299,10 @@ export function ProjectShowcase({
           }}
         >
           <div
-            className={`relative overflow-hidden flex items-center justify-center transition-all duration-300 ${
+            className={`relative flex items-center justify-center overflow-hidden transition-all duration-300 ${
               imageShape === "circle"
-                ? "w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-border bg-background shadow-xl"
-                : "w-[280px] sm:w-[320px] h-[180px] sm:h-[200px] rounded-xl border border-border/50 bg-secondary shadow-xl"
+                ? "border-border bg-background h-20 w-20 rounded-full border-2 shadow-xl sm:h-24 sm:w-24"
+                : "border-border/50 bg-secondary h-[180px] w-[280px] rounded-xl border shadow-xl sm:h-[200px] sm:w-[320px]"
             }`}
           >
             {showcaseItems.map((item, index) => (
@@ -316,10 +310,8 @@ export function ProjectShowcase({
                 key={item.title}
                 src={item.image || "/placeholder.svg"}
                 alt={item.title}
-                className={`absolute inset-0 w-full h-full transition-all duration-300 ease-out ${
-                  imageShape === "circle"
-                    ? "object-cover rounded-full"
-                    : "object-cover"
+                className={`absolute inset-0 h-full w-full transition-all duration-300 ease-out ${
+                  imageShape === "circle" ? "rounded-full object-cover" : "object-cover"
                 }`}
                 style={{
                   opacity: hoveredIndex === index ? 1 : 0,
@@ -333,9 +325,9 @@ export function ProjectShowcase({
         {/* Timeline Layout */}
         <div className="relative pl-9 sm:pl-14">
           {/* Unified Vertical Progress Bar Track Container */}
-          <div className="absolute left-[15px] sm:left-[19px] top-6 bottom-6 w-1.5 z-10 pointer-events-none">
+          <div className="pointer-events-none absolute top-6 bottom-6 left-[15px] z-10 w-1.5 sm:left-[19px]">
             {/* Base Guide Line Track */}
-            <div className="absolute inset-0 w-full bg-border/40 dark:bg-border/30 rounded-full border border-border/20" />
+            <div className="bg-border/40 dark:bg-border/30 border-border/20 absolute inset-0 w-full rounded-full border" />
 
             {/* Scroll-Synced Animated Progress Fill Line */}
             <m.div
@@ -344,7 +336,7 @@ export function ProjectShowcase({
                 "absolute inset-0 w-full rounded-full transition-all duration-75",
                 isDark
                   ? "bg-gradient-to-b from-[#EDE8D0] via-[#F5F1E3] to-[#EDE8D0] shadow-[0_0_14px_rgba(237,232,208,0.5)]"
-                  : "bg-gradient-to-b from-[#181818] via-[#333333] to-[#181818] shadow-[0_0_14px_rgba(24,24,24,0.4)]"
+                  : "bg-gradient-to-b from-[#181818] via-[#333333] to-[#181818] shadow-[0_0_14px_rgba(24,24,24,0.4)]",
               )}
             />
 
@@ -352,10 +344,10 @@ export function ProjectShowcase({
             <m.div
               style={{ top: progressPercent }}
               className={cn(
-                "absolute left-1/2 -translate-x-1/2 size-3.5 -translate-y-1/2 rounded-full border-2 transition-transform duration-75 z-20",
+                "absolute left-1/2 z-20 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-transform duration-75",
                 isDark
                   ? "border-[#181818] bg-[#EDE8D0] shadow-[0_0_16px_4px_rgba(237,232,208,0.9)]"
-                  : "border-[#EDE8D0] bg-[#181818] shadow-[0_0_16px_4px_rgba(24,24,24,0.75)]"
+                  : "border-[#EDE8D0] bg-[#181818] shadow-[0_0_16px_4px_rgba(24,24,24,0.75)]",
               )}
             />
           </div>

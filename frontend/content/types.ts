@@ -84,7 +84,8 @@ export interface Skill {
   readonly proficiency: SkillProficiency;
 }
 
-export type ExperienceType = "full-time" | "internship" | "freelance" | "open-source" | "achievement";
+export type ExperienceType =
+  "full-time" | "internship" | "freelance" | "open-source" | "achievement";
 
 export interface Experience {
   readonly id: string;

@@ -34,9 +34,7 @@ export function ScrollLinkedCards({ children, className }: ScrollLinkedCardsProp
 
   return (
     <div ref={containerRef} className={className}>
-      <motion.div style={{ x }}>
-        {children}
-      </motion.div>
+      <motion.div style={{ x }}>{children}</motion.div>
     </div>
   );
 }

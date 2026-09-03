@@ -48,12 +48,12 @@ export function Navbar(): ReactNode {
           : { opacity: 1, y: 0, pointerEvents: "auto" }
       }
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="sticky top-0 z-50 w-full border-b border-border bg-background/80 text-foreground supports-[backdrop-filter]:bg-background/60 supports-[backdrop-filter]:backdrop-blur-[var(--glass-blur)]"
+      className="border-border bg-background/80 text-foreground supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b supports-[backdrop-filter]:backdrop-blur-[var(--glass-blur)]"
     >
       <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8 2xl:max-w-[1600px]">
         <Link
           href="/"
-          className="text-base font-semibold tracking-tight transition-colors text-foreground hover:opacity-80"
+          className="text-foreground text-base font-semibold tracking-tight transition-colors hover:opacity-80"
         >
           {siteConfig.name}
         </Link>
@@ -69,7 +69,7 @@ export function Navbar(): ReactNode {
                 className={cn(
                   "rounded-[var(--radius-md)] px-3 py-2 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
                   isActive
-                    ? "font-semibold text-foreground bg-accent/40"
+                    ? "text-foreground bg-accent/40 font-semibold"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent/20",
                 )}
               >

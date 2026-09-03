@@ -32,11 +32,5 @@ export function PortfolioFloatingNav(): ReactNode {
     },
   ];
 
-  return (
-    <FloatingMenu
-      items={menuItems}
-      isDark={isDark}
-      onToggleTheme={toggleTheme}
-    />
-  );
+  return <FloatingMenu items={menuItems} isDark={isDark} onToggleTheme={toggleTheme} />;
 }

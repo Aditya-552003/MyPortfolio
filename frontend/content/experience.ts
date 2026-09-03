@@ -10,7 +10,12 @@ export const experience: readonly Experience[] = [
     endDate: null,
     description:
       "Designed and developed a custom SharePoint platform from scratch, including a tailored home page, document management system, SME Finder with Azure integration, and enterprise search.",
-    tags: ["SharePoint Framework (SPFx)", "SharePoint Permissions", "Azure Integration", "Enterprise Search"],
+    tags: [
+      "SharePoint Framework (SPFx)",
+      "SharePoint Permissions",
+      "Azure Integration",
+      "Enterprise Search",
+    ],
     isPlaceholder: false,
   },
   {

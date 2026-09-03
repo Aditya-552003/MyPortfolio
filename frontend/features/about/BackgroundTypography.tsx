@@ -27,13 +27,13 @@ export function BackgroundTypography(): ReactNode {
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0"
+      className="pointer-events-none absolute inset-0 z-0 overflow-hidden select-none"
       aria-hidden="true"
     >
       {/* Top-Left Watermark Typography */}
       <motion.div
         style={{ y: shouldReduceMotion ? 0 : y1 }}
-        className={`${serifFont.className} absolute top-6 left-4 sm:top-8 sm:left-6 text-[12vw] sm:text-[14vw] md:text-[15vw] font-black leading-none text-foreground/[0.035] dark:text-foreground/[0.045] tracking-tighter`}
+        className={`${serifFont.className} text-foreground/[0.035] dark:text-foreground/[0.045] absolute top-6 left-4 text-[12vw] leading-none font-black tracking-tighter sm:top-8 sm:left-6 sm:text-[14vw] md:text-[15vw]`}
       >
         AI
       </motion.div>
@@ -41,7 +41,7 @@ export function BackgroundTypography(): ReactNode {
       {/* Bottom-Right Watermark Typography */}
       <motion.div
         style={{ y: shouldReduceMotion ? 0 : y2 }}
-        className={`${serifFont.className} absolute -bottom-6 -right-4 text-[10vw] sm:text-[12vw] md:text-[14vw] font-black leading-none text-foreground/[0.025] dark:text-foreground/[0.035] tracking-tighter`}
+        className={`${serifFont.className} text-foreground/[0.025] dark:text-foreground/[0.035] absolute -right-4 -bottom-6 text-[10vw] leading-none font-black tracking-tighter sm:text-[12vw] md:text-[14vw]`}
       >
         CREATE
       </motion.div>

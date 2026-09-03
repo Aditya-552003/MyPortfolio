@@ -69,7 +69,7 @@ function MenuButton({
       onClick={onClick}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      className="text-[22px] sm:text-[24px] uppercase leading-none overflow-hidden cursor-pointer"
+      className="cursor-pointer overflow-hidden text-[22px] leading-none uppercase sm:text-[24px]"
       style={{
         fontFamily: "'Trobika', 'Bebas Neue', sans-serif",
         letterSpacing: "-0.03em",
@@ -85,11 +85,7 @@ function MenuButton({
     >
       <div className="flex justify-center">
         {chars.map((char, i) => (
-          <span
-            key={i}
-            className="inline-block overflow-hidden"
-            style={{ height: "1em" }}
-          >
+          <span key={i} className="inline-block overflow-hidden" style={{ height: "1em" }}>
             <span
               className="flex flex-col"
               style={{
@@ -100,17 +96,10 @@ function MenuButton({
                 transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
-              <span
-                className="block"
-                style={{ height: "1em", lineHeight: "1em" }}
-              >
+              <span className="block" style={{ height: "1em", lineHeight: "1em" }}>
                 {char}
               </span>
-              <span
-                className="block"
-                style={{ height: "1em", lineHeight: "1em" }}
-                aria-hidden
-              >
+              <span className="block" style={{ height: "1em", lineHeight: "1em" }} aria-hidden>
                 {char}
               </span>
             </span>
@@ -164,7 +153,7 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
         transition={{ duration: 0.4, ease }}
       >
         <motion.div
-          className="relative overflow-hidden flex flex-col justify-between shadow-xl"
+          className="relative flex flex-col justify-between overflow-hidden shadow-xl"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
           onClick={() => {
@@ -189,7 +178,7 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
         >
           {/* Flat Glassmorphic background layer */}
           <motion.div
-            className="absolute inset-0 backdrop-blur-3xl overflow-hidden"
+            className="absolute inset-0 overflow-hidden backdrop-blur-3xl"
             animate={{
               backgroundColor: menuBgColor,
               borderColor: menuBorderColor,
@@ -205,7 +194,7 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
           {/* Menu items list */}
           {isOpen && (
             <motion.div
-              className="relative z-10 flex flex-col gap-3 items-center justify-center pt-8 pb-4"
+              className="relative z-10 flex flex-col items-center justify-center gap-3 pt-8 pb-4"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1, ease }}
@@ -233,7 +222,7 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
 
           {/* Bottom bar: Menu + Theme toggle + hamburger */}
           <motion.div
-            className="relative z-10 flex items-center justify-between w-full shrink-0 cursor-pointer px-6 h-12"
+            className="relative z-10 flex h-12 w-full shrink-0 cursor-pointer items-center justify-between px-6"
             onClick={(e) => {
               e.stopPropagation();
               setIsOpen(!isOpen);
@@ -249,19 +238,16 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
                     onToggleTheme();
                   }}
                   aria-label="Toggle theme"
-                  className="p-1.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors cursor-pointer"
+                  className="cursor-pointer rounded-full p-1.5 transition-colors hover:bg-black/10 dark:hover:bg-white/10"
                 >
-                  <motion.div
-                    animate={{ color: contentColor }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <motion.div animate={{ color: contentColor }} transition={{ duration: 0.3 }}>
                     {isDark ? <Moon className="size-4" /> : <Sun className="size-4" />}
                   </motion.div>
                 </button>
               )}
               {/* Rolling character hover effect for MENU text */}
               <div
-                className="text-[20px] leading-none select-none uppercase tracking-wide overflow-hidden"
+                className="overflow-hidden text-[20px] leading-none tracking-wide uppercase select-none"
                 style={{
                   fontFamily: "'Trobika', 'Bebas Neue', sans-serif",
                   letterSpacing: "-0.01em",
@@ -289,7 +275,11 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
                         <span className="block" style={{ height: "1em", lineHeight: "1em" }}>
                           {char}
                         </span>
-                        <span className="block" style={{ height: "1em", lineHeight: "1em" }} aria-hidden>
+                        <span
+                          className="block"
+                          style={{ height: "1em", lineHeight: "1em" }}
+                          aria-hidden
+                        >
                           {char}
                         </span>
                       </span>
@@ -299,9 +289,9 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
               </div>
             </div>
 
-            <div className="relative w-[32px] h-[32px] flex items-center justify-center">
+            <div className="relative flex h-[32px] w-[32px] items-center justify-center">
               <motion.span
-                className="absolute block w-[22px] h-[2.5px] rounded-full"
+                className="absolute block h-[2.5px] w-[22px] rounded-full"
                 animate={{
                   rotate: isOpen ? 45 : 0,
                   y: isOpen ? 0 : -4,
@@ -310,7 +300,7 @@ export default function FloatingMenu({ items, isDark, onToggleTheme }: FloatingM
                 transition={{ duration: 0.4, ease }}
               />
               <motion.span
-                className="absolute block w-[22px] h-[2.5px] rounded-full"
+                className="absolute block h-[2.5px] w-[22px] rounded-full"
                 animate={{
                   rotate: isOpen ? -45 : 0,
                   y: isOpen ? 0 : 4,

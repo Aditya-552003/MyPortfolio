@@ -1,12 +1,6 @@
 "use client";
 
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { ScrollLinkedCards } from "./ScrollLinkedCards";
@@ -46,8 +40,7 @@ function calculateGap(width: number) {
   const minGap = 30;
   const maxGap = 44;
   if (width <= minWidth) return minGap;
-  if (width >= maxWidth)
-    return Math.max(minGap, maxGap + 0.03 * (width - maxWidth));
+  if (width >= maxWidth) return Math.max(minGap, maxGap + 0.03 * (width - maxWidth));
   return minGap + (maxGap - minGap) * ((width - minWidth) / (maxWidth - minWidth));
 }
 
@@ -78,10 +71,7 @@ export const CircularTestimonials = ({
   const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const testimonialsLength = useMemo(() => testimonials.length, [testimonials]);
-  const activeTestimonial = useMemo(
-    () => testimonials[activeIndex],
-    [activeIndex, testimonials]
-  );
+  const activeTestimonial = useMemo(() => testimonials[activeIndex], [activeIndex, testimonials]);
 
   // Responsive gap calculation
   useEffect(() => {
@@ -210,10 +200,7 @@ export const CircularTestimonials = ({
               exit="exit"
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <h3
-                className="name"
-                style={{ color: colorName, fontSize: fontSizeName }}
-              >
+              <h3 className="name" style={{ color: colorName, fontSize: fontSizeName }}>
                 {activeTestimonial.name}
               </h3>
               <p
@@ -267,7 +254,11 @@ export const CircularTestimonials = ({
               onMouseLeave={() => setHoverPrev(false)}
               aria-label="Previous testimonial"
             >
-              <FaArrowLeft size={18} color={hoverPrev ? colorArrowBg : colorArrowFg} style={{ transition: "color 0.25s" }} />
+              <FaArrowLeft
+                size={18}
+                color={hoverPrev ? colorArrowBg : colorArrowFg}
+                style={{ transition: "color 0.25s" }}
+              />
             </button>
             <button
               className="arrow-button next-button"
@@ -283,7 +274,11 @@ export const CircularTestimonials = ({
               onMouseLeave={() => setHoverNext(false)}
               aria-label="Next testimonial"
             >
-              <FaArrowRight size={18} color={hoverNext ? colorArrowBg : colorArrowFg} style={{ transition: "color 0.25s" }} />
+              <FaArrowRight
+                size={18}
+                color={hoverNext ? colorArrowBg : colorArrowFg}
+                style={{ transition: "color 0.25s" }}
+              />
             </button>
           </div>
         </div>
@@ -320,16 +315,16 @@ export const CircularTestimonials = ({
           min-height: 16.5rem;
         }
         .name {
-          font-family: var(--font-sans, 'Inter', -apple-system, sans-serif);
+          font-family: var(--font-sans, "Inter", -apple-system, sans-serif);
           font-weight: 700;
           margin-bottom: 0.25rem;
         }
         .designation {
-          font-family: var(--font-sans, 'Inter', -apple-system, sans-serif);
+          font-family: var(--font-sans, "Inter", -apple-system, sans-serif);
           margin-bottom: 1.25rem;
         }
         .quote {
-          font-family: var(--font-sans, 'Inter', -apple-system, sans-serif);
+          font-family: var(--font-sans, "Inter", -apple-system, sans-serif);
           line-height: 1.75;
           font-weight: 400;
         }
@@ -348,7 +343,9 @@ export const CircularTestimonials = ({
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: background-color 0.25s, transform 0.25s;
+          transition:
+            background-color 0.25s,
+            transform 0.25s;
           border: none;
         }
         .word {

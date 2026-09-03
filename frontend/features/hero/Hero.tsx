@@ -39,7 +39,6 @@ export function Hero({
   const [introPhase, setIntroPhase] = useState<IntroPhase>("liquid");
 
   useEffect(() => {
-
     // Chronological Intro Sequence:
     // 0s - 1.2s : Liquid arises bottom-to-top filling "ADITYA" in center (small scale 0.55)
     // 1.2s - 1.8s: Zoom in smoothly to 1.0 (matching full hero title size)
@@ -100,7 +99,8 @@ export function Hero({
   }, [mouseX, mouseY]);
 
   const isZoomOrLater = introPhase !== "liquid";
-  const isPortraitOrLater = introPhase === "portrait" || introPhase === "traits" || introPhase === "complete";
+  const isPortraitOrLater =
+    introPhase === "portrait" || introPhase === "traits" || introPhase === "complete";
   const isTraitsOrLater = introPhase === "traits" || introPhase === "complete";
 
   return (
@@ -114,7 +114,7 @@ export function Hero({
         minHeight: "650px",
         width: "100%",
       }}
-      className="relative z-10 flex flex-col justify-between overflow-hidden bg-background text-foreground select-none"
+      className="bg-background text-foreground relative z-10 flex flex-col justify-between overflow-hidden select-none"
     >
       {/* ------------------------------------------------------------- */}
       {/* PHASE 1 & 2: INTRO LIQUID LOADER OVERLAY & ZOOM SEQUENCE */}
@@ -125,7 +125,7 @@ export function Hero({
           initial={{ opacity: 1 }}
           animate={{ opacity: isPortraitOrLater ? 0 : 1 }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute inset-0 z-[100] flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 bg-background pointer-events-none"
+          className="bg-background pointer-events-none absolute inset-0 z-[100] flex -translate-y-8 items-center justify-center sm:-translate-y-12 md:-translate-y-16"
         >
           <motion.div
             initial={{ scale: 0.55 }}
@@ -135,7 +135,7 @@ export function Hero({
           >
             {/* Ghost outline text boundary in center */}
             <span
-              className={`${bebasNeue.className} uppercase whitespace-nowrap text-foreground/15`}
+              className={`${bebasNeue.className} text-foreground/15 whitespace-nowrap uppercase`}
               style={{
                 fontSize: "clamp(5.5rem, 28vw, 36rem)",
                 lineHeight: "0.85",
@@ -151,7 +151,7 @@ export function Hero({
               initial={{ clipPath: "inset(100% 0% 0% 0%)" }}
               animate={{ clipPath: "inset(0% 0% 0% 0%)" }}
               transition={{ duration: 1.15, ease: [0.25, 1, 0.5, 1] }}
-              className={`${bebasNeue.className} absolute uppercase whitespace-nowrap text-[var(--hero-text-solid,#EDE8D0)]`}
+              className={`${bebasNeue.className} absolute whitespace-nowrap text-[var(--hero-text-solid,#EDE8D0)] uppercase`}
               style={{
                 fontSize: "clamp(5.5rem, 28vw, 36rem)",
                 lineHeight: "0.85",
@@ -165,12 +165,12 @@ export function Hero({
       )}
 
       {/* Layer 0: Theme Background */}
-      <div style={{ zIndex: 0 }} className="absolute inset-0 bg-background" />
+      <div style={{ zIndex: 0 }} className="bg-background absolute inset-0" />
 
       {/* Layer 1: Massive Solid Background Typography ("ADITYA") */}
       <div
         style={{ zIndex: 1 }}
-        className="absolute inset-0 flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 overflow-hidden pointer-events-none"
+        className="pointer-events-none absolute inset-0 flex -translate-y-8 items-center justify-center overflow-hidden sm:-translate-y-12 md:-translate-y-16"
       >
         <motion.div
           suppressHydrationWarning
@@ -189,14 +189,14 @@ export function Hero({
             scale: isZoomOrLater ? 1 : 0.55,
           }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`${bebasNeue.className} uppercase whitespace-nowrap select-none opacity-95`}
+          className={`${bebasNeue.className} whitespace-nowrap uppercase opacity-95 select-none`}
         >
           ADITYA
         </motion.div>
       </div>
 
       {/* Layer 5: 5 Decorative Hand-Drawn Arrow Traits (Top Layer z-index: 10) */}
-      <div style={{ zIndex: 10 }} className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div style={{ zIndex: 10 }} className="pointer-events-none absolute inset-0 overflow-hidden">
         {/* 1. FREELANCER (Top-Left: Yellow arrow) */}
         <motion.div
           suppressHydrationWarning
@@ -211,12 +211,14 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.2 }}
           animate={isTraitsOrLater ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.8, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-1 select-none pointer-events-none"
+          className="pointer-events-none flex flex-col items-center gap-1 select-none"
         >
-          <span className={`${caveat.className} text-[22px] sm:text-[26px] font-bold tracking-wider text-foreground/95 whitespace-nowrap`}>
+          <span
+            className={`${caveat.className} text-foreground/95 text-[22px] font-bold tracking-wider whitespace-nowrap sm:text-[26px]`}
+          >
             Freelancer
           </span>
-          <div className="relative h-12 w-20 sm:h-14 sm:w-24 md:h-16 md:w-28 -translate-y-1 sm:-translate-y-2">
+          <div className="relative h-12 w-20 -translate-y-1 sm:h-14 sm:w-24 sm:-translate-y-2 md:h-16 md:w-28">
             <Image
               src="/images/elements/yellow.png"
               alt="Freelancer Arrow"
@@ -224,7 +226,7 @@ export function Hero({
               sizes="150px"
               quality={100}
               unoptimized
-              className="object-contain hero-arrow-img rotate-90 -scale-y-100"
+              className="hero-arrow-img -scale-y-100 rotate-90 object-contain"
             />
           </div>
         </motion.div>
@@ -243,9 +245,9 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.2 }}
           animate={isTraitsOrLater ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-start gap-1 select-none pointer-events-none"
+          className="pointer-events-none flex flex-col items-start gap-1 select-none"
         >
-          <div className="relative h-20 w-32 sm:h-24 sm:w-40 md:h-28 md:w-48 translate-x-12">
+          <div className="relative h-20 w-32 translate-x-12 sm:h-24 sm:w-40 md:h-28 md:w-48">
             <Image
               src="/images/elements/pink.png"
               alt="Creative Developer Arrow"
@@ -253,10 +255,12 @@ export function Hero({
               sizes="200px"
               quality={100}
               unoptimized
-              className="object-contain hero-arrow-img -scale-x-100 -scale-y-100 -rotate-340"
+              className="hero-arrow-img -scale-x-100 -scale-y-100 -rotate-340 object-contain"
             />
           </div>
-          <span className={`${caveat.className} text-[20px] sm:text-[24px] font-bold tracking-wider text-foreground/95 leading-none text-left translate-x-5 sm:translate-x-10 -translate-y-3 sm:-translate-y-4`}>
+          <span
+            className={`${caveat.className} text-foreground/95 translate-x-5 -translate-y-3 text-left text-[20px] leading-none font-bold tracking-wider sm:translate-x-10 sm:-translate-y-4 sm:text-[24px]`}
+          >
             Creative
             <br />
             Developer
@@ -277,9 +281,9 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.2 }}
           animate={isTraitsOrLater ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.8, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-row items-center gap-2 select-none pointer-events-none"
+          className="pointer-events-none flex flex-row items-center gap-2 select-none"
         >
-          <div className="relative h-12 w-20 sm:h-14 sm:w-24 md:h-16 md:w-28 translate-x-5 translate-y-5">
+          <div className="relative h-12 w-20 translate-x-5 translate-y-5 sm:h-14 sm:w-24 md:h-16 md:w-28">
             <Image
               src="/images/elements/blue2.png"
               alt="AI / ML Arrow"
@@ -287,10 +291,12 @@ export function Hero({
               sizes="150px"
               quality={100}
               unoptimized
-              className="object-contain hero-arrow-img -rotate-12"
+              className="hero-arrow-img -rotate-12 object-contain"
             />
           </div>
-          <span className={`${caveat.className} text-[22px] sm:text-[26px] font-bold tracking-wider text-foreground/95 whitespace-nowrap -translate-y-1 sm:-translate-y-2`}>
+          <span
+            className={`${caveat.className} text-foreground/95 -translate-y-1 text-[22px] font-bold tracking-wider whitespace-nowrap sm:-translate-y-2 sm:text-[26px]`}
+          >
             AI / ML
           </span>
         </motion.div>
@@ -309,14 +315,16 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.2 }}
           animate={isTraitsOrLater ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-row items-center gap-2 sm:gap-3 select-none pointer-events-none"
+          className="pointer-events-none flex flex-row items-center gap-2 select-none sm:gap-3"
         >
-          <span className={`${caveat.className} text-[20px] sm:text-[24px] font-bold tracking-wider text-foreground/95 leading-none text-left translate-x-25 sm:translate-x-30 translate-y-2`}>
+          <span
+            className={`${caveat.className} text-foreground/95 translate-x-25 translate-y-2 text-left text-[20px] leading-none font-bold tracking-wider sm:translate-x-30 sm:text-[24px]`}
+          >
             SharePoint
             <br />
             Developer
           </span>
-          <div className="relative h-16 w-24 sm:h-20 sm:w-32 md:h-22 md:w-40 translate-x-25 -translate-y-5">
+          <div className="relative h-16 w-24 translate-x-25 -translate-y-5 sm:h-20 sm:w-32 md:h-22 md:w-40">
             <Image
               src="/images/elements/green.png"
               alt="SharePoint Developer Arrow"
@@ -324,7 +332,7 @@ export function Hero({
               sizes="180px"
               quality={100}
               unoptimized
-              className="object-contain hero-arrow-img scale-x-100 rotate-[125deg]"
+              className="hero-arrow-img scale-x-100 rotate-[125deg] object-contain"
             />
           </div>
         </motion.div>
@@ -343,9 +351,9 @@ export function Hero({
           initial={{ opacity: 0, scale: 0.2 }}
           animate={isTraitsOrLater ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.2 }}
           transition={{ duration: 0.8, delay: 0.65, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-end gap-1 select-none pointer-events-none"
+          className="pointer-events-none flex flex-col items-end gap-1 select-none"
         >
-          <div className="relative h-24 w-24 sm:h-32 sm:w-32 md:h-40 md:w-40 translate-x-2 sm:translate-x-4 -translate-y-5">
+          <div className="relative h-24 w-24 translate-x-2 -translate-y-5 sm:h-32 sm:w-32 sm:translate-x-4 md:h-40 md:w-40">
             <Image
               src="/images/elements/purpule.png"
               alt="Digital Builder Arrow"
@@ -353,10 +361,12 @@ export function Hero({
               sizes="180px"
               quality={100}
               unoptimized
-              className="object-contain hero-arrow-img -scale-y-100 rotate-270"
+              className="hero-arrow-img -scale-y-100 rotate-270 object-contain"
             />
           </div>
-          <span className={`${caveat.className} text-[20px] sm:text-[24px] font-bold tracking-wider text-foreground/95 leading-none text-right translate-x-2 sm:translate-x-4 -translate-y-4 sm:-translate-y-6`}>
+          <span
+            className={`${caveat.className} text-foreground/95 translate-x-2 -translate-y-4 text-right text-[20px] leading-none font-bold tracking-wider sm:translate-x-4 sm:-translate-y-6 sm:text-[24px]`}
+          >
             Digital
             <br />
             Builder
@@ -367,7 +377,7 @@ export function Hero({
       {/* Layer 3: Central High-Res Portrait Cutout of Aditya */}
       <div
         style={{ zIndex: 3 }}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
       >
         <motion.div
           suppressHydrationWarning
@@ -376,11 +386,12 @@ export function Hero({
             x: isMounted && introPhase === "complete" ? portraitX : 0,
             y: isMounted && introPhase === "complete" ? portraitY : 0,
             height: "90%",
-            left: "2%"
-
+            left: "2%",
           }}
           initial={{ opacity: 0, scale: 0.85, y: 80 }}
-          animate={isPortraitOrLater ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 80 }}
+          animate={
+            isPortraitOrLater ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.85, y: 80 }
+          }
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="relative flex w-auto items-center justify-center pt-4 sm:pt-6"
         >
@@ -407,7 +418,7 @@ export function Hero({
       {/* Layer 4: Outlined Foreground Typography Overlay over Portrait */}
       <div
         style={{ zIndex: 4 }}
-        className="absolute inset-0 flex items-center justify-center -translate-y-8 sm:-translate-y-12 md:-translate-y-16 overflow-hidden pointer-events-none"
+        className="pointer-events-none absolute inset-0 flex -translate-y-8 items-center justify-center overflow-hidden sm:-translate-y-12 md:-translate-y-16"
       >
         <motion.div
           suppressHydrationWarning
@@ -428,7 +439,7 @@ export function Hero({
             scale: isZoomOrLater ? 1 : 0.55,
           }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className={`${bebasNeue.className} uppercase whitespace-nowrap select-none hero-stroke-overlay`}
+          className={`${bebasNeue.className} hero-stroke-overlay whitespace-nowrap uppercase select-none`}
         >
           ADITYA
         </motion.div>

@@ -13,7 +13,6 @@ import { ProjectsPreview } from "@/features/projects";
 import { SkillsHighlight } from "@/features/skills";
 import { siteConfig } from "@/config/site";
 
-
 export const metadata: Metadata = {
   title: siteConfig.tagline,
   description: siteConfig.description,
@@ -29,7 +28,10 @@ export default function HomePage(): ReactNode {
         {/* Section 1: My Projects */}
         <section aria-labelledby="projects-heading">
           <div className="flex items-center justify-between">
-            <h2 id="projects-heading" className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase text-primary shrink-0">
+            <h2
+              id="projects-heading"
+              className="text-primary shrink-0 text-[11px] font-bold tracking-[0.25em] uppercase sm:text-xs"
+            >
               MY PROJECTS
             </h2>
             <Link
@@ -59,8 +61,11 @@ export default function HomePage(): ReactNode {
         {/* Section 3: Work & Experience (Interactive Pinned Path) */}
         <section aria-labelledby="experience-heading">
           <ScrollReveal delay={0} distance={30}>
-            <div className="flex items-center justify-between pb-3 border-b border-border/60">
-              <h2 id="experience-heading" className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase text-primary shrink-0">
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
+              <h2
+                id="experience-heading"
+                className="text-primary shrink-0 text-[11px] font-bold tracking-[0.25em] uppercase sm:text-xs"
+              >
                 WORK &amp; EXPERIENCE
               </h2>
               <Link
@@ -81,8 +86,11 @@ export default function HomePage(): ReactNode {
         {/* Section 4: Achievements & Certifications */}
         <section aria-labelledby="certifications-heading">
           <ScrollReveal delay={0} distance={30}>
-            <div className="flex items-center justify-between pb-3 border-b border-border/60">
-              <h2 id="certifications-heading" className="text-[11px] sm:text-xs font-bold tracking-[0.25em] uppercase text-primary shrink-0">
+            <div className="border-border/60 flex items-center justify-between border-b pb-3">
+              <h2
+                id="certifications-heading"
+                className="text-primary shrink-0 text-[11px] font-bold tracking-[0.25em] uppercase sm:text-xs"
+              >
                 ACHIEVEMENTS &amp; CERTIFICATIONS
               </h2>
             </div>
