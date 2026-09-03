@@ -1,8 +1,10 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import { navItems, siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils/cn";
@@ -13,16 +15,46 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar(): ReactNode {
   const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(() => pathname === "/");
+
+  useEffect(() => {
+    if (pathname !== "/") {
+      return;
+    }
+
+    const handleComplete = (): void => {
+      setIsLoading(false);
+    };
+
+    window.addEventListener("hero-loading-complete", handleComplete);
+
+    // Safety fallback timer to ensure navbar is never stuck hidden
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3600);
+
+    return () => {
+      window.removeEventListener("hero-loading-complete", handleComplete);
+      clearTimeout(timer);
+    };
+  }, [pathname]);
 
   return (
-    <header
-      className={cn(
-        "border-border sticky top-0 z-40 w-full border-b",
-        "bg-background/80 supports-[backdrop-filter]:bg-background/60 supports-[backdrop-filter]:backdrop-blur-[var(--glass-blur)]",
-      )}
+    <motion.header
+      initial={pathname === "/" ? { opacity: 0, y: -48 } : { opacity: 1, y: 0 }}
+      animate={
+        isLoading && pathname === "/"
+          ? { opacity: 0, y: -48, pointerEvents: "none" }
+          : { opacity: 1, y: 0, pointerEvents: "auto" }
+      }
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="border-border bg-background/80 text-foreground supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b supports-[backdrop-filter]:backdrop-blur-[var(--glass-blur)]"
     >
       <div className="mx-auto flex h-16 w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-8 2xl:max-w-[1600px]">
-        <Link href="/" className="text-foreground text-base font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="text-foreground text-base font-semibold tracking-tight transition-colors hover:opacity-80"
+        >
           {siteConfig.name}
         </Link>
 
@@ -36,7 +68,9 @@ export function Navbar(): ReactNode {
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
                   "rounded-[var(--radius-md)] px-3 py-2 text-sm font-medium transition-colors duration-[var(--duration-fast)]",
-                  isActive ? "text-primary" : "text-muted hover:text-foreground",
+                  isActive
+                    ? "text-foreground bg-accent/40 font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/20",
                 )}
               >
                 {item.label}
@@ -51,6 +85,6 @@ export function Navbar(): ReactNode {
           <MobileNav />
         </div>
       </div>
-    </header>
+    </motion.header>
   );
 }

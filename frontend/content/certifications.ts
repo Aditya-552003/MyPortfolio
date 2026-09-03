@@ -1,21 +1,35 @@
 import type { Certification } from "./types";
 
-/** Placeholder certifications (PRD §7.8) — replace with real credentials before launch. */
 export const certifications: readonly Certification[] = [
   {
-    id: "sample-cert-1",
-    title: "[Certification Title]",
-    issuer: "[Issuing Organization]",
-    date: "2025-03",
-    credentialUrl: "#",
-    isPlaceholder: true,
+    id: "hackathon-built-with-framework",
+    title: "Secured First Prize in Built with Framework Hackathon",
+    issuer: "Flutter Kanpur",
+    date: "2026",
+    isPlaceholder: false,
   },
   {
-    id: "sample-cert-2",
-    title: "[Certification Title]",
-    issuer: "[Issuing Organization]",
-    date: "2024-11",
+    id: "ibm-data-science-cert",
+    title: "IBM Data Science Professional Certificate",
+    issuer: "IBM & Coursera",
+    date: "2025",
     credentialUrl: "#",
-    isPlaceholder: true,
+    isPlaceholder: false,
+  },
+  {
+    id: "physics-wallah-python-dsa",
+    title: "Decode Python with DSA",
+    issuer: "Physics Wallah",
+    date: "2025",
+    credentialUrl: "#",
+    isPlaceholder: false,
+  },
+  {
+    id: "tutedude-machine-learning",
+    title: "Machine Learning Certificate",
+    issuer: "Tutedude",
+    date: "2025",
+    credentialUrl: "#",
+    isPlaceholder: false,
   },
 ] as const;

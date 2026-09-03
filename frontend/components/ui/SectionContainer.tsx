@@ -7,7 +7,7 @@ export interface SectionContainerProps extends HTMLAttributes<HTMLElement> {
   as?: ElementType;
 }
 
-/** Consistent max-width + responsive padding wrapper used by every page section. */
+/** Consistent max-width + responsive padding wrapper matching About section grid alignment. */
 export function SectionContainer({
   children,
   className,
@@ -16,10 +16,7 @@ export function SectionContainer({
 }: SectionContainerProps): ReactNode {
   return (
     <Component
-      className={cn(
-        "mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8 2xl:max-w-[1600px]",
-        className,
-      )}
+      className={cn("mx-auto w-full max-w-7xl px-6 sm:px-12 md:px-16 lg:px-24", className)}
       {...rest}
     >
       {children}

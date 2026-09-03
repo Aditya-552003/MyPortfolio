@@ -1,25 +1,27 @@
 import type { ReactNode } from "react";
-
-import { Timeline, TimelineItem } from "@/components/ui/Timeline";
+import { ProjectShowcase, type ShowcaseItem } from "@/components/ui/project-showcase";
 import { experience } from "@/content/experience";
 import { formatDateRange } from "@/lib/utils/formatDateRange";
 
-export function ExperienceTimeline(): ReactNode {
+const experienceLogos: Record<string, string> = {
+  "rapsora-software-engineer": "/rapsora_technology_logo.jpg",
+  "rapsora-ai-engineer": "/rapsora_technology_logo.jpg",
+  "oasis-infobyte-intern": "/oasis_infobyte_logo.jpg",
+};
+
+export function ExperienceTimeline({ className }: { className?: string } = {}): ReactNode {
+  const showcaseItems: ShowcaseItem[] = experience.map((entry) => ({
+    title: `${entry.role} — ${entry.organization}`,
+    description: entry.description,
+    year: formatDateRange(entry.startDate, entry.endDate),
+    link: "/experience",
+    image: experienceLogos[entry.id] ?? "/rapsora_technology_logo.jpg",
+    tags: entry.tags,
+  }));
+
   return (
-    <Timeline className="max-w-2xl">
-      {experience.map((entry, index) => (
-        <TimelineItem
-          key={entry.id}
-          dateRange={formatDateRange(entry.startDate, entry.endDate)}
-          title={entry.role}
-          subtitle={entry.organization}
-          tags={entry.tags}
-          isPlaceholder={entry.isPlaceholder}
-          delayMs={index * 75}
-        >
-          {entry.description}
-        </TimelineItem>
-      ))}
-    </Timeline>
+    <div className={className}>
+      <ProjectShowcase title="" items={showcaseItems} imageShape="circle" />
+    </div>
   );
 }
