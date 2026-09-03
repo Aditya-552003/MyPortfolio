@@ -22,13 +22,19 @@ const caveat = Caveat({
 
 type IntroPhase = "liquid" | "zoom" | "portrait" | "traits" | "complete";
 
+import type { MotionValue } from "framer-motion";
+
 export interface HeroProps {
-  _traitsOpacity?: unknown;
-  _traitsY?: unknown;
-  _portraitOpacity?: unknown;
+  traitsOpacity?: MotionValue<number>;
+  traitsY?: MotionValue<number>;
+  portraitOpacity?: MotionValue<number>;
 }
 
-export function Hero(): ReactNode {
+export function Hero({
+  traitsOpacity: _traitsOpacity,
+  traitsY: _traitsY,
+  portraitOpacity: _portraitOpacity,
+}: HeroProps = {}): ReactNode {
   const [isMounted] = useState(() => typeof window !== "undefined");
   const [introPhase, setIntroPhase] = useState<IntroPhase>("liquid");
 
