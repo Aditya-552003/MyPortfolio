@@ -62,7 +62,7 @@ const defaultItems: ShowcaseItem[] = [
 
 interface TimelineCardItemProps {
   item: ShowcaseItem;
-  index: number;
+  index?: number;
   isDark: boolean;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -70,7 +70,7 @@ interface TimelineCardItemProps {
 
 function TimelineCardItem({
   item,
-  index,
+  index: _index,
   isDark,
   onMouseEnter,
   onMouseLeave,
@@ -212,6 +212,7 @@ export function ProjectShowcase({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 });
+  const [containerRect, setContainerRect] = useState({ left: 0, top: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | null>(null);
@@ -255,6 +256,7 @@ export function ProjectShowcase({
   const handleMouseMove = (e: React.MouseEvent) => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
+      setContainerRect({ left: rect.left, top: rect.top });
       setMousePosition({
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
@@ -291,8 +293,8 @@ export function ProjectShowcase({
             imageShape === "circle" ? "rounded-full" : "rounded-xl shadow-2xl"
           }`}
           style={{
-            left: containerRef.current?.getBoundingClientRect().left ?? 0,
-            top: containerRef.current?.getBoundingClientRect().top ?? 0,
+            left: containerRect.left,
+            top: containerRect.top,
             transform: `translate3d(${smoothPosition.x + 20}px, ${
               smoothPosition.y - (imageShape === "circle" ? 50 : 100)
             }px, 0)`,

@@ -3,7 +3,7 @@ import { Suspense, type ReactNode } from "react";
 
 import { SectionContainer } from "@/components/ui/SectionContainer";
 import { CertificationsList } from "@/features/certifications";
-import { EducationTimeline, ExperienceTimeline } from "@/features/experience";
+import { ExperienceTimeline } from "@/features/experience";
 import { GitHubStats } from "@/features/github";
 import { GitHubStatsSkeleton } from "@/features/github/GitHubStatsSkeleton";
 

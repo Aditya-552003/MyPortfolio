@@ -1,17 +1,17 @@
+import type { ComponentPropsWithoutRef } from "react";
 import { useId } from "react";
 
 import { cn } from "@/lib/utils";
 
-interface DotPatternProps {
-  width?: any;
-  height?: any;
-  x?: any;
-  y?: any;
-  cx?: any;
-  cy?: any;
-  cr?: any;
+interface DotPatternProps extends ComponentPropsWithoutRef<"svg"> {
+  width?: number | string;
+  height?: number | string;
+  x?: number | string;
+  y?: number | string;
+  cx?: number | string;
+  cy?: number | string;
+  cr?: number | string;
   className?: string;
-  [key: string]: any;
 }
 
 function DotPattern({

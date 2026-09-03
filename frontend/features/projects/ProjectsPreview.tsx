@@ -11,8 +11,6 @@ const projectImages: Record<string, string> = {
   "smart-shortlist": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
 };
 
-import { ScrollReveal } from "@/components/ui/ScrollReveal";
-
 export function ProjectsPreview(): ReactNode {
   const { theme } = useTheme();
   const isDark = theme === "dark";

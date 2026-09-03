@@ -23,17 +23,16 @@ const caveat = Caveat({
 type IntroPhase = "liquid" | "zoom" | "portrait" | "traits" | "complete";
 
 export interface HeroProps {
-  traitsOpacity?: any;
-  traitsY?: any;
-  portraitOpacity?: any;
+  _traitsOpacity?: unknown;
+  _traitsY?: unknown;
+  _portraitOpacity?: unknown;
 }
 
-export function Hero({ traitsOpacity, traitsY, portraitOpacity }: HeroProps = {}): ReactNode {
-  const [isMounted, setIsMounted] = useState(false);
+export function Hero(): ReactNode {
+  const [isMounted] = useState(() => typeof window !== "undefined");
   const [introPhase, setIntroPhase] = useState<IntroPhase>("liquid");
 
   useEffect(() => {
-    setIsMounted(true);
 
     // Chronological Intro Sequence:
     // 0s - 1.2s : Liquid arises bottom-to-top filling "ADITYA" in center (small scale 0.55)

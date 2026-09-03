@@ -13,28 +13,6 @@ import { ProjectsPreview } from "@/features/projects";
 import { SkillsHighlight } from "@/features/skills";
 import { siteConfig } from "@/config/site";
 
-import HowItWorks, { type Step } from "@/components/ui/how-it-works";
-
-const experienceSteps: Step[] = [
-  {
-    title: "Software Engineer",
-    description:
-      "Rapsora Technologies (Aug 2026 – Present). Designed & developed a custom SharePoint platform from scratch with Azure integration & enterprise search.",
-    colorTheme: "orange",
-  },
-  {
-    title: "AI Engineer Intern",
-    description:
-      "Rapsora Technologies (Feb 2026 – Aug 2026). Developed machine learning models, natural language processing pipelines, and AI automation solutions.",
-    colorTheme: "blue",
-  },
-  {
-    title: "Web & API Intern",
-    description:
-      "Oasis Infobyte (May 2024 – Jun 2024). Developed web software projects and implemented API integrations.",
-    colorTheme: "purple",
-  },
-];
 
 export const metadata: Metadata = {
   title: siteConfig.tagline,

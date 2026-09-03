@@ -15,11 +15,10 @@ import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar(): ReactNode {
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState(pathname === "/");
+  const [isLoading, setIsLoading] = useState(() => pathname === "/");
 
   useEffect(() => {
     if (pathname !== "/") {
-      setIsLoading(false);
       return;
     }
 

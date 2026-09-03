@@ -35,15 +35,10 @@ export function TypewriterParagraph(): ReactNode {
   const containerRef = useRef<HTMLParagraphElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-50px" });
   const shouldReduceMotion = useReducedMotion();
-  const [charIndex, setCharIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(() => (shouldReduceMotion ? TOTAL_CHARS : 0));
 
   useEffect(() => {
-    if (shouldReduceMotion) {
-      setCharIndex(TOTAL_CHARS);
-      return;
-    }
-
-    if (!isInView) return;
+    if (shouldReduceMotion || !isInView) return;
 
     // Typing interval (~14ms per character for ultra-fluid typing)
     const interval = setInterval(() => {

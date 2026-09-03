@@ -313,8 +313,18 @@ export default function HowItWorks({
     restDelta: 0.001,
   });
 
+  const pathLength = useTransform(
+    smoothProgress,
+    [0, 0.7],
+    [0, 1]
+  );
+
   const data = features ?? [];
   const positions = stepPositions ?? DEFAULT_CARD_POSITIONS;
+
+  const strokeWidthNum = 3;
+  const pathD =
+    "M 200,60 C 600,100 800,180 750,260 C 700,340 300,380 250,460 C 200,540 800,580 750,630";
 
   return (
     <LazyMotion features={domAnimation}>
@@ -344,18 +354,18 @@ export default function HowItWorks({
             {/* SVG Connecting Line */}
             {data.length > 1 && (
               <svg
-                className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible"
+                className="pointer-events-none absolute inset-0 hidden w-full h-full md:block overflow-visible"
+                viewBox="0 0 1000 800"
                 preserveAspectRatio="none"
-                viewBox="0 0 1000 840"
               >
                 <defs>
                   <marker
                     id="arrow-head"
                     viewBox="0 0 10 10"
-                    refX="6"
+                    refX="5"
                     refY="5"
-                    markerWidth="8"
-                    markerHeight="8"
+                    markerWidth="6"
+                    markerHeight="6"
                     orient="auto-start-reverse"
                   >
                     <path
@@ -366,47 +376,31 @@ export default function HowItWorks({
                   </marker>
                 </defs>
 
-                {(() => {
-                  const strokeWidthNum = 3;
-                  const pathD =
-                    "M 200,60 C 600,100 800,180 750,260 C 700,340 300,380 250,460 C 200,540 800,580 750,630";
-
-                  const pathLength = useTransform(
-                    smoothProgress,
-                    [0, 0.7],
-                    [0, 1]
-                  );
-
-                  return (
-                    <>
-                      <defs>
-                        <mask id="dashed-line-mask">
-                          <m.path
-                            d={pathD}
-                            stroke="white"
-                            strokeWidth="14"
-                            fill="none"
-                            strokeLinecap="round"
-                            vectorEffect="non-scaling-stroke"
-                            style={{ pathLength }}
-                          />
-                        </mask>
-                      </defs>
-                      <path
-                        d={pathD}
-                        stroke="currentColor"
-                        className="text-primary/60 transition-colors duration-300"
-                        strokeWidth={strokeWidthNum}
-                        strokeDasharray="10 8"
-                        fill="none"
-                        strokeLinecap="round"
-                        vectorEffect="non-scaling-stroke"
-                        mask="url(#dashed-line-mask)"
-                        markerEnd="url(#arrow-head)"
-                      />
-                    </>
-                  );
-                })()}
+                <defs>
+                  <mask id="dashed-line-mask">
+                    <m.path
+                      d={pathD}
+                      stroke="white"
+                      strokeWidth="14"
+                      fill="none"
+                      strokeLinecap="round"
+                      vectorEffect="non-scaling-stroke"
+                      style={{ pathLength }}
+                    />
+                  </mask>
+                </defs>
+                <path
+                  d={pathD}
+                  stroke="currentColor"
+                  className="text-primary/60 transition-colors duration-300"
+                  strokeWidth={strokeWidthNum}
+                  strokeDasharray="10 8"
+                  fill="none"
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                  mask="url(#dashed-line-mask)"
+                  markerEnd="url(#arrow-head)"
+                />
               </svg>
             )}
 

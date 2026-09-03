@@ -51,7 +51,7 @@ export function SandMorph(): ReactNode {
     logoIndex: 0,
     phase: "form" as "form" | "hold" | "dissolve",
     phaseTimer: 0,
-    lastTime: performance.now(),
+    lastTime: 0,
   });
 
   // Pre-extract target points from SVG images
