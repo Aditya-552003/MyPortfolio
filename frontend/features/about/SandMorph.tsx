@@ -13,7 +13,7 @@ const LOGOS: LogoConfig[] = [
   { name: "PYTHON", src: "/logo/python.svg" },
   { name: "SHAREPOINT", src: "/logo/icons8-microsoft-sharepoint-2025-500.svg" },
   { name: "REACT", src: "/logo/react.svg" },
-  { name: "HUGGING FACE", src: "/logo/huggingface.svg" },
+  { name: "HUGGING FACE", src: "/logo/huggingface-sandmorph.svg" },
   { name: "PYTORCH", src: "/logo/pytorch.svg" },
   { name: "TENSORFLOW", src: "/logo/icons8-tensorflow.svg" },
   { name: "GITHUB", src: "/logo/github.svg" },

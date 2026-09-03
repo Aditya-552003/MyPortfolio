@@ -22,3 +22,8 @@ export type { FormFieldProps } from "./FormField";
 export { ErrorBoundary } from "./ErrorBoundary";
 export { default as FloatingMenu } from "./liquid-morph-floating-menu";
 export type { FloatingMenuProps, MenuItem } from "./liquid-morph-floating-menu";
+export { CircularTestimonials } from "./circular-testimonials";
+export type { CircularTestimonialsProps, Testimonial } from "./circular-testimonials";
+export { MarqueeLogoScroller } from "./marquee-logo-scroller";
+export type { MarqueeLogoScrollerProps, Logo } from "./marquee-logo-scroller";
+
